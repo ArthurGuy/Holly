@@ -27,8 +27,9 @@ Outputs:
     x, y, z: signed 16-bit integer of x, y, and z values
 """
 def read3axis(x, address, reg, cal):
-    x.address(address)
-    data = x.readBytesReg(0x80 | reg, 6)
+    #x.address(address)
+    #data = x.readBytesReg(0x80 | reg, 6)
+    data = x.read_i2c_block_data(address, 0x80 | reg)
     x, y, z = parsedata(data, cal)
     return x, y, z 
 
@@ -160,17 +161,20 @@ class IMU:
     # Reads and calibrates the accelerometer values into Gs
     def read_accel(self):
         cal = self.XM.CAL_A[self.selected_a_range]
-        self.ax, self.ay, self.az = read3axis(self.x, self.XM.ADDRESS, self.XM.OUT_X_L_XL, cal)
+        #self.ax, self.ay, self.az = read3axis(self.x, self.XM.ADDRESS, self.XM.OUT_X_L_XL, cal)
+        self.ax, self.ay, self.az = read3axis(self.bus, self.XM.ADDRESS, self.XM.OUT_X_L_XL, cal)
     
     # Reads and calibrates the mag values into Gauss
     def read_mag(self):
         cal = self.MA.CAL_M[self.selected_m_range]
-        self.mx, self.my, self.mz = read3axis(self.x, self.MA.ADDRESS, self.MA.OUT_X_L_M, cal) 
+        #self.mx, self.my, self.mz = read3axis(self.x, self.MA.ADDRESS, self.MA.OUT_X_L_M, cal) 
+        self.mx, self.my, self.mz = read3axis(self.bus, self.MA.ADDRESS, self.MA.OUT_X_L_M, cal) 
     
     # Reads and calibrates the gyro values into degrees per second
     def read_gyro(self):
         cal = self.XM.CAL_G[self.selected_g_range]
-        self.gx, self.gy, self.gz = read3axis(self.x, self.XM.ADDRESS, self.XM.OUT_X_L_G, cal)  
+        #self.gx, self.gy, self.gz = read3axis(self.x, self.XM.ADDRESS, self.XM.OUT_X_L_G, cal) 
+        self.gx, self.gy, self.gz = read3axis(self.bus, self.XM.ADDRESS, self.XM.OUT_X_L_G, cal) 
     
     # Reads and calibrates the temperature in degrees C
     def readTemp(self):
