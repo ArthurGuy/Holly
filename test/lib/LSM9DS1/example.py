@@ -32,10 +32,10 @@ while(1):
     #imu.readTemp()
 
     # Print the results
-    print "Accel: " + str(imu.ax) + ", " + str(imu.ay) + ", " + str(imu.az) 
+    #print "Accel: " + str(imu.ax) + ", " + str(imu.ay) + ", " + str(imu.az) 
     print "Mag:   " + str(imu.mx) + ", " + str(imu.my) + ", " + str(imu.mz) 
-    print "Gyro:  " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz) 
+    #print "Gyro:  " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz) 
     #print "Temperature: " + str(imu.temp) 
 
     # Sleep for 1/10th of a second
-    time.sleep(0.1)
+    time.sleep(0.05)
