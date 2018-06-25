@@ -119,6 +119,7 @@ class IMU:
             #self.x.address(self.XM.ADDRESS)
             #accelReg = self.x.readReg(self.XM.CTRL_REG6_XL)
             accelReg = self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL)[0]
+            print "accelerometer default settings " + str(accelReg)
             accelReg |= Arange
             #self.x.address(self.XM.ADDRESS)
             #self.x.writeReg(self.XM.CTRL_REG6_XL, accelReg)
