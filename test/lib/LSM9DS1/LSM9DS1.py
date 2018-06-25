@@ -94,8 +94,8 @@ class IMU:
 
     # Enables the mag continuously on all axes
     def enable_mag(self):
-        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.XM.CTRL_REG1_M, [0x7C])
-        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.XM.CTRL_REG3_M, [0x00])
+        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG1_M, [0x7C])
+        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG3_M, [0x00])
         #self.x.address(self.MA.ADDRESS)
         #self.x.writeReg(self.MA.CTRL_REG1_M, 0x7C)  
         #self.x.address(self.MA.ADDRESS)
@@ -104,7 +104,7 @@ class IMU:
     # Enables temperature measurement at the same frequency as mag  
     """def enable_temp(self):
         self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XM)
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XM, (rate | (1<<7)))
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XM, [(rate | (1<<7))])
         #self.x.address(self.XM.ADDRESS)
         #rate = self.x.readReg(self.XM.CTRL_REG5_XM)  
         #self.x.address(self.XM.ADDRESS)
@@ -120,7 +120,7 @@ class IMU:
             accelReg |= Arange
             #self.x.address(self.XM.ADDRESS)
             #self.x.writeReg(self.XM.CTRL_REG6_XL, accelReg)
-            self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL, accelReg)
+            self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL, [accelReg])
             self.selected_a_range = AR
         except(KeyError):
             print("Invalid range. Valid range keys are '2G', '4G', '8G', '16G'")
@@ -136,7 +136,7 @@ class IMU:
             magReg |= Mrange
             #self.x.address(self.MA.ADDRESS)
             #self.x.writeReg(self.MA.CTRL_REG2_M, magReg)
-            self.bus.write_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG2_M, magReg)
+            self.bus.write_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG2_M, [magReg])
             self.selected_m_range = MR
         except(KeyError):
             print("Invalid range. Valid range keys are '4GAUSS', '8GAUSS', or '12GAUSS' '16GAUSS'")
@@ -152,7 +152,7 @@ class IMU:
             gyroReg |= Grange;
             #self.x.address(self.G.ADDRESS)
             #self.x.writeReg(self.G.CTRL_REG1_G, gyroReg)
-            self.bus.write_i2c_block_data(self.G.ADDRESS, self.G.CTRL_REG1_G, gyroReg)
+            self.bus.write_i2c_block_data(self.G.ADDRESS, self.G.CTRL_REG1_G, [gyroReg])
             self.selected_g_range = GR
         except(KeyError):
             print("Invalid range. Valid range keys are '245DPS', '500DPS', or '2000DPS'")
