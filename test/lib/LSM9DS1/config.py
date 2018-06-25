@@ -130,7 +130,7 @@ class XM:
 
 # Class for gyro configuration and registers
 class MAG:
-    ADDRESS = 0x1D
+    ADDRESS = 0x1E
     WHO_AM_I = 0x0F # r
     WHO_AM_I_OK = 0x3D #r
     
