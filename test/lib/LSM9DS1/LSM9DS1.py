@@ -132,7 +132,7 @@ class IMU:
             Mrange = self.MA.RANGE_M[MR]
             #self.x.address(self.MA.ADDRESS)
             #magReg = self.x.readReg(self.MA.CTRL_REG2_M)
-            magReg = self.bus.read_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG2_M)
+            magReg = self.bus.read_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG2_M)[0]
             magReg &= ~(0b01100000)
             magReg |= Mrange
             #self.x.address(self.MA.ADDRESS)
