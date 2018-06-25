@@ -18,8 +18,8 @@ imu.enable_gyro()
 # Specify Options: "2G", "4G", "6G", "8G", "16G"
 imu.accel_range("2G")       # leave blank for default of "2G" 
 
-# Specify Options: "2GAUSS", "4GAUSS", "8GAUSS", "12GAUSS"
-imu.mag_range("2GAUSS")     # leave blank for default of "2GAUSS"
+# Specify Options: "4GAUSS", "8GAUSS", "12GAUSS"
+imu.mag_range("4GAUSS")     # leave blank for default of "4GAUSS"
 
 # Specify Options: "245DPS", "500DPS", "2000DPS" 
 imu.gyro_range("245DPS")    # leave blank for default of "245DPS"
