@@ -103,8 +103,8 @@ class IMU:
 
     # Enables temperature measurement at the same frequency as mag  
     def enable_temp(self):
-        self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XM)
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XM, [(rate | (1<<7))])
+        self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL)
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL, [(rate | (1<<7))])
         #self.x.address(self.XM.ADDRESS)
         #rate = self.x.readReg(self.XM.CTRL_REG5_XM)  
         #self.x.address(self.XM.ADDRESS)
