@@ -32,8 +32,8 @@ while(1):
     #imu.readTemp()
 
     # Print the results
-    print "Accel: " + str(imu.ax) + ", " + str(imu.ay) + ", " + str(imu.az) 
-    #print "Mag:   " + str(imu.mx) + ", " + str(imu.my) + ", " + str(imu.mz) 
+    #print "Accel: " + str(imu.ax) + ", " + str(imu.ay) + ", " + str(imu.az) 
+    print "Mag:   " + str(imu.mx) + ", " + str(imu.my) + ", " + str(imu.mz) 
     #print "Gyro:  " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz) 
     #print "Temperature: " + str(imu.temp) 
 
