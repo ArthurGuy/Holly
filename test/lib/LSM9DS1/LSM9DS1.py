@@ -1,6 +1,6 @@
 #Sourced from https://github.com/popedison/LSM9DS1
 
-import mraa as m
+#import mraa as m
 import numpy as np
 from config import XM, MAG
 
@@ -46,19 +46,22 @@ class IMU:
 
     # Initialize I2C port for 9-axis IMU
     def __init__(self, I2CPort=1):
-        self.x = m.I2c(I2CPort)
+        self.bus = smbus.SMBus(I2CPort)
+        #self.x = m.I2c(I2CPort)
 
     # Initialize - checking gyro and mag are properly connected
     def initialize(self):
-        self.x.address(self.MA.ADDRESS)
-        resp = self.x.readReg(self.MA.WHO_AM_I)
+        #self.x.address(self.MA.ADDRESS)
+        resp = self.bus.read_i2c_block_data(self.MA.ADDRESS, self.MA.WHO_AM_I)
+        #resp = self.x.readReg(self.MA.WHO_AM_I)
         if resp == self.MA.WHO_AM_I_OK:
             print "Magnetometer init success!"
         else:
             print "Magnetometer init failed"
         # Check accel/mag - expect back 0x49 = 73L if connected to 9dof breakout
-        self.x.address(self.XM.ADDRESS)
-        resp = self.x.readReg(self.XM.WHO_AM_I)
+        #self.x.address(self.XM.ADDRESS)
+        resp = self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.WHO_AM_I)
+        #resp = self.x.readReg(self.XM.WHO_AM_I)
         if resp == self.XM.WHO_AM_I_OK:
             print "Accel/giro init success!"
         else:
@@ -66,35 +69,45 @@ class IMU:
 
     # Enables the accelerometer, 100 Hz continuous in X, Y, and Z
     def enable_accel(self):
-        self.x.address(self.XM.ADDRESS)
-        self.x.writeReg(self.XM.CTRL_REG5_XL, 0x38)  # 3 axis enable 
-        self.x.address(self.XM.ADDRESS)
-        self.x.writeReg(self.XM.CTRL_REG6_XL, 0xC0) # 408 Hz, 952 ODR
-        self.x.address(self.XM.ADDRESS)
-        self.x.writeReg(self.XM.CTRL_REG8, 0x04) #multiple reads enable
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL, 0x38)
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL, 0xC0)
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG8, 0x04)
+        #self.x.address(self.XM.ADDRESS)
+        #self.x.writeReg(self.XM.CTRL_REG5_XL, 0x38)  # 3 axis enable 
+        #self.x.address(self.XM.ADDRESS)
+        #self.x.writeReg(self.XM.CTRL_REG6_XL, 0xC0) # 408 Hz, 952 ODR
+        #self.x.address(self.XM.ADDRESS)
+        #self.x.writeReg(self.XM.CTRL_REG8, 0x04) #multiple reads enable
 
     # Enables the gyro in normal mode on all axes
     def enable_gyro(self):
-        self.x.address(self.XM.ADDRESS)
-        self.x.writeReg(self.XM.CTRL_REG1_G, 0xC3) # 100Hz 952 ODR
-        self.x.address(self.XM.ADDRESS)
-        self.x.writeReg(self.XM.CTRL_REG4, 0x38) # 3 axis enable
-        self.x.address(self.XM.ADDRESS)
-        self.x.writeReg(self.XM.CTRL_REG8, 0x04) #multiple reads enable
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G, 0xC3)
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG4, 0x38)
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG8, 0x04)
+        #self.x.address(self.XM.ADDRESS)
+        #self.x.writeReg(self.XM.CTRL_REG1_G, 0xC3) # 100Hz 952 ODR
+        #self.x.address(self.XM.ADDRESS)
+        #self.x.writeReg(self.XM.CTRL_REG4, 0x38) # 3 axis enable
+        #self.x.address(self.XM.ADDRESS)
+        #self.x.writeReg(self.XM.CTRL_REG8, 0x04) #multiple reads enable
 
     # Enables the mag continuously on all axes
     def enable_mag(self):
-        self.x.address(self.MA.ADDRESS)
-        self.x.writeReg(self.MA.CTRL_REG1_M, 0x7C)  
-        self.x.address(self.MA.ADDRESS)
-        self.x.writeReg(self.MA.CTRL_REG3_M, 0x00) # continous
+        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.XM.CTRL_REG1_M, 0x7C)
+        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.XM.CTRL_REG3_M, 0x00)
+        #self.x.address(self.MA.ADDRESS)
+        #self.x.writeReg(self.MA.CTRL_REG1_M, 0x7C)  
+        #self.x.address(self.MA.ADDRESS)
+        #self.x.writeReg(self.MA.CTRL_REG3_M, 0x00) # continous
 
     # Enables temperature measurement at the same frequency as mag  
     """def enable_temp(self):
-        self.x.address(self.XM.ADDRESS)
-        rate = self.x.readReg(self.XM.CTRL_REG5_XM)  
-        self.x.address(self.XM.ADDRESS)
-        self.x.writeReg(self.XM.CTRL_REG5_XM, (rate | (1<<7)))"""  
+        self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XM)
+        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.XM.CTRL_REG5_XM, (rate | (1<<7)))
+        #self.x.address(self.XM.ADDRESS)
+        #rate = self.x.readReg(self.XM.CTRL_REG5_XM)  
+        #self.x.address(self.XM.ADDRESS)
+        #self.x.writeReg(self.XM.CTRL_REG5_XM, (rate | (1<<7)))"""  
 
     # Sets the range on the accelerometer, default is +/- 2Gs
     def accel_range(self,AR="2G"):
