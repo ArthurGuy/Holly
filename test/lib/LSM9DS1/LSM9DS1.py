@@ -54,20 +54,21 @@ class IMU:
     # Initialize - checking gyro and mag are properly connected
     def initialize(self):
         #self.x.address(self.MA.ADDRESS)
-        resp = self.bus.read_i2c_block_data(self.MA.ADDRESS, self.MA.WHO_AM_I)
+        resp = self.bus.read_i2c_block_data(self.MA.ADDRESS, self.MA.WHO_AM_I)[0]
         #resp = self.x.readReg(self.MA.WHO_AM_I)
         if resp == self.MA.WHO_AM_I_OK:
             print "Magnetometer init success!"
         else:
-            print "Magnetometer init failed"
+            print "Magnetometer init failed, received " + str(resp)
+
         # Check accel/mag - expect back 0x49 = 73L if connected to 9dof breakout
         #self.x.address(self.XM.ADDRESS)
-        resp = self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.WHO_AM_I)
+        resp = self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.WHO_AM_I)[0]
         #resp = self.x.readReg(self.XM.WHO_AM_I)
         if resp == self.XM.WHO_AM_I_OK:
             print "Accel/giro init success!"
         else:
-            print "Accel/giro init failed"
+            print "Accel/giro init failed, received " + str(resp)
 
     # Enables the accelerometer, 100 Hz continuous in X, Y, and Z
     def enable_accel(self):
