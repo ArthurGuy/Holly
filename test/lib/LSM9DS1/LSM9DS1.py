@@ -2,6 +2,7 @@
 
 #import mraa as m
 import numpy as np
+from smbus import SMBus
 from config import XM, MAG
 
 """ Function to parse the data bytes
@@ -46,7 +47,7 @@ class IMU:
 
     # Initialize I2C port for 9-axis IMU
     def __init__(self, I2CPort=1):
-        self.bus = smbus.SMBus(I2CPort)
+        self.bus = SMBus(I2CPort)
         #self.x = m.I2c(I2CPort)
 
     # Initialize - checking gyro and mag are properly connected
