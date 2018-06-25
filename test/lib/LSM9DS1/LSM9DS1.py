@@ -185,4 +185,6 @@ class IMU:
         tempdata[1] = self.bus.read_i2c_block_data(self.XM.ADDRESS, 0x80 | self.XM.OUT_TEMP_H)[0]
         temp = np.int16(((tempdata[1] >> 4) << 8) | tempdata[0])
         self.temp = temp * self.XM.CAL_TEMP
+        
+        print "Accel/giro init failed, received, " + str(tempdata[0]) + ", " + str(tempdata[1])
 
