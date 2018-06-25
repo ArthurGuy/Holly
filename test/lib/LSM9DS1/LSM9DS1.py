@@ -147,7 +147,7 @@ class IMU:
             Grange = self.XM.RANGE_G[GR]
             #self.x.address(self.XM.ADDRESS)
             #gyroReg = self.x.readReg(self.XM.CTRL_REG1_G)
-            gyroReg = self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G)
+            gyroReg = self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G)[0]
             gyroReg &= ~(0b00011000)
             gyroReg |= Grange;
             #self.x.address(self.G.ADDRESS)
