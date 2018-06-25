@@ -70,9 +70,9 @@ class IMU:
 
     # Enables the accelerometer, 100 Hz continuous in X, Y, and Z
     def enable_accel(self):
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL, 0x38)
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL, 0xC0)
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG8, 0x04)
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL, [0x38])
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL, [0xC0])
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG8, [0x04])
         #self.x.address(self.XM.ADDRESS)
         #self.x.writeReg(self.XM.CTRL_REG5_XL, 0x38)  # 3 axis enable 
         #self.x.address(self.XM.ADDRESS)
@@ -82,9 +82,9 @@ class IMU:
 
     # Enables the gyro in normal mode on all axes
     def enable_gyro(self):
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G, 0xC3)
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG4, 0x38)
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG8, 0x04)
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G, [0xC3])
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG4, [0x38])
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG8, [0x04])
         #self.x.address(self.XM.ADDRESS)
         #self.x.writeReg(self.XM.CTRL_REG1_G, 0xC3) # 100Hz 952 ODR
         #self.x.address(self.XM.ADDRESS)
@@ -94,8 +94,8 @@ class IMU:
 
     # Enables the mag continuously on all axes
     def enable_mag(self):
-        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.XM.CTRL_REG1_M, 0x7C)
-        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.XM.CTRL_REG3_M, 0x00)
+        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.XM.CTRL_REG1_M, [0x7C])
+        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.XM.CTRL_REG3_M, [0x00])
         #self.x.address(self.MA.ADDRESS)
         #self.x.writeReg(self.MA.CTRL_REG1_M, 0x7C)  
         #self.x.address(self.MA.ADDRESS)
