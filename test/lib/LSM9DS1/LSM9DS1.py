@@ -29,7 +29,7 @@ Outputs:
 def read3axis(x, address, reg, cal):
     #x.address(address)
     #data = x.readBytesReg(0x80 | reg, 6)
-    data = x.read_i2c_block_data(address, 0x80 | reg)
+    data = x.read_i2c_block_data(address, 0x80 | reg, 6)
     x, y, z = parsedata(data, cal)
     return x, y, z 
 
