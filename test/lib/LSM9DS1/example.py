@@ -33,8 +33,8 @@ while(1):
 
     # Print the results
     print "Accel: " + str(imu.ax) + ", " + str(imu.ay) + ", " + str(imu.az) 
-    print "Mag: " + str(imu.mx) + ", " + str(imu.my) + ", " + str(imu.mz) 
-    print "Gyro: " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz) 
+    print "Mag:   " + str(imu.mx) + ", " + str(imu.my) + ", " + str(imu.mz) 
+    print "Gyro:  " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz) 
     #print "Temperature: " + str(imu.temp) 
 
     # Sleep for 1/10th of a second
