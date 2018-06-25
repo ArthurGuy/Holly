@@ -105,7 +105,7 @@ class IMU:
 
     # Enables temperature measurement at the same frequency as mag  
     def enable_temp(self):
-        self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL)
+        rate = self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL)[0]
         self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL, [(rate | (1<<7))])
         #self.x.address(self.XM.ADDRESS)
         #rate = self.x.readReg(self.XM.CTRL_REG5_XM)  
@@ -181,7 +181,7 @@ class IMU:
     def readTemp(self):
         #self.x.address(self.XM.ADDRESS)
         #tempdata = self.x.readBytesReg(0x80 | self.XM.OUT_TEMP_L, 2)
-        gyroReg = self.bus.read_i2c_block_data(self.XM.ADDRESS, 0x80 | self.XM.OUT_TEMP_L)
+        tempdata = self.bus.read_i2c_block_data(self.XM.ADDRESS, 0x80 | self.XM.OUT_TEMP_L)
         temp = np.int16(((tempdata[1] >> 4) << 8) | tempdata[0])
         self.temp = temp * self.XM.CAL_TEMP
 
