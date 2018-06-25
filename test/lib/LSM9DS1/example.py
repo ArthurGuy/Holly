@@ -1,4 +1,4 @@
-from SF_9DOF import IMU
+from LSM9DS1 import IMU
 import time
 
 # Create IMU object
