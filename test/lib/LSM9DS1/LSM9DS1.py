@@ -182,6 +182,7 @@ class IMU:
         #self.x.address(self.XM.ADDRESS)
         #tempdata = self.x.readBytesReg(0x80 | self.XM.OUT_TEMP_L, 2)
         tempdata = self.bus.read_i2c_block_data(self.XM.ADDRESS, 0x80 | self.XM.OUT_TEMP_L)
+        tempdata[1] = self.bus.read_i2c_block_data(self.XM.ADDRESS, 0x80 | self.XM.OUT_TEMP_H)[0]
         temp = np.int16(((tempdata[1] >> 4) << 8) | tempdata[0])
         self.temp = temp * self.XM.CAL_TEMP
 
