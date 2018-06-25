@@ -152,7 +152,7 @@ class IMU:
             gyroReg |= Grange;
             #self.x.address(self.G.ADDRESS)
             #self.x.writeReg(self.G.CTRL_REG1_G, gyroReg)
-            self.bus.write_i2c_block_data(self.G.ADDRESS, self.G.CTRL_REG1_G, [gyroReg])
+            self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G, [gyroReg])
             self.selected_g_range = GR
         except(KeyError):
             print("Invalid range. Valid range keys are '245DPS', '500DPS', or '2000DPS'")
