@@ -102,13 +102,13 @@ class IMU:
         #self.x.writeReg(self.MA.CTRL_REG3_M, 0x00) # continous
 
     # Enables temperature measurement at the same frequency as mag  
-    """def enable_temp(self):
+    def enable_temp(self):
         self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XM)
         self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XM, [(rate | (1<<7))])
         #self.x.address(self.XM.ADDRESS)
         #rate = self.x.readReg(self.XM.CTRL_REG5_XM)  
         #self.x.address(self.XM.ADDRESS)
-        #self.x.writeReg(self.XM.CTRL_REG5_XM, (rate | (1<<7)))"""  
+        #self.x.writeReg(self.XM.CTRL_REG5_XM, (rate | (1<<7)))
 
     # Sets the range on the accelerometer, default is +/- 2Gs
     def accel_range(self,AR="2G"):
