@@ -11,7 +11,7 @@ imu.initialize()
 imu.enable_accel()
 imu.enable_mag()
 imu.enable_gyro()
-#imu.enable_temp()
+imu.enable_temp()
 
 # Set range on accel, mag, and gyro
 
@@ -29,13 +29,13 @@ while(1):
     imu.read_accel()
     imu.read_mag()
     imu.read_gyro()
-    #imu.readTemp()
+    imu.readTemp()
 
     # Print the results
-    #print "Accel: " + str(imu.ax) + ", " + str(imu.ay) + ", " + str(imu.az) 
+    print "Accel: " + str(imu.ax) + ", " + str(imu.ay) + ", " + str(imu.az) 
     print "Mag:   " + str(imu.mx) + ", " + str(imu.my) + ", " + str(imu.mz) 
-    #print "Gyro:  " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz) 
-    #print "Temperature: " + str(imu.temp) 
+    print "Gyro:  " + str(imu.gx) + ", " + str(imu.gy) + ", " + str(imu.gz) 
+    print "Temperature: " + str(imu.temp) 
 
     # Sleep for 1/10th of a second
-    time.sleep(0.05)
+    time.sleep(0.1)
