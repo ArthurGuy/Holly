@@ -124,7 +124,7 @@ class IMU:
             self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL, [accelReg])
             self.selected_a_range = AR
         except(KeyError):
-            print("Invalid range. Valid range keys are '2G', '4G', '8G', '16G'")
+            print("Invalid accelerometer range. Valid range keys are '2G', '4G', '8G', '16G'")
 
     # Sets the range on the mag - default is +/- 2 Gauss
     def mag_range(self,MR="2GAUSS"):
@@ -140,7 +140,7 @@ class IMU:
             self.bus.write_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG2_M, [magReg])
             self.selected_m_range = MR
         except(KeyError):
-            print("Invalid range. Valid range keys are '4GAUSS', '8GAUSS', or '12GAUSS' '16GAUSS'")
+            print("Invalid mag range. Valid range keys are '4GAUSS', '8GAUSS', or '12GAUSS' '16GAUSS'")
 
     # Sets the range on the gyro - default is +/- 245 degrees per second
     def gyro_range(self,GR="245DPS"):
@@ -156,7 +156,7 @@ class IMU:
             self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G, [gyroReg])
             self.selected_g_range = GR
         except(KeyError):
-            print("Invalid range. Valid range keys are '245DPS', '500DPS', or '2000DPS'")
+            print("Invalid gyro range. Valid range keys are '245DPS', '500DPS', or '2000DPS'")
 
     # Reads and calibrates the accelerometer values into Gs
     def read_accel(self):
