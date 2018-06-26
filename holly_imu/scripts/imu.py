@@ -15,6 +15,8 @@ rospy.init_node('get_data', anonymous=True)
 rate = rospy.Rate(10) # 10hz
 msg = Imu()
 
+seq = 0
+
 # Setup the IMU
 imu = IMU()
 
