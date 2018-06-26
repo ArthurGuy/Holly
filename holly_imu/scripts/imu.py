@@ -11,7 +11,7 @@ from sensor_msgs.msg import Imu
 
 # setup publisher and classes
 pub = rospy.Publisher('imu', Imu, queue_size=10)
-rospy.init_node('get_data', anonymous=True)
+rospy.init_node('holly_imu', anonymous=True) #public display name of the publisher
 rate = rospy.Rate(10) # 10hz
 msg = Imu()
 
@@ -66,6 +66,8 @@ def get_data():
     msg.linear_acceleration.z = imu.az
     
     pub.publish(msg)
+    
+    echo "Published new data"
     
     rate.sleep()
 
