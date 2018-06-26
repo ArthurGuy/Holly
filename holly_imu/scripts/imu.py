@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy
 
-from LSM9DS1 import IMU
+from LSM9DS1.LSM9DS1 import IMU
 import time
 
 from std_msgs.msg import String, Float32
