@@ -31,10 +31,10 @@ def read3axis(x, address, reg, cal):
     #data = x.readBytesReg(0x80 | reg, 6)
     data = x.read_i2c_block_data(address, 0x80 | reg, 6)
     x, y, z = parsedata(data, cal)
-    return x, y, z 
+    return x, y, z
 
 
-# IMU Class 
+# IMU Class
 class IMU:
 
     # Mag and Gyro Configs loaded
@@ -72,58 +72,34 @@ class IMU:
 
     # Enables the accelerometer, 100 Hz continuous in X, Y, and Z
     def enable_accel(self):
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL, [0x38])
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL, [0xC0])
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG8, [0x04])
-        #self.x.address(self.XM.ADDRESS)
-        #self.x.writeReg(self.XM.CTRL_REG5_XL, 0x38)  # 3 axis enable 
-        #self.x.address(self.XM.ADDRESS)
-        #self.x.writeReg(self.XM.CTRL_REG6_XL, 0xC0) # 408 Hz, 952 ODR
-        #self.x.address(self.XM.ADDRESS)
-        #self.x.writeReg(self.XM.CTRL_REG8, 0x04) #multiple reads enable
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL, [0x38]) # 3 axis enable
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL, [0xC0]) # 408 Hz, 952 ODR
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG8, [0x04])    # multiple reads enable
 
     # Enables the gyro in normal mode on all axes
     def enable_gyro(self):
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G, [0xC3])
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG4, [0x38])
-        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG8, [0x04])
-        #self.x.address(self.XM.ADDRESS)
-        #self.x.writeReg(self.XM.CTRL_REG1_G, 0xC3) # 100Hz 952 ODR
-        #self.x.address(self.XM.ADDRESS)
-        #self.x.writeReg(self.XM.CTRL_REG4, 0x38) # 3 axis enable
-        #self.x.address(self.XM.ADDRESS)
-        #self.x.writeReg(self.XM.CTRL_REG8, 0x04) #multiple reads enable
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G, [0xC3]) # 100Hz 952 ODR
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG4, [0x38])   # 3 axis enable
+        self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG8, [0x04])   # multiple reads enable
 
     # Enables the mag continuously on all axes
     def enable_mag(self):
         self.bus.write_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG1_M, [0x7C])
-        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG3_M, [0x00])
-        #self.x.address(self.MA.ADDRESS)
-        #self.x.writeReg(self.MA.CTRL_REG1_M, 0x7C)  
-        #self.x.address(self.MA.ADDRESS)
-        #self.x.writeReg(self.MA.CTRL_REG3_M, 0x00) # continous
+        self.bus.write_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG3_M, [0x00]) # continous
 
-    # Enables temperature measurement at the same frequency as mag  
+    # Enables temperature measurement at the same frequency as mag
     def enable_temp(self):
         rate = self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL)[0]
         self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG5_XL, [(rate | (1<<7))])
-        #self.x.address(self.XM.ADDRESS)
-        #rate = self.x.readReg(self.XM.CTRL_REG5_XM)  
-        #self.x.address(self.XM.ADDRESS)
-        #self.x.writeReg(self.XM.CTRL_REG5_XM, (rate | (1<<7)))
 
     # Sets the range on the accelerometer, default is +/- 2Gs
     def accel_range(self,AR="2G"):
         try:
             Arange = self.XM.RANGE_A[AR]
-            #self.x.address(self.XM.ADDRESS)
-            #accelReg = self.x.readReg(self.XM.CTRL_REG6_XL)
             accelReg = self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL)[0]
-            print "accelerometer default settings " + str(accelReg)
+            #print "accelerometer default settings " + str(accelReg)
             accelReg |= Arange
-            print "accelerometer updated settings " + str(accelReg)
-            #self.x.address(self.XM.ADDRESS)
-            #self.x.writeReg(self.XM.CTRL_REG6_XL, accelReg)
+            #print "accelerometer updated settings " + str(accelReg)
             self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG6_XL, [accelReg])
             self.selected_a_range = AR
         except(KeyError):
@@ -133,13 +109,9 @@ class IMU:
     def mag_range(self,MR="2GAUSS"):
         try:
             Mrange = self.MA.RANGE_M[MR]
-            #self.x.address(self.MA.ADDRESS)
-            #magReg = self.x.readReg(self.MA.CTRL_REG2_M)
             magReg = self.bus.read_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG2_M)[0]
             magReg &= ~(0b01100000)
             magReg |= Mrange
-            #self.x.address(self.MA.ADDRESS)
-            #self.x.writeReg(self.MA.CTRL_REG2_M, magReg)
             self.bus.write_i2c_block_data(self.MA.ADDRESS, self.MA.CTRL_REG2_M, [magReg])
             self.selected_m_range = MR
         except(KeyError):
@@ -149,13 +121,9 @@ class IMU:
     def gyro_range(self,GR="245DPS"):
         try:
             Grange = self.XM.RANGE_G[GR]
-            #self.x.address(self.XM.ADDRESS)
-            #gyroReg = self.x.readReg(self.XM.CTRL_REG1_G)
             gyroReg = self.bus.read_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G)[0]
             gyroReg &= ~(0b00011000)
             gyroReg |= Grange;
-            #self.x.address(self.G.ADDRESS)
-            #self.x.writeReg(self.G.CTRL_REG1_G, gyroReg)
             self.bus.write_i2c_block_data(self.XM.ADDRESS, self.XM.CTRL_REG1_G, [gyroReg])
             self.selected_g_range = GR
         except(KeyError):
@@ -164,21 +132,18 @@ class IMU:
     # Reads and calibrates the accelerometer values into Gs
     def read_accel(self):
         cal = self.XM.CAL_A[self.selected_a_range]
-        #self.ax, self.ay, self.az = read3axis(self.x, self.XM.ADDRESS, self.XM.OUT_X_L_XL, cal)
         self.ax, self.ay, self.az = read3axis(self.bus, self.XM.ADDRESS, self.XM.OUT_X_L_XL, cal)
-    
+
     # Reads and calibrates the mag values into Gauss
     def read_mag(self):
         cal = self.MA.CAL_M[self.selected_m_range]
-        #self.mx, self.my, self.mz = read3axis(self.x, self.MA.ADDRESS, self.MA.OUT_X_L_M, cal) 
         self.mx, self.my, self.mz = read3axis(self.bus, self.MA.ADDRESS, self.MA.OUT_X_L_M, cal) 
-    
+
     # Reads and calibrates the gyro values into degrees per second
     def read_gyro(self):
         cal = self.XM.CAL_G[self.selected_g_range]
-        #self.gx, self.gy, self.gz = read3axis(self.x, self.XM.ADDRESS, self.XM.OUT_X_L_G, cal) 
         self.gx, self.gy, self.gz = read3axis(self.bus, self.XM.ADDRESS, self.XM.OUT_X_L_G, cal) 
-    
+
     # Reads and calibrates the temperature in degrees C
     def readTemp(self):
         #self.x.address(self.XM.ADDRESS)
