@@ -10,8 +10,8 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu
 
 # setup publisher and classes
-pub = rospy.Publisher('imu', Imu, queue_size=10)
-rospy.init_node('holly_imu', anonymous=True) #public display name of the publisher
+pub = rospy.Publisher('imu/data_raw', Imu, queue_size=10)
+rospy.init_node('holly_imu') #public display name of the publisher
 rate = rospy.Rate(10) # 10hz
 msg = Imu()
 
