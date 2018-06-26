@@ -67,7 +67,7 @@ def get_data():
     
     pub.publish(msg)
     
-    echo "Published new data"
+    print "Published new data"
     
     rate.sleep()
 
