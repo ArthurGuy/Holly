@@ -1,3 +1,4 @@
 <launch>
     <node pkg="holly_imu" type="imu.py" name="holly_imu" />
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="holly_imu_fusion" />
 </launch>
