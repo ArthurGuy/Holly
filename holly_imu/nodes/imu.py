@@ -62,9 +62,9 @@ def get_data():
     msg.angular_velocity.y = imu.gy
     msg.angular_velocity.z = imu.gz
 
-    msg.linear_acceleration.x = imu.ax
-    msg.linear_acceleration.y = imu.ay
-    msg.linear_acceleration.z = imu.az
+    msg.linear_acceleration.x = imu.ax * 9.80665
+    msg.linear_acceleration.y = imu.ay * 9.80665
+    msg.linear_acceleration.z = imu.az * 9.80665
     
     pub.publish(msg)
     
