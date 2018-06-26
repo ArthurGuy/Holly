@@ -45,7 +45,6 @@ def get_data():
     imu.read_gyro()
     imu.readTemp()
 
-    data = imu.getIMUData()
     seq += 1
     msg.header.seq = seq
     msg.header.stamp = rospy.Time.now()
