@@ -51,6 +51,7 @@ def get_data():
     seq += 1
     msg.header.seq = seq
     msg.header.stamp = rospy.Time.now()
+    msg.header.frame_id = "base_link"
 
     msg.orientation.x = imu.mx
     msg.orientation.y = imu.my
