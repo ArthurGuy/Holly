@@ -3,6 +3,7 @@ import rospy
 
 from LSM9DS1.LSM9DS1 import IMU
 import time
+import traceback
 
 from std_msgs.msg import String, Float32
 from geometry_msgs.msg import Twist
