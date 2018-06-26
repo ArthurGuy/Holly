@@ -15,7 +15,7 @@ rospy.init_node('get_data', anonymous=True)
 rate = rospy.Rate(10) # 10hz
 msg = Imu()
 
-seq = 0
+seq = 1
 
 # Setup the IMU
 imu = IMU()
@@ -41,7 +41,8 @@ imu.mag_range("4GAUSS")     # leave blank for default of "4GAUSS"
 imu.gyro_range("245DPS")    # leave blank for default of "245DPS"
 
 def get_data():
-
+    global seq
+    
     imu.read_accel()
     imu.read_mag()
     imu.read_gyro()
