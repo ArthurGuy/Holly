@@ -38,7 +38,7 @@ def get_readings():
     for x in range(0, 3):
         mag_bias[x] = (mag_max[x] + mag_min[x]) / 2
 
-    print "Offsets " + mag_bias[0] + ", " + mag_bias[1] + ", " + mag_bias[2]
+    print "Offsets " + str(mag_bias[0]) + ", " + str(mag_bias[1]) + ", " + str(mag_bias[2])
 
 
 while not rospy.is_shutdown():
