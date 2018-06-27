@@ -85,7 +85,6 @@
                 <cylinder radius="0.06" length="0.06"/>
             </geometry>
             <material name="black" />
-            <origin rpy="1.570895 0 0" xyz="0 0.17 0.06" />
         </visual>
     </link>
 
@@ -95,7 +94,6 @@
                 <cylinder radius="0.06" length="0.06"/>
             </geometry>
             <material name="black" />
-            <origin rpy="1.570895 0 0" xyz="0 -0.17 0.06" />
         </visual>
     </link>
 
@@ -105,7 +103,6 @@
                 <cylinder radius="0.06" length="0.06"/>
             </geometry>
             <material name="black" />
-            <origin rpy="1.570895 0 0" xyz="0.23 -0.17 0.06" />
         </visual>
     </link>
 
@@ -115,7 +112,6 @@
                 <cylinder radius="0.06" length="0.06"/>
             </geometry>
             <material name="black" />
-            <origin rpy="1.570895 0 0" xyz="0.23 0.17 0.06" />
         </visual>
     </link>
 
@@ -125,7 +121,6 @@
                 <cylinder radius="0.06" length="0.06"/>
             </geometry>
             <material name="black" />
-            <origin rpy="1.570895 0 0" xyz="-0.23 -0.17 0.06" />
         </visual>
     </link>
 
@@ -135,38 +130,151 @@
                 <cylinder radius="0.06" length="0.06"/>
             </geometry>
             <material name="black" />
-            <origin rpy="1.570895 0 0" xyz="-0.23 0.17 0.06" />
         </visual>
     </link>
 
-    <joint name="base_to_wheel1" type="fixed">
+    <link name="/motor1">
+        <visual>
+            <geometry>
+                <cylinder radius="0.016" length="0.075"/>
+            </geometry>
+            <material name="grey" />
+            <origin rpy="0 0 0" xyz="0 0 0.08" />
+        </visual>
+    </link>
+
+    <link name="/motor2">
+        <visual>
+            <geometry>
+                <cylinder radius="0.016" length="0.075"/>
+            </geometry>
+            <material name="grey" />
+            <origin rpy="0 0 0" xyz="0 0 0.08" />
+        </visual>
+    </link>
+
+    <link name="/motor3">
+        <visual>
+            <geometry>
+                <cylinder radius="0.016" length="0.075"/>
+            </geometry>
+            <material name="grey" />
+            <origin rpy="0 0 0" xyz="0 0 0.08" />
+        </visual>
+    </link>
+
+    <link name="/motor4">
+        <visual>
+            <geometry>
+                <cylinder radius="0.016" length="0.075"/>
+            </geometry>
+            <material name="grey" />
+            <origin rpy="0 0 0" xyz="0 0 0.08" />
+        </visual>
+    </link>
+
+    <link name="/motor5">
+        <visual>
+            <geometry>
+                <cylinder radius="0.016" length="0.075"/>
+            </geometry>
+            <material name="grey" />
+            <origin rpy="0 0 0" xyz="0 0 0.08" />
+        </visual>
+    </link>
+
+    <link name="/motor6">
+        <visual>
+            <geometry>
+                <cylinder radius="0.016" length="0.075"/>
+            </geometry>
+            <material name="grey" />
+            <origin rpy="0 0 0" xyz="0 0 0.08" />
+        </visual>
+    </link>
+
+    <joint name="base_to_motor1" type="continuous">
         <parent link="/base_link" />
+        <child link="/motor1" />
+        <axis xyz="0 1 0"/>
+        <origin rpy="1.570895 0 0" xyz="0 0.17 0.06" />
+    </joint>
+
+    <joint name="base_to_motor2" type="continuous">
+        <parent link="/base_link" />
+        <child link="/motor2" />
+        <axis xyz="0 1 0"/>
+        <origin rpy="1.570895 3.14159 0" xyz="0 -0.17 0.06" />
+    </joint>
+
+    <joint name="base_to_motor3" type="continuous">
+        <parent link="/base_link" />
+        <child link="/motor3" />
+        <axis xyz="0 1 0"/>
+        <origin rpy="1.570895 3.14159 0" xyz="0.23 -0.17 0.06" />
+    </joint>
+
+    <joint name="base_to_motor4" type="continuous">
+        <parent link="/base_link" />
+        <child link="/motor4" />
+        <axis xyz="0 1 0"/>
+        <origin rpy="1.570895 0 0" xyz="0.23 0.17 0.06" />
+    </joint>
+
+    <joint name="base_to_motor5" type="continuous">
+        <parent link="/base_link" />
+        <child link="/motor5" />
+        <axis xyz="0 1 0"/>
+        <origin rpy="1.570895 3.14159 0" xyz="-0.23 -0.17 0.06" />
+    </joint>
+
+    <joint name="base_to_motor6" type="continuous">
+        <parent link="/base_link" />
+        <child link="/motor6" />
+        <axis xyz="0 1 0"/>
+        <origin rpy="1.570895 0 0" xyz="-0.23 0.17 0.06" />
+    </joint>
+
+    <joint name="motor_to_wheel1" type="continuous">
+        <parent link="/motor1" />
         <child link="/wheel1" />
+        <axis xyz="0 0 1"/>
+        <origin rpy="0 0 0" xyz="0 0 0" />
     </joint>
 
-    <joint name="base_to_wheel2" type="fixed">
-        <parent link="/base_link" />
+    <joint name="motor_to_wheel2" type="continuous">
+        <parent link="/motor2" />
         <child link="/wheel2" />
+        <axis xyz="0 0 1"/>
+        <origin rpy="0 0 0" xyz="0 0 0" />
     </joint>
 
-    <joint name="base_to_wheel3" type="fixed">
-        <parent link="/base_link" />
+    <joint name="motor_to_wheel3" type="continuous">
+        <parent link="/motor3" />
         <child link="/wheel3" />
+        <axis xyz="0 0 1"/>
+        <origin rpy="0 0 0" xyz="0 0 0" />
     </joint>
 
-    <joint name="base_to_wheel4" type="fixed">
-        <parent link="/base_link" />
+    <joint name="motor_to_wheel4" type="continuous">
+        <parent link="/motor4" />
         <child link="/wheel4" />
+        <axis xyz="0 0 1"/>
+        <origin rpy="0 0 0" xyz="0 0 0" />
     </joint>
 
-    <joint name="base_to_wheel5" type="fixed">
-        <parent link="/base_link" />
+    <joint name="motor_to_wheel5" type="continuous">
+        <parent link="/motor5" />
         <child link="/wheel5" />
+        <axis xyz="0 0 1"/>
+        <origin rpy="0 0 0" xyz="0 0 0" />
     </joint>
 
-    <joint name="base_to_wheel6" type="fixed">
-        <parent link="/base_link" />
+    <joint name="motor_to_wheel6" type="continuous">
+        <parent link="/motor6" />
         <child link="/wheel6" />
+        <axis xyz="0 0 1"/>
+        <origin rpy="0 0 0" xyz="0 0 0" />
     </joint>
 
 </robot>
