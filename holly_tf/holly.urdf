@@ -139,4 +139,34 @@
         </visual>
     </link>
 
+    <joint name="base_to_wheel1" type="fixed">
+        <parent link="/base_link" />
+        <child link="/wheel1" />
+    </joint>
+
+    <joint name="base_to_wheel2" type="fixed">
+        <parent link="/base_link" />
+        <child link="/wheel2" />
+    </joint>
+
+    <joint name="base_to_wheel3" type="fixed">
+        <parent link="/base_link" />
+        <child link="/wheel3" />
+    </joint>
+
+    <joint name="base_to_wheel4" type="fixed">
+        <parent link="/base_link" />
+        <child link="/wheel4" />
+    </joint>
+
+    <joint name="base_to_wheel5" type="fixed">
+        <parent link="/base_link" />
+        <child link="/wheel5" />
+    </joint>
+
+    <joint name="base_to_wheel6" type="fixed">
+        <parent link="/base_link" />
+        <child link="/wheel6" />
+    </joint>
+
 </robot>
