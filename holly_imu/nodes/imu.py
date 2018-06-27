@@ -11,6 +11,8 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
 
+mag_offsets = [0.0869750976562, 0.0980224609375, -0.05517578125]
+
 rospy.init_node('holly_imu') #public display name of the publisher
 rate = rospy.Rate(10) # 10hz
 
@@ -62,9 +64,9 @@ def get_data():
     magMsg.header.stamp = rospy.Time.now()
     magMsg.header.frame_id = "base_link"
 
-    magMsg.magnetic_field.x = imu.mx
-    magMsg.magnetic_field.y = imu.my
-    magMsg.magnetic_field.z = imu.mz
+    magMsg.magnetic_field.x = imu.mx - mag_offsets[0]
+    magMsg.magnetic_field.y = imu.my - mag_offsets[1]
+    magMsg.magnetic_field.z = imu.mz - mag_offsets[2]
 
     magPub.publish(magMsg)
 
