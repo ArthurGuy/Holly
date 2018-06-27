@@ -4,7 +4,7 @@
     <link name="/base_link">
         <visual>
             <geometry>
-                <box size="0.505 0.27 0.3"/>
+                <box size="0.505 0.27 0.02"/>
             </geometry>
             <material name="grey" />
             <origin rpy="0 0 0" xyz="0 0 0.2" />
@@ -77,5 +77,66 @@
     <material name="grey">
         <color rgba="0.5 0.5 0.5 1"/>
     </material>
+
+
+    <link name="/wheel1">
+        <visual>
+            <geometry>
+                <cylinder radius="0.06" length="0.06"/>
+            </geometry>
+            <material name="black" />
+            <origin rpy="1.570895 0 0" xyz="0 0.17 0.06" />
+        </visual>
+    </link>
+
+    <link name="/wheel2">
+        <visual>
+            <geometry>
+                <cylinder radius="0.06" length="0.06"/>
+            </geometry>
+            <material name="black" />
+            <origin rpy="1.570895 0 0" xyz="0 -0.17 0.06" />
+        </visual>
+    </link>
+
+    <link name="/wheel3">
+        <visual>
+            <geometry>
+                <cylinder radius="0.06" length="0.06"/>
+            </geometry>
+            <material name="black" />
+            <origin rpy="1.570895 0 0" xyz="0.23 -0.17 0.06" />
+        </visual>
+    </link>
+
+    <link name="/wheel4">
+        <visual>
+            <geometry>
+                <cylinder radius="0.06" length="0.06"/>
+            </geometry>
+            <material name="black" />
+            <origin rpy="1.570895 0 0" xyz="0.23 0.17 0.06" />
+        </visual>
+    </link>
+
+    <link name="/wheel5">
+        <visual>
+            <geometry>
+                <cylinder radius="0.06" length="0.06"/>
+            </geometry>
+            <material name="black" />
+            <origin rpy="1.570895 0 0" xyz="-0.23 -0.17 0.06" />
+        </visual>
+    </link>
+
+    <link name="/wheel6">
+        <visual>
+            <geometry>
+                <cylinder radius="0.06" length="0.06"/>
+            </geometry>
+            <material name="black" />
+            <origin rpy="1.570895 0 0" xyz="-0.23 0.17 0.06" />
+        </visual>
+    </link>
 
 </robot>
