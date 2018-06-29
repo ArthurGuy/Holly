@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="rosserial_arduino" name="rosserial_arduino" type="serial_node.py">
+        <param name="_port" value="/dev/ttyUSB0" />
+    </node>
+</launch>
