@@ -1,4 +1,5 @@
 <launch>
+    <include file="$(find holly_motors)/launch/start.launch" />
     <node pkg="holly_imu" type="imu.py" name="holly_imu" output="screen" />
     <node pkg="imu_filter_madgwick" type="imu_filter_node" name="holly_imu_fusion" output="screen" />
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_node" output="screen">
@@ -9,9 +10,9 @@
                                false, false, true,
                                true, false, false]</rosparam>
         <param name="odom0" value="/odom" />
-        <rosparam param="odom0_config">[false,  false,  false,
+        <rosparam param="odom0_config">[true, true, false,
                                 false, false, false,
-                                false,  false, false,
+                                true,  false, false,
                                 false, false, false,
                                 false, false, false]</rosparam>
         <param name="print_diagnostics" value="true" />
