@@ -3,6 +3,11 @@
     <node pkg="imu_filter_madgwick" type="imu_filter_node" name="holly_imu_fusion" output="screen" />
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_node" output="screen">
         <param name="imu0" value="/imu/data_raw" />
+        <rosparam param="imu0_config">[false, false, false,
+                               true, true, true,
+                               false, false, false,
+                               true, true, true,
+                               true, false, false]</rosparam>
         <param name="odom0" value="/odom" />
         <rosparam param="odom0_config">[false,  false,  false,
                                 false, false, false,
