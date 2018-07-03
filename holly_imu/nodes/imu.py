@@ -67,18 +67,19 @@ def get_data():
 
         gyroData = data["gyro"]
         accelData = data["accel"]
+        compassData = data["compass"]
 
         # Publish the mag data
 
-        #magMsg.header.seq = seq
-        #magMsg.header.stamp = rospy.Time.now()
-        #magMsg.header.frame_id = "base_link"
+        magMsg.header.seq = seq
+        magMsg.header.stamp = rospy.Time.now()
+        magMsg.header.frame_id = "base_link"
 
-        #magMsg.magnetic_field.x = imu.mx - mag_offsets[0]
-        #magMsg.magnetic_field.y = imu.my - mag_offsets[1]
-        #magMsg.magnetic_field.z = imu.mz - mag_offsets[2]
+        magMsg.magnetic_field.x = compassData[0]
+        magMsg.magnetic_field.y = compassData[1]
+        magMsg.magnetic_field.z = compassData[2]
 
-        #magPub.publish(magMsg)
+        magPub.publish(magMsg)
 
 
         # Publish the gyro and accel data
