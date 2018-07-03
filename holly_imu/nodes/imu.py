@@ -12,6 +12,11 @@ import os.path
 import time
 import math
 
+from std_msgs.msg import String, Float32
+from geometry_msgs.msg import Twist
+from sensor_msgs.msg import Imu
+from sensor_msgs.msg import MagneticField
+
 SETTINGS_FILE = "RTIMULib"
 
 print("Using settings file " + SETTINGS_FILE + ".ini")
@@ -19,22 +24,22 @@ if not os.path.exists(SETTINGS_FILE + ".ini"):
   print("Settings file does not exist, will be created")
 
 s = RTIMU.Settings(SETTINGS_FILE)
-imu = RTIMU.RTIMU(s)
+imuSensor = RTIMU.RTIMU(s)
 
-print("IMU Name: " + imu.IMUName())
+print("IMU Name: " + imuSensor.IMUName())
 
-if (not imu.IMUInit()):
+if (not imuSensor.IMUInit()):
     print("IMU Init Failed")
     sys.exit(1)
 else:
     print("IMU Init Succeeded")
 
-imu.setSlerpPower(0.02)
-imu.setGyroEnable(True)
-imu.setAccelEnable(True)
-imu.setCompassEnable(True)
+imuSensor.setSlerpPower(0.02)
+imuSensor.setGyroEnable(True)
+imuSensor.setAccelEnable(True)
+imuSensor.setCompassEnable(True)
 
-poll_interval = imu.IMUGetPollInterval()
+poll_interval = imuSensor.IMUGetPollInterval()
 print("Recommended Poll Interval: %dmS\n" % poll_interval)
 
 rospy.init_node('holly_imu') #public display name of the publisher
@@ -53,11 +58,11 @@ seq = 1
 def get_data():
     global seq
 
-    if imu.IMURead():
+    if imuSensor.IMURead():
 
         seq += 1
 
-        data = imu.getIMUData()
+        data = imuSensor.getIMUData()
         fusionPose = data["fusionPose"]
 
         gyroData = data["gyro"]
