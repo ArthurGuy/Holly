@@ -144,7 +144,7 @@ def mousecam_read_motion():
 
 
 def get_data():
-    global seq
+    global seq, abs_x, abs_y, abs_x_m, abs_y_m
 
     seq += 1
 
