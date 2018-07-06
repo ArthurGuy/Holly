@@ -157,17 +157,19 @@ def get_data():
     seq += 1
 
     m = mousecam_read_motion()
-    #print m.squal
+    if m.motion:
+        #print m.squal
 
-    abs_x += m.dx
-    abs_y += m.dy
+        abs_x += m.dx
+        abs_y += m.dy
 
-    # Convert the counts per inch reading into metres
-    abs_x_m = (float(abs_x) / ADNS3080_COUNTS_PER_INCH) * 0.0254
-    abs_y_m = (float(abs_y) / ADNS3080_COUNTS_PER_INCH) * 0.0254
+        # Convert the counts per inch reading into metres
+        abs_x_m = (float(abs_x) / ADNS3080_COUNTS_PER_INCH) * 0.0254
+        abs_y_m = (float(abs_y) / ADNS3080_COUNTS_PER_INCH) * 0.0254
 
-    print str(abs_x) + ", " + str(abs_y)
-    print str(abs_x_m) + ", " + str(abs_y_m)
+        print str(abs_x) + ", " + str(abs_y)
+        print str(abs_x_m) + ", " + str(abs_y_m)
+        print m.squal
 
     msg.header.seq = seq
     msg.header.stamp = rospy.Time.now()
