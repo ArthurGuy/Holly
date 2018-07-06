@@ -142,6 +142,7 @@ def get_data():
     seq += 1
 
     m = mousecam_read_motion()
+    print m.squal
 
 
     msg.header.seq = seq
