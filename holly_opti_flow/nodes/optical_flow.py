@@ -104,7 +104,7 @@ def mousecam_read_reg(reg):
     ret = opti_flow_sensor._spi.transfer([0xff]);
     opti_flow_cs.on()
     sleep(0.000005)
-    return ret;
+    return ret[0];
 
 class Move:
     def __init__(self):
@@ -160,7 +160,9 @@ def get_data():
 
 
 # Setup the sensor
-sensor_init()
+if sensor_init() == -1:
+    print "Error setting up the motion sensor"
+    exit()
 
 while not rospy.is_shutdown():
     try:
