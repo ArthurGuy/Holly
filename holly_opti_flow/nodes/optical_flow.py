@@ -144,7 +144,10 @@ def get_data():
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "odom"
 
-    msg.pose.pose = Pose(Point(0, 0, 0))
+    pose = Pose()
+    pose.position.x = 0;
+    pose.position.y = 0;
+    msg.pose.pose = pose;
 
     odomPub.publish(msg)
 
