@@ -61,9 +61,6 @@ opti_flow_sensor = gpiozero.SPIDevice(port=0, device=0)
 opti_flow_reset = gpiozero.LED(PIN_MOUSECAM_RESET)
 opti_flow_cs = gpiozero.LED(PIN_MOUSECAM_CS)
 
-# Setup the sensor
-sensor_init()
-
 # Setup the ROS publisher
 rospy.init_node('holly_optical_flow') #public display name of the publisher
 rate = rospy.Rate(10) # 10hz
@@ -155,6 +152,9 @@ def get_data():
 
     rate.sleep()
 
+
+# Setup the sensor
+sensor_init()
 
 while not rospy.is_shutdown():
     try:
