@@ -10,7 +10,7 @@ from time import sleep
 
 
 from std_msgs.msg import String, Float32
-from geometry_msgs.msg import Twist, Point
+from geometry_msgs.msg import Twist, Pose, Point
 from nav_msgs.msg import Odometry
 
 
