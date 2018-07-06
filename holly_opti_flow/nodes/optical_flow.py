@@ -129,7 +129,8 @@ def mousecam_read_motion():
 
     m = Move()
 
-    m.motion =  opti_flow_sensor._spi.transfer([0xff])[0]
+    m.motion = opti_flow_sensor._spi.transfer([0xff])[0]
+
     dx =  opti_flow_sensor._spi.transfer([0xff])[0]
     if dx > 127:
         dx = (255 - dx) * -1
@@ -157,19 +158,17 @@ def get_data():
     seq += 1
 
     m = mousecam_read_motion()
-    if m.motion:
-        #print m.squal
+    #if m.motion:
+    abs_x += m.dx
+    abs_y += m.dy
 
-        abs_x += m.dx
-        abs_y += m.dy
+    # Convert the counts per inch reading into metres
+    abs_x_m = (float(abs_x) / ADNS3080_COUNTS_PER_INCH) * 0.0254
+    abs_y_m = (float(abs_y) / ADNS3080_COUNTS_PER_INCH) * 0.0254
 
-        # Convert the counts per inch reading into metres
-        abs_x_m = (float(abs_x) / ADNS3080_COUNTS_PER_INCH) * 0.0254
-        abs_y_m = (float(abs_y) / ADNS3080_COUNTS_PER_INCH) * 0.0254
-
-        print str(abs_x) + ", " + str(abs_y)
-        print str(abs_x_m) + ", " + str(abs_y_m)
-        print m.squal
+    print str(abs_x) + ", " + str(abs_y)
+    print str(abs_x_m) + ", " + str(abs_y_m)
+    print m.squal
 
     msg.header.seq = seq
     msg.header.stamp = rospy.Time.now()
@@ -182,8 +181,8 @@ def get_data():
 
     odomPub.publish(msg)
 
-
-    rate.sleep()
+    sleep(0.05)
+    #rate.sleep()
 
 
 # Setup the sensor
