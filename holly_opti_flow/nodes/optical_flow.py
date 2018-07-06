@@ -122,13 +122,13 @@ def mousecam_read_motion():
 
     m = Move()
 
-    m.motion =  opti_flow_sensor._spi.transfer([0xff])
-    m.dx =  opti_flow_sensor._spi.transfer([0xff])
-    m.dy =  opti_flow_sensor._spi.transfer([0xff])
-    m.squal =  opti_flow_sensor._spi.transfer([0xff])
-    m.shutter =  opti_flow_sensor._spi.transfer([0xff])<<8
-    m.shutter |=  opti_flow_sensor._spi.transfer([0xff])
-    m.max_pix =  opti_flow_sensor._spi.transfer([0xff])
+    m.motion =  opti_flow_sensor._spi.transfer([0xff])[0]
+    m.dx =  opti_flow_sensor._spi.transfer([0xff])[0]
+    m.dy =  opti_flow_sensor._spi.transfer([0xff])[0]
+    m.squal =  opti_flow_sensor._spi.transfer([0xff])[0]
+    m.shutter =  opti_flow_sensor._spi.transfer([0xff])[0] << 8
+    m.shutter |=  opti_flow_sensor._spi.transfer([0xff])[0]
+    m.max_pix =  opti_flow_sensor._spi.transfer([0xff])[0]
 
     opti_flow_cs.on()
     sleep(0.000005)
