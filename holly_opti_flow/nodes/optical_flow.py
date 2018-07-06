@@ -52,8 +52,7 @@ ADNS3080_INVERSE_PRODUCT_ID   = 0x3f
 ADNS3080_PIXEL_BURST          = 0x40
 ADNS3080_MOTION_BURST         = 0x50
 ADNS3080_SROM_LOAD            = 0x60
-
-define ADNS3080_PRODUCT_ID_VAL = 0x17
+ADNS3080_PRODUCT_ID_VAL       = 0x17
 
 
 # Setup the connection to the optical flow sensor
