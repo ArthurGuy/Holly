@@ -79,9 +79,9 @@ abs_y_m = 0
 
 def sensor_reset():
     opti_flow_reset.on()
-    sleep(0.001) # reset pulse >10us
+    sleep(0.010) # reset pulse >10us
     opti_flow_reset.off()
-    sleep(0.035) # 35ms from reset to functional
+    sleep(0.040) # 35ms from reset to functional
 
 def sensor_init():
     opti_flow_cs.on()
@@ -125,7 +125,7 @@ class Move:
 def mousecam_read_motion():
     opti_flow_cs.off()
     opti_flow_sensor._spi.transfer([ADNS3080_MOTION_BURST])
-    sleep(0.000075)
+    sleep(0.0001) # > 75us
 
     m = Move()
 
