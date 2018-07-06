@@ -158,7 +158,8 @@ def get_data():
     abs_x_m = (abs_x / ADNS3080_COUNTS_PER_INCH) * 0.0254
     abs_y_m = (abs_y / ADNS3080_COUNTS_PER_INCH) * 0.0254
 
-    print str(abs_x_m) + ", " + str(abs_y_m)
+    print str(m.dx) + ", " + str(m.dy)
+    print str(abs_x) + ", " + str(abs_y)
 
     msg.header.seq = seq
     msg.header.stamp = rospy.Time.now()
