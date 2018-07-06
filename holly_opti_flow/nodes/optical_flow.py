@@ -188,4 +188,5 @@ while not rospy.is_shutdown():
         spi.close()
         raise
     except:
+        spi.close()
         traceback.print_exc()
