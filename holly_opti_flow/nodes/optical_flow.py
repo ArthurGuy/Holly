@@ -169,7 +169,7 @@ def get_data():
     abs_x_m = (float(abs_x) / ADNS3080_COUNTS_PER_METER)
     abs_y_m = (float(abs_y) / ADNS3080_COUNTS_PER_METER)
 
-    print str(abs_x) + ", " + str(abs_y)
+    # print str(abs_x) + ", " + str(abs_y)
     print str(abs_x_m) + ", " + str(abs_y_m)
     print m.squal
 
