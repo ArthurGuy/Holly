@@ -132,11 +132,11 @@ def mousecam_read_motion():
     m.motion =  opti_flow_sensor._spi.transfer([0xff])[0]
     dx =  opti_flow_sensor._spi.transfer([0xff])[0]
     if dx > 127:
-        dx = 255 - dx
+        dx = (255 - dx) * -1
 
     dy =  opti_flow_sensor._spi.transfer([0xff])[0]
     if dy > 127:
-        dy = 255 - dy
+        dy = (255 - dy) * -1
 
     m.dx = dx
     m.dy = dy
