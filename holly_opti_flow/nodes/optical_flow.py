@@ -18,8 +18,9 @@ PIN_MOUSECAM_CS    = 5
 PIN_MOUSECAM_RESET = 6
 
 
-ADNS3080_PIXELS_X                = 30
-ADNS3080_PIXELS_Y                = 30
+ADNS3080_PIXELS_X             = 30
+ADNS3080_PIXELS_Y             = 30
+ADNS3080_COUNTS_PER_INCH      = 1600
 
 ADNS3080_PRODUCT_ID           = 0x00
 ADNS3080_REVISION_ID          = 0x01
@@ -55,7 +56,10 @@ ADNS3080_SROM_LOAD            = 0x60
 ADNS3080_PRODUCT_ID_VAL       = 0x17
 
 
-
+# Setup the connection to the optical flow sensor
+opti_flow_sensor = gpiozero.SPIDevice(port=0, device=0)
+opti_flow_reset  = gpiozero.LED(PIN_MOUSECAM_RESET)
+opti_flow_cs     = gpiozero.LED(PIN_MOUSECAM_CS)
 
 # Setup the ROS publisher
 rospy.init_node('holly_optical_flow') #public display name of the publisher
@@ -67,6 +71,12 @@ msg = Odometry()
 
 seq = 1
 
+# Cumulative offsets
+abs_x = 0
+abs_y = 0
+abs_x_m = 0
+abs_y_m = 0
+
 def sensor_reset():
     opti_flow_reset.on()
     sleep(0.001) # reset pulse >10us
@@ -74,12 +84,6 @@ def sensor_reset():
     sleep(0.035) # 35ms from reset to functional
 
 def sensor_init():
-
-    # Setup the connection to the optical flow sensor
-    opti_flow_sensor = gpiozero.SPIDevice(port=0, device=0)
-    opti_flow_reset  = gpiozero.LED(PIN_MOUSECAM_RESET)
-    opti_flow_cs     = gpiozero.LED(PIN_MOUSECAM_CS)
-
     opti_flow_cs.on()
 
     sensor_reset()
@@ -88,7 +92,7 @@ def sensor_init():
     if pid != ADNS3080_PRODUCT_ID_VAL:
         return -1
 
-    #turn on sensitive mode
+    #turn on sensitive mode, 1600 counts per inch
     mousecam_write_reg(ADNS3080_CONFIGURATION_BITS, 0x19)
     return 0
 
@@ -147,14 +151,21 @@ def get_data():
     m = mousecam_read_motion()
     print m.squal
 
+    abs_x += m.dx
+    abs_y += m.dy
+
+    # Convert the counts per inch reading into metres
+    abs_x_m = (abs_x / ADNS3080_COUNTS_PER_INCH) * 0.0254
+    abs_y_m = (abs_y / ADNS3080_COUNTS_PER_INCH) * 0.0254
+
 
     msg.header.seq = seq
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "odom"
 
     pose = Pose()
-    pose.position.x = 0;
-    pose.position.y = 0;
+    pose.position.x = abs_x_m;
+    pose.position.y = abs_y_m;
     msg.pose.pose = pose;
 
     odomPub.publish(msg)
