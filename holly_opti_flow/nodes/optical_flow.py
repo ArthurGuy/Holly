@@ -55,10 +55,7 @@ ADNS3080_SROM_LOAD            = 0x60
 ADNS3080_PRODUCT_ID_VAL       = 0x17
 
 
-# Setup the connection to the optical flow sensor
-opti_flow_sensor = gpiozero.SPIDevice(port=0, device=0)
-opti_flow_reset = gpiozero.LED(PIN_MOUSECAM_RESET)
-opti_flow_cs = gpiozero.LED(PIN_MOUSECAM_CS)
+
 
 # Setup the ROS publisher
 rospy.init_node('holly_optical_flow') #public display name of the publisher
@@ -77,6 +74,12 @@ def sensor_reset():
     sleep(0.035) # 35ms from reset to functional
 
 def sensor_init():
+
+    # Setup the connection to the optical flow sensor
+    opti_flow_sensor = gpiozero.SPIDevice(port=0, device=0)
+    opti_flow_reset  = gpiozero.LED(PIN_MOUSECAM_RESET)
+    opti_flow_cs     = gpiozero.LED(PIN_MOUSECAM_CS)
+
     opti_flow_cs.on()
 
     sensor_reset()
@@ -170,7 +173,7 @@ while not rospy.is_shutdown():
         get_data()
 
     except (KeyboardInterrupt, SystemExit):
-        spi.close() 
+        spi.close()
         raise
     except:
         traceback.print_exc()
