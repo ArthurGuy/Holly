@@ -149,7 +149,7 @@ def get_data():
     seq += 1
 
     m = mousecam_read_motion()
-    print m.squal
+    #print m.squal
 
     abs_x += m.dx
     abs_y += m.dy
@@ -158,6 +158,7 @@ def get_data():
     abs_x_m = (abs_x / ADNS3080_COUNTS_PER_INCH) * 0.0254
     abs_y_m = (abs_y / ADNS3080_COUNTS_PER_INCH) * 0.0254
 
+    print abs_x_m + ", " + abs_y_m
 
     msg.header.seq = seq
     msg.header.stamp = rospy.Time.now()
