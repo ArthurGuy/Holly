@@ -133,11 +133,15 @@ def mousecam_read_motion():
     opti_flow_cs.on()
     sleep(0.000005)
 
+    return m
+
 
 def get_data():
     global seq
 
     seq += 1
+
+    m = mousecam_read_motion()
 
 
     msg.header.seq = seq
