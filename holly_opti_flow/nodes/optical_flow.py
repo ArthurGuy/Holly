@@ -20,7 +20,7 @@ PIN_MOUSECAM_RESET = 6
 
 ADNS3080_PIXELS_X             = 30
 ADNS3080_PIXELS_Y             = 30
-ADNS3080_COUNTS_PER_INCH      = 1600
+ADNS3080_COUNTS_PER_INCH      = 400
 
 ADNS3080_PRODUCT_ID           = 0x00
 ADNS3080_REVISION_ID          = 0x01
@@ -93,7 +93,7 @@ def sensor_init():
         return -1
 
     #turn on sensitive mode, 1600 counts per inch
-    mousecam_write_reg(ADNS3080_CONFIGURATION_BITS, 0x19)
+    # mousecam_write_reg(ADNS3080_CONFIGURATION_BITS, 0x19)
     return 0
 
 
