@@ -10,7 +10,7 @@ from time import sleep
 
 
 from std_msgs.msg import String, Float32
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, Point
 from nav_msgs.msg import Odometry
 
 
@@ -144,8 +144,7 @@ def get_data():
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "odom"
 
-    msg.pose.pose.point.x = 0;
-    msg.pose.pose.point.y = 0;
+    msg.pose.pose = Pose(Point(0, 0, 0))
 
     odomPub.publish(msg)
 
