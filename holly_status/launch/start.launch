@@ -1,3 +1,3 @@
 <launch>
-    <node pkg="holly_status" type="status.py" name="holly_status" output="screen" launch-prefix="sudo -E " />
+    <node pkg="holly_status" type="status.py" name="holly_status" output="screen" />
 </launch>
