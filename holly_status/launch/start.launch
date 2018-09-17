@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="holy_status" type="status.py" name="holy_status" output="screen" />
+</launch>
