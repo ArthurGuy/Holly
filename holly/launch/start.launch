@@ -1,4 +1,4 @@
 <launch>
     <include file="$(find holly_tf)/launch/start.launch" />
-    <include file="$(find holly_kinect)/launch/start.launch" />
+    <include file="$(find holly_status)/launch/start.launch" />
 </launch>
