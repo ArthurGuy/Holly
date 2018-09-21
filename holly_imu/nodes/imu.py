@@ -106,7 +106,7 @@ def get_data():
         imuPub.publish(msg)
 
 
-        #print "Published new data " + str(seq)
+        print "Published new data " + str(seq)
 
         rate.sleep()
 
