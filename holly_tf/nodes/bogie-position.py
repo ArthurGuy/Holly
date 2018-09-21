@@ -45,9 +45,9 @@ def get_data():
 
     # Read sensor data
     try:
-        rear = (adc.read_adc(0, gain=1) / bits_per_rad) - center_rear
-        left = (adc.read_adc(1, gain=1) / bits_per_rad) - center_left
-        right = (adc.read_adc(2, gain=1) / bits_per_rad) - center_right
+        rear = round((adc.read_adc(0, gain=1) / bits_per_rad) - center_rear, 3)
+        left = round((adc.read_adc(1, gain=1) / bits_per_rad) - center_left, 3)
+        right = round((adc.read_adc(2, gain=1) / bits_per_rad) - center_right, 3)
 
     except IOError:
         rear = 0
