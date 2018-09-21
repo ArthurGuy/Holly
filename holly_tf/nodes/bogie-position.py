@@ -33,7 +33,7 @@ adc = Adafruit_ADS1x15.ADS1115()
 v_per_bit = 4.096/32767
 
 # TODO - Workout how many bits per radian
-bits_per_rad = 5000
+bits_per_rad = 10000.0
 
 # On startup assume the rover is level and take readings for the midpoints
 center_rear = adc.read_adc(0, gain=1) / bits_per_rad
