@@ -1,5 +1,7 @@
 <launch>
     <param name="robot_description" textfile="$(find holly_tf)/holly.urdf" />
-    <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" />
+    <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher">
+        <rosparam param="source_list">["holly/joint_states"]</rosparam>
+    </node>
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
 </launch>
