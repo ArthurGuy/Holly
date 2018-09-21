@@ -26,8 +26,8 @@ def get_data():
     jointMessage.header.stamp = rospy.Time.now()
     jointMessage.header.frame_id = "base_link"
 
-    jointMessage.name = "base_to_bogie_rear"
-    jointMessage.position = random.uniform(-0.3, 0.3)
+    jointMessage.name = ["base_to_bogie_rear"]
+    jointMessage.position = [random.uniform(-0.3, 0.3)]
 
     jointPublisher.publish(jointMessage)
 
