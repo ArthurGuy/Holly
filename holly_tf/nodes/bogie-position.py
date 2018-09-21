@@ -32,14 +32,22 @@ adc = Adafruit_ADS1x15.ADS1115()
 # Using the gai we can work out the volt reading per bit
 v_per_bit = 4.096/32767
 
+# TODO - Workout how many bits per radian
+bits_per_rad = 100
+
+# On startup assume the rover is level and take readings for the midpoints
+center_rear = adc.read_adc(0, gain=1) / bits_per_rad
+center_left = adc.read_adc(1, gain=1) / bits_per_rad
+center_right = adc.read_adc(2, gain=1) / bits_per_rad
+
 def get_data():
     global seq
 
     # Read sensor data
     try:
-        rear = adc.read_adc(0, gain=1) * v_per_bit
-        left = adc.read_adc(1, gain=1) * v_per_bit
-        right = adc.read_adc(2, gain=1) * v_per_bit
+        rear = (adc.read_adc(0, gain=1) / bits_per_rad) - center_rear
+        left = (adc.read_adc(1, gain=1) / bits_per_rad) - center_left
+        right = (adc.read_adc(2, gain=1) / bits_per_rad) - center_right
 
     except IOError:
         rear = 0
