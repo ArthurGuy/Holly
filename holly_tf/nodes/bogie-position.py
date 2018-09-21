@@ -32,9 +32,14 @@ def get_data():
     global seq
 
     # Read sensor data
-    rear = adc.read_adc(0, gain=1)
-    left = adc.read_adc(1, gain=1)
-    right = adc.read_adc(2, gain=1)
+    try:
+        rear = adc.read_adc(0, gain=1)
+        left = adc.read_adc(1, gain=1)
+        right = adc.read_adc(2, gain=1)
+    except IOError:
+        rear = 0
+        left = 0
+        right = 0
 
     seq += 1
 
