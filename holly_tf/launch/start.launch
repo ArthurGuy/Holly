@@ -4,5 +4,5 @@
         <rosparam param="source_list">["holly/joint_states"]</rosparam>
     </node>
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
-    <node pkg="holly_tf" type="bogie-positions.py.py" name="holly_bogie_positions" output="screen" />
+    <node pkg="holly_tf" type="bogie-positions.py" name="holly_bogie_positions" output="screen" />
 </launch>
