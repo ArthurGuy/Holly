@@ -28,14 +28,19 @@ adc = Adafruit_ADS1x15.ADS1115()
 #  -   8 = +/-0.512V
 #  -  16 = +/-0.256V
 
+# The full range is 32767
+# Using the gai we can work out the volt reading per bit
+v_per_bit = 4.096/32767
+
 def get_data():
     global seq
 
     # Read sensor data
     try:
-        rear = adc.read_adc(0, gain=1)
-        left = adc.read_adc(1, gain=1)
-        right = adc.read_adc(2, gain=1)
+        rear = adc.read_adc(0, gain=1) * v_per_bit
+        left = adc.read_adc(1, gain=1) * v_per_bit
+        right = adc.read_adc(2, gain=1) * v_per_bit
+
     except IOError:
         rear = 0
         left = 0
