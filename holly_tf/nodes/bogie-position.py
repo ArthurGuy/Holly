@@ -36,8 +36,8 @@ v_per_bit = 4.096/32767
 bits_per_rad = 10000.0
 
 # On startup assume the rover is level and take readings for the midpoints
-center_left = adc.read_adc(0, gain=1) / bits_per_rad
-center_right = adc.read_adc(1, gain=1) / bits_per_rad
+center_left = (adc.read_adc(0, gain=1) * -1) / bits_per_rad
+center_right = (adc.read_adc(1, gain=1) * -1) / bits_per_rad
 center_rear = adc.read_adc(2, gain=1) / bits_per_rad
 
 def get_data():
@@ -45,8 +45,8 @@ def get_data():
 
     # Read sensor data
     try:
-        left = round((adc.read_adc(0, gain=1) / bits_per_rad) - center_left, 3)
-        right = round((adc.read_adc(1, gain=1) / bits_per_rad) - center_right, 3)
+        left = round(((adc.read_adc(0, gain=1) * -1) / bits_per_rad) - center_left, 3)
+        right = round(((adc.read_adc(1, gain=1) * -1) / bits_per_rad) - center_right, 3)
         rear = round((adc.read_adc(2, gain=1) / bits_per_rad) - center_rear, 3)
 
     except IOError:
