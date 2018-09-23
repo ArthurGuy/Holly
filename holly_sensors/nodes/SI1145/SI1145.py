@@ -244,7 +244,7 @@ class SI1145(object):
                 self._device.write8(SI1145_REG_MEASRATE0, 0xFF) # 255 * 31.25uS = 8ms
 
                 # auto run
-                self._device.write8(SI1145_REG_COMMAND, SI1145_PSALS_AUTO)
+                self._device.write8(SI1145_REG_COMMAND, SI1145_ALS_AUTO)
 
         # returns the UV index * 100 (divide by 100 to get the index)
         def readUV(self):

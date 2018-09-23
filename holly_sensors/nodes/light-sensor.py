@@ -8,7 +8,7 @@ import time
 sys.path.append('.')
 
 rospy.init_node('holly_light_sensor') #public display name of the publisher
-rate = rospy.Rate(10) # 10hz
+rate = rospy.Rate(1) # 1hz
 
 #jointPublisher = rospy.Publisher('/holly/light_sensor', JointState, queue_size=10)
 #jointMessage = JointState()
