@@ -5,13 +5,14 @@ import sys, getopt
 import random
 import SI1145.SI1145 as SI1145
 import time
+from holly_sensors.msg import LightReading
 sys.path.append('.')
 
 rospy.init_node('holly_light_sensor') #public display name of the publisher
 rate = rospy.Rate(1) # 1hz
 
-#jointPublisher = rospy.Publisher('/holly/light_sensor', JointState, queue_size=10)
-#jointMessage = JointState()
+lightPublisher = rospy.Publisher('/holly/light_sensor', LightReading, queue_size=10)
+lightMessage = LightReading()
 
 seq = 1
 
@@ -31,14 +32,15 @@ def get_data():
 
     seq += 1
 
-    # jointMessage.header.seq = seq
-    # jointMessage.header.stamp = rospy.Time.now()
-    # jointMessage.header.frame_id = "base_link"
-    #
-    # jointMessage.name = ["base_to_bogie_rear", "base_to_bogie_left", "base_to_bogie_right"]
-    # jointMessage.position = [rear, left, right]
-    #
-    # jointPublisher.publish(jointMessage)
+    lightMessage.header.seq = seq
+    lightMessage.header.stamp = rospy.Time.now()
+    lightMessage.header.frame_id = "base_link"
+
+    lightMessage.vis = vis
+    lightMessage.ir = IR
+    lightMessage.uv = uvIndex
+
+    lightPublisher.publish(lightMessage)
 
     rate.sleep()
 
