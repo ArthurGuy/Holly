@@ -2,7 +2,6 @@
 import rospy
 import traceback
 import sys, getopt
-import random
 import SI1145.SI1145 as SI1145
 import time
 from holly_sensors.msg import LightReading
@@ -32,9 +31,9 @@ def get_data():
 
     seq += 1
 
-    lightMessage.header.seq = seq
-    lightMessage.header.stamp = rospy.Time.now()
-    lightMessage.header.frame_id = "base_link"
+    # lightMessage.header.seq = seq
+    # lightMessage.header.stamp = rospy.Time.now()
+    # lightMessage.header.frame_id = "base_link"
 
     lightMessage.vis = vis
     lightMessage.ir = IR
