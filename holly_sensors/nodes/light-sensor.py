@@ -34,7 +34,7 @@ def get_data():
 
         seq += 1
 
-        lightMessage.header.seq = seq
+        # lightMessage.header.seq = seq
         # lightMessage.header.stamp = rospy.Time.now()
         # lightMessage.header.frame_id = "base_link"
 
