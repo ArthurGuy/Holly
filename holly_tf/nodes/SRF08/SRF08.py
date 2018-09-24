@@ -12,7 +12,7 @@ class SRF08:
         self._device = I2C.Device(address, busnum)
 
     def distance(self):
-        self._device.write8(0, 0x51)
+        self._device.write8(0x00, 0x51)
         time.sleep(self.delay_time)
         range_byte_1 = self._device.readU8(2)
         range_byte_2 = self._device.readU8(3)
