@@ -87,7 +87,7 @@ def update_position():
     time_delta = time.time() - last_update_time
 
     # Average the two center wheels
-    _average_distance_traveled = (wheel_travel_2 + wheel_travel_4) / 2
+    _average_distance_traveled = ((wheel_travel_2 + wheel_travel_4) / 2) - average_distance_traveled
     _speed = _average_distance_traveled / time_delta
 
     x_delta = _average_distance_traveled * math.cos(wheel_angle)
