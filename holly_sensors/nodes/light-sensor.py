@@ -17,12 +17,17 @@ lightMessage = Float32()
 seq = 1
 
 sensor = SI1145.SI1145()
-
+sensorSetupNeeded = 0
 
 def get_data():
-    global seq
+    global seq, sensorSetupNeeded
 
     try:
+
+        if sensorSetupNeeded:
+            sensorSetupNeeded = 0
+            sensor = SI1145.SI1145()
+
         vis = sensor.readVisible()
         IR = sensor.readIR()
         UV = sensor.readUV()
@@ -44,6 +49,7 @@ def get_data():
         lightPublisher.publish(lightMessage)
     except IOError:
         print 'Error reading sensor'
+        sensorSetupNeeded = 1
 
     rate.sleep()
 
