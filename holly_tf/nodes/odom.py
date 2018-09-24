@@ -19,28 +19,34 @@ encoder_count_5 = 0
 encoder_count_6 = 0
 
 
-def odom_callback_1(self, data):
-    self.encoder_count_1 = data.data
+def odom_callback_1(data):
+    global encoder_count_1
+    encoder_count_1 = data.data
 
 
-def odom_callback_2(self, data):
-    self.encoder_count_2 = data.data
+def odom_callback_2(data):
+    global encoder_count_2
+    encoder_count_2 = data.data
 
 
-def odom_callback_3(self, data):
-    self.encoder_count_3 = data.data
+def odom_callback_3(data):
+    global encoder_count_3
+    encoder_count_3 = data.data
 
 
-def odom_callback_4(self, data):
-    self.encoder_count_4 = data.data
+def odom_callback_4(data):
+    global encoder_count_4
+    encoder_count_4 = data.data
 
 
-def odom_callback_5(self, data):
-    self.encoder_count_5 = data.data
+def odom_callback_5(data):
+    global encoder_count_5
+    encoder_count_5 = data.data
 
 
-def odom_callback_6(self, data):
-    self.encoder_count_6 = data.data
+def odom_callback_6(data):
+    global encoder_count_6
+    encoder_count_6 = data.data
 
 
 odomMsg = Odometry()
