@@ -22,25 +22,28 @@ sensor = SI1145.SI1145()
 def get_data():
     global seq
 
-    vis = sensor.readVisible()
-    IR = sensor.readIR()
-    UV = sensor.readUV()
-    uvIndex = UV / 100.0
-    print 'Vis:             ' + str(vis)
-    print 'IR:              ' + str(IR)
-    print 'UV Index:        ' + str(uvIndex)
+    try:
+        vis = sensor.readVisible()
+        IR = sensor.readIR()
+        UV = sensor.readUV()
+        uvIndex = UV / 100.0
+        print 'Vis:             ' + str(vis)
+        print 'IR:              ' + str(IR)
+        print 'UV Index:        ' + str(uvIndex)
 
-    seq += 1
+        seq += 1
 
-    # lightMessage.header.seq = seq
-    # lightMessage.header.stamp = rospy.Time.now()
-    # lightMessage.header.frame_id = "base_link"
+        # lightMessage.header.seq = seq
+        # lightMessage.header.stamp = rospy.Time.now()
+        # lightMessage.header.frame_id = "base_link"
 
-    # lightMessage.vis = vis
-    # lightMessage.ir = IR
-    lightMessage.data = uvIndex
+        # lightMessage.vis = vis
+        # lightMessage.ir = IR
+        lightMessage.data = uvIndex
 
-    lightPublisher.publish(lightMessage)
+        lightPublisher.publish(lightMessage)
+    except IOError:
+        print 'Error reading sensor'
 
     rate.sleep()
 
