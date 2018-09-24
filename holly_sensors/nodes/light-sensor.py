@@ -24,10 +24,6 @@ def get_data():
 
     try:
 
-        if sensorSetupNeeded:
-            sensorSetupNeeded = 0
-            sensor = SI1145.SI1145()
-
         vis = sensor.readVisible()
         IR = sensor.readIR()
         UV = sensor.readUV()
@@ -57,6 +53,10 @@ def get_data():
 while not rospy.is_shutdown():
     try:
         get_data()
+
+        if sensorSetupNeeded:
+            sensorSetupNeeded = 0
+            sensor = SI1145.SI1145()
 
     except (KeyboardInterrupt, SystemExit):
         raise
