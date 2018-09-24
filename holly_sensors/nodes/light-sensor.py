@@ -34,13 +34,13 @@ def get_data():
 
         seq += 1
 
-        # lightMessage.header.seq = seq
+        lightMessage.header.seq = seq
         # lightMessage.header.stamp = rospy.Time.now()
         # lightMessage.header.frame_id = "base_link"
 
         # lightMessage.vis = vis
         # lightMessage.ir = IR
-        lightMessage.data = uvIndex
+        lightMessage.data = round(uvIndex, 2)
 
         lightPublisher.publish(lightMessage)
     except IOError:
