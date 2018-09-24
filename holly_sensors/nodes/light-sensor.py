@@ -4,14 +4,15 @@ import traceback
 import sys, getopt
 import SI1145.SI1145 as SI1145
 import time
+from std_msgs.msg import Float64, Float32
 from holly_sensors.msg import LightReading
 sys.path.append('.')
 
 rospy.init_node('holly_light_sensor') #public display name of the publisher
 rate = rospy.Rate(1) # 1hz
 
-lightPublisher = rospy.Publisher('/holly/light_sensor', LightReading, queue_size=10)
-lightMessage = LightReading()
+lightPublisher = rospy.Publisher('/holly/light_sensor', Float32, queue_size=10)
+lightMessage = Float32()
 
 seq = 1
 
@@ -35,9 +36,9 @@ def get_data():
     # lightMessage.header.stamp = rospy.Time.now()
     # lightMessage.header.frame_id = "base_link"
 
-    lightMessage.vis = vis
-    lightMessage.ir = IR
-    lightMessage.uv = uvIndex
+    # lightMessage.vis = vis
+    # lightMessage.ir = IR
+    lightMessage.data = uvIndex
 
     lightPublisher.publish(lightMessage)
 
