@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(holly_opti_flow)
+project(holly_status)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
