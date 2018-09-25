@@ -16,17 +16,16 @@ seq = 1
 
 tof = VL53L1X.VL53L1X(i2c_bus=1, i2c_address=0x29)
 tof.open() # Initialise the i2c bus and configure the sensor
+tof.start_ranging(1)  # Start ranging, 1 = Short Range, 2 = Medium Range, 3 = Long Range
 
 def get_data():
     global seq
 
     seq += 1
 
-    tof.start_ranging(1)  # Start ranging, 1 = Short Range, 2 = Medium Range, 3 = Long Range
-
     distance_in_mm = tof.get_distance()  # Grab the range in mm
+    print distance_in_mm
 
-    tof.stop_ranging()  # Stop ranging
 
     rangeMessage.header.seq = seq
     rangeMessage.header.stamp = rospy.Time.now()
@@ -46,4 +45,5 @@ while not rospy.is_shutdown():
     except (KeyboardInterrupt, SystemExit):
         raise
     except:
+        tof.stop_ranging()  # Stop ranging
         traceback.print_exc()
