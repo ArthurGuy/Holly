@@ -7,8 +7,8 @@ from time import sleep
 from geometry_msgs.msg import Twist, Pose, Point
 from nav_msgs.msg import Odometry
 
-PIN_MOUSECAM_CS = 5
-PIN_MOUSECAM_RESET = 6
+PIN_SENSOR_CS = 5
+PIN_SENSOR_RESET = 6
 
 ADNS3080_PIXELS_X = 30
 ADNS3080_PIXELS_Y = 30
@@ -51,8 +51,8 @@ ADNS3080_PRODUCT_ID_VAL = 0x17
 
 # Setup the connection to the optical flow sensor
 opti_flow_sensor = gpiozero.SPIDevice(port=0, device=0)
-opti_flow_reset = gpiozero.LED(PIN_MOUSECAM_RESET)
-opti_flow_cs = gpiozero.LED(PIN_MOUSECAM_CS)
+opti_flow_reset = gpiozero.LED(PIN_SENSOR_RESET)
+opti_flow_cs = gpiozero.LED(PIN_SENSOR_CS)
 
 # Setup the ROS publisher
 rospy.init_node('holly_optical_flow')  # public display name of the publisher
