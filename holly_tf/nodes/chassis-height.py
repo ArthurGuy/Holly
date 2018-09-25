@@ -37,6 +37,9 @@ def setup_sensor():
 def get_data():
     global seq
 
+    if not device_setup:
+        return
+
     seq += 1
 
     distance_in_mm = tof.get_distance()  # Grab the range in mm
@@ -60,7 +63,7 @@ while not rospy.is_shutdown():
         get_data()
 
     except (KeyboardInterrupt, SystemExit):
+        tof.stop_ranging()  # Stop ranging
         raise
     except:
-        tof.stop_ranging()  # Stop ranging
         traceback.print_exc()
