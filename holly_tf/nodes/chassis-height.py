@@ -30,6 +30,8 @@ def setup_sensor():
     tof.open() # Initialise the i2c bus and configure the sensor
     tof.start_ranging(1)  # Start ranging, 1 = Short Range, 2 = Medium Range, 3 = Long Range
     device_setup = 1
+
+    print "Device setup"
     sleep(1)
 
 
@@ -66,6 +68,7 @@ while not rospy.is_shutdown():
         get_data()
 
     except (KeyboardInterrupt, SystemExit):
+        print "Exiting, shutting down sensor"
         tof.stop_ranging()  # Stop ranging
         raise
     except:
