@@ -4,7 +4,7 @@ import traceback
 import gpiozero
 from time import sleep
 
-from geometry_msgs.msg import Twist, PoseWithCovarianceStamped, Pose, Point
+from geometry_msgs.msg import Twist, PoseWithCovariance, Pose, Point
 from nav_msgs.msg import Odometry
 
 PIN_SENSOR_CS = 5
@@ -177,7 +177,7 @@ def get_data():
     pose.position.x = abs_x_m
     pose.position.y = abs_y_m
 
-    poseC = PoseWithCovarianceStamped()
+    poseC = PoseWithCovariance()
     poseC.pose = pose
     poseC.covariance = [0.1, 0.1, 0.1,
                         -1, -1, -1,
