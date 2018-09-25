@@ -15,6 +15,12 @@
                                 true,  true, false,
                                 false, false, false,
                                 false, false, false]</rosparam>
+        <param name="odom1" value="/optical_flow/odom" />
+        <rosparam param="odom1_config">[true, true, false,
+                                false, false, false,
+                                true,  true, false,
+                                false, false, false,
+                                false, false, false]</rosparam>
         <param name="print_diagnostics" value="true" />
         <param name="two_d_mode" value="true" />
     </node>
