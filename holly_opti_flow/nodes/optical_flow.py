@@ -156,7 +156,8 @@ def get_data():
     seq += 1
 
     m = sensor_read_motion()
-    # if m.motion:
+    if m.motion & 0x10:
+        print "Overflow"
     abs_x += m.dx
     abs_y += m.dy
 
@@ -179,8 +180,7 @@ def get_data():
 
     odomPub.publish(msg)
 
-    sleep(0.05)
-    # rate.sleep()
+    rate.sleep()
 
 
 # Setup the sensor
