@@ -4,7 +4,7 @@ import traceback
 import gpiozero
 from time import sleep
 
-from geometry_msgs.msg import Twist, Pose, Point
+from geometry_msgs.msg import Twist, PoseWithCovarianceStamped, Pose, Point
 from nav_msgs.msg import Odometry
 
 PIN_SENSOR_CS = 5
@@ -174,9 +174,17 @@ def get_data():
     msg.header.frame_id = "odom"
 
     pose = Pose()
-    pose.position.x = abs_x_m;
-    pose.position.y = abs_y_m;
-    msg.pose.pose = pose;
+    pose.position.x = abs_x_m
+    pose.position.y = abs_y_m
+
+    poseC = PoseWithCovarianceStamped()
+    poseC.pose = pose
+    poseC.covariance = [0.1, 0.1, 0.1,
+                        -1, -1, -1,
+                        -1, -1, -1,
+                        -1, -1, -1]
+
+    msg.pose = poseC
 
     odomPub.publish(msg)
 
