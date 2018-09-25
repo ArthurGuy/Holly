@@ -4,6 +4,7 @@ import traceback
 import sys
 import VL53L1X
 from sensor_msgs.msg import Range
+from time import sleep
 sys.path.append('.')
 
 rospy.init_node('holly_chassis_height') #public display name of the publisher
@@ -14,9 +15,24 @@ rangeMessage = Range()
 
 seq = 1
 
-tof = VL53L1X.VL53L1X(i2c_bus=1, i2c_address=0x29)
-tof.open() # Initialise the i2c bus and configure the sensor
-tof.start_ranging(1)  # Start ranging, 1 = Short Range, 2 = Medium Range, 3 = Long Range
+device_setup = 0
+
+
+def setup_sensor():
+    global device_setup, tof
+
+    if device_setup:
+        return
+    try:
+        tof = VL53L1X.VL53L1X(i2c_bus=1, i2c_address=0x29)
+        tof.open() # Initialise the i2c bus and configure the sensor
+        tof.start_ranging(1)  # Start ranging, 1 = Short Range, 2 = Medium Range, 3 = Long Range
+        device_setup = 1
+        sleep(1)
+    except IOError:
+        sleep(5)
+        raise
+
 
 def get_data():
     global seq
@@ -40,6 +56,7 @@ def get_data():
 
 while not rospy.is_shutdown():
     try:
+        setup_sensor()
         get_data()
 
     except (KeyboardInterrupt, SystemExit):
