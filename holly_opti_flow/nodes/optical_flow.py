@@ -14,7 +14,7 @@ ADNS3080_PIXELS_X = 30
 ADNS3080_PIXELS_Y = 30
 ADNS3080_COUNTS_PER_INCH = 1600
 # This will need trial and error as its dependent on the mounting height
-ADNS3080_COUNTS_PER_METER = 1
+ADNS3080_COUNTS_PER_METER = 1620
 
 ADNS3080_PRODUCT_ID = 0x00
 ADNS3080_REVISION_ID = 0x01
@@ -161,7 +161,7 @@ def get_data():
     abs_x += m.dx
     abs_y += m.dy
 
-    # Convert the counts per inch reading into metres
+    # Convert the counts reading into metres
     abs_x_m = (float(abs_x) / ADNS3080_COUNTS_PER_METER)
     abs_y_m = (float(abs_y) / ADNS3080_COUNTS_PER_METER)
 
