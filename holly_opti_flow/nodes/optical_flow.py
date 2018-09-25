@@ -179,10 +179,12 @@ def get_data():
 
     poseC = PoseWithCovariance()
     poseC.pose = pose
-    poseC.covariance = [0.1, 0.1, 0.1,
-                        -1, -1, -1,
-                        -1, -1, -1,
-                        -1, -1, -1]
+    poseC.covariance = [0.1, 0, 0, 0, 0, 0,
+                        0, 0.1, 0, 0, 0, 0,
+                        0, 0, 99999, 0, 0, 0,
+                        0, 0, 0, 99999, 0, 0,
+                        0, 0, 0, 0, 99999, 0,
+                        0, 0, 0, 0, 0, 10]
 
     msg.pose = poseC
 
