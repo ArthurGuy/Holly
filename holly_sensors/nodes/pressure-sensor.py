@@ -13,11 +13,12 @@ rate = rospy.Rate(0.5)  # 0.1hz
 pressurePublisher = rospy.Publisher('/holly/pressure_sensor', Float32, queue_size=10)
 pressureMessage = Float32()
 
+firstReading = 1
 sensorSetupNeeded = 1
 
 
 def get_data():
-    global sensorSetupNeeded
+    global sensorSetupNeeded, firstReading
 
     if not sensorSetupNeeded:
         try:
@@ -25,6 +26,11 @@ def get_data():
             pascals = sensor.read_pressure()
             hectopascals = pascals / 100
             humidity = sensor.read_humidity()
+
+            if firstReading:
+                # The first reading isn't accurate so ignore that one
+                firstReading = 0
+                return
 
             print 'Temp      = {0:0.3f} deg C'.format(degrees)
             print 'Pressure  = {0:0.2f} hPa'.format(hectopascals)
@@ -47,6 +53,7 @@ while not rospy.is_shutdown():
             try:
                 sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
                 sensorSetupNeeded = 0
+                firstReading = 1
             except IOError:
                 print 'Error setting up sensor'
                 sensorSetupNeeded = 1
