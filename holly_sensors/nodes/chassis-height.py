@@ -24,11 +24,17 @@ def handler(signum, frame):
     raise Exception("end of time")
 
 
+signal.signal(signal.SIGALRM, handler)
+
+
 def get_data():
     global seq, sensorSetupNeeded
 
     if not sensorSetupNeeded:
         try:
+            # Reset the watchdog to 1 second
+            signal.alarm(1)
+
             distance_in_mm = tof.get_distance()  # Grab the range in mm
 
             if distance_in_mm > 0:
@@ -47,7 +53,8 @@ def get_data():
                 rangeMessage.range = float(distance_in_mm) / 1000
 
                 rangePublisher.publish(rangeMessage)
-        except:
+        except Exception, exc:
+            print exc
             rospy.logwarn('Error reading the range sensor')
             sensorSetupNeeded = 1
             # sleep(5)
@@ -58,7 +65,7 @@ def get_data():
 while not rospy.is_shutdown():
     try:
         if sensorSetupNeeded:
-            signal.signal(signal.SIGALRM, handler)
+            # Reset the watchdog to 2 seconds
             signal.alarm(2)
             try:
                 tof = VL53L0X()
