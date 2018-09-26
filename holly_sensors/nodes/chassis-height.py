@@ -5,7 +5,6 @@ import sys
 from VL53L0X.python.VL53L0X import VL53L0X
 from VL53L0X.python.VL53L0X import VL53L0X_BETTER_ACCURACY_MODE
 from sensor_msgs.msg import Range
-from time import sleep
 sys.path.append('.')
 
 rospy.init_node('holly_chassis_height') #public display name of the publisher
@@ -16,65 +15,57 @@ rangeMessage = Range()
 
 seq = 1
 
-device_setup = 0
-
-
-def setup_sensor():
-    global device_setup, tof
-
-    print "Setting up sensor"
-
-    if device_setup:
-        return
-
-    tof = VL53L0X()
-    tof.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
-    device_setup = 1
-
-    print "Device setup"
-    sleep(1)
+sensorSetupNeeded = 1
 
 
 def get_data():
-    global seq, device_setup
+    global seq, sensorSetupNeeded
 
-    try:
-        if not device_setup:
-            setup_sensor()
-    except IOError:
-        print "Error setting up device, waiting"
-        sleep(5)
-        return
+    if not sensorSetupNeeded:
+        try:
+            distance_in_mm = tof.get_distance()  # Grab the range in mm
 
-    distance_in_mm = tof.get_distance()  # Grab the range in mm
+            if distance_in_mm > 0:
+                seq += 1
 
-    if distance_in_mm > 0:
-        seq += 1
+                print float(distance_in_mm) / 1000
 
-        print float(distance_in_mm) / 1000
+                rangeMessage.header.seq = seq
+                rangeMessage.header.stamp = rospy.Time.now()
+                rangeMessage.header.frame_id = "chassis_height_sensor"
 
-        rangeMessage.header.seq = seq
-        rangeMessage.header.stamp = rospy.Time.now()
-        rangeMessage.header.frame_id = "chassis_height_sensor"
+                rangeMessage.radiation_type = 1
+                rangeMessage.min_range = 0.05
+                rangeMessage.max_range = 8
+                rangeMessage.field_of_view = 0.436 # 25 degrees
+                rangeMessage.range = float(distance_in_mm) / 1000
 
-        rangeMessage.radiation_type = 1
-        rangeMessage.min_range = 0.05
-        rangeMessage.max_range = 8
-        rangeMessage.field_of_view = 0.02
-        rangeMessage.range = float(distance_in_mm) / 1000
-
-        rangePublisher.publish(rangeMessage)
+                rangePublisher.publish(rangeMessage)
+        except IOError:
+            rospy.logwarn('Error reading the range sensor')
+            sensorSetupNeeded = 1
+            # sleep(5)
 
     rate.sleep()
 
 
 while not rospy.is_shutdown():
     try:
+        if sensorSetupNeeded:
+            try:
+                tof = VL53L0X()
+                tof.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
+                sensorSetupNeeded = 0
+            except IOError:
+                # print 'Error setting up pressure sensor'
+                rospy.logwarn('Error setting up range sensor')
+                sensorSetupNeeded = 1
+
         get_data()
 
     except (KeyboardInterrupt, SystemExit):
         print "Exiting, shutting down sensor"
-        tof.stop_ranging()  # Stop ranging
+        # tof.stop_ranging()  # Stop ranging
         raise
     except:
         # Dump a stacktrace and throw the exception again
