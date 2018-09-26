@@ -13,12 +13,7 @@ rate = rospy.Rate(0.5)  # 0.1hz
 pressurePublisher = rospy.Publisher('/holly/pressure_sensor', Float32, queue_size=10)
 pressureMessage = Float32()
 
-try:
-    sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
-    sensorSetupNeeded = 0
-except IOError:
-    print 'Error setting up sensor'
-    sensorSetupNeeded = 1
+sensorSetupNeeded = 1
 
 
 def get_data():
