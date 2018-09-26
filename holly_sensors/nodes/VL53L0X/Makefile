@@ -42,11 +42,11 @@ all: ${TARGET_LIB}
 
 $(TARGET_LIB): $(LIB_OBJS)
 	mkdir -p $(dir $@)
-	$(CC) -shared $^ $(PYTHON_INCLUDES) $(INCLUDES) -lpthread -o $@.so
+	$(CC) -shared $^ $(PYTHON_INCLUDES) $(INCLUDES) -fPIC -lpthread -o $@.so
 
 $(OBJ_DIR)/%.o:%.c
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(PYTHON_INCLUDES) $(INCLUDES) $< -o $@
+	$(CC) $(CFLAGS) $(PYTHON_INCLUDES) $(INCLUDES) -fPIC $< -o $@
 
 .PHONY: clean
 clean:
