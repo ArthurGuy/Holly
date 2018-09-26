@@ -6,10 +6,10 @@ from APDS9301.APDS9301 import *
 from std_msgs.msg import Float32
 sys.path.append('.')
 
-rospy.init_node('holly_light_sensor')  # public display name of the publisher
+rospy.init_node('holly_lux_sensor')  # public display name of the publisher
 # rate = rospy.Rate(1/30)  # every 30 seconds
 
-lightPublisher = rospy.Publisher('/environment/uv_index', Float32, queue_size=10)
+lightPublisher = rospy.Publisher('/environment/lux_level', Float32, queue_size=10)
 lightMessage = Float32()
 
 firstReading = 1
@@ -26,19 +26,18 @@ def get_data():
             if firstReading:
                 # The first reading isn't accurate so ignore that one
                 firstReading = 0
-                return
+            else:
+                print 'Vis: ' + str(round(lux))
 
-            print 'Vis: ' + str(round(lux))
+                lightMessage.data = round(lux)
 
-            lightMessage.data = round(lux)
-
-            lightPublisher.publish(lightMessage)
+                lightPublisher.publish(lightMessage)
         except IOError:
             # print 'Error reading uv sensor'
             rospy.logwarn('Error reading the lux sensor')
             sensorSetupNeeded = 1
 
-    rospy.sleep(1)
+    rospy.sleep(30)
 
 
 while not rospy.is_shutdown():
