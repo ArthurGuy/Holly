@@ -64,7 +64,8 @@ while not rospy.is_shutdown():
                 sensorSetupNeeded = 0
                 firstReading = 1
             except IOError:
-                print 'Error setting up pressure sensor'
+                # print 'Error setting up pressure sensor'
+                rospy.logwarn('Error setting up pressure sensor')
                 sensorSetupNeeded = 1
 
         get_data()
