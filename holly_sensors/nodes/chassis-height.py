@@ -46,23 +46,24 @@ def get_data():
         sleep(5)
         return
 
-    seq += 1
-
     distance_in_mm = tof.get_distance()  # Grab the range in mm
-    print float(distance_in_mm) / 1000
 
+    if distance_in_mm > 0:
+        seq += 1
 
-    rangeMessage.header.seq = seq
-    rangeMessage.header.stamp = rospy.Time.now()
-    rangeMessage.header.frame_id = "chassis_height_sensor"
+        print float(distance_in_mm) / 1000
 
-    rangeMessage.radiation_type = 1
-    rangeMessage.min_range = 0.05
-    rangeMessage.max_range = 8
-    rangeMessage.field_of_view = 0.01
-    rangeMessage.range = float(distance_in_mm) / 1000
+        rangeMessage.header.seq = seq
+        rangeMessage.header.stamp = rospy.Time.now()
+        rangeMessage.header.frame_id = "chassis_height_sensor"
 
-    rangePublisher.publish(rangeMessage)
+        rangeMessage.radiation_type = 1
+        rangeMessage.min_range = 0.05
+        rangeMessage.max_range = 8
+        rangeMessage.field_of_view = 0.02
+        rangeMessage.range = float(distance_in_mm) / 1000
+
+        rangePublisher.publish(rangeMessage)
 
     rate.sleep()
 
