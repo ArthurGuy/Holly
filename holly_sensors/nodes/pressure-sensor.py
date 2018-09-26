@@ -2,7 +2,7 @@
 import rospy
 import traceback
 import sys
-import BME280.BME280 as BME280
+from BME280.BME280 import *
 from std_msgs.msg import Float64, Float32
 sys.path.append('.')
 
