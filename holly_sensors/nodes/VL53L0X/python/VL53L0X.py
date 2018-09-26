@@ -25,7 +25,7 @@
 import os
 import time
 from ctypes import *
-import smbus
+import smbus2
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -35,27 +35,29 @@ VL53L0X_BEST_ACCURACY_MODE      = 2   # Best Accuracy mode
 VL53L0X_LONG_RANGE_MODE         = 3   # Longe Range mode
 VL53L0X_HIGH_SPEED_MODE         = 4   # High Speed mode
 
-i2cbus = smbus.SMBus(1)
+i2cbus = smbus2.SMBus(1)
+
 
 # i2c bus read callback
 def i2c_read(address, reg, data_p, length):
-    ret_val = 0;
+    ret_val = 0
     result = []
  
     try:
         result = i2cbus.read_i2c_block_data(address, reg, length)
     except IOError:
-        ret_val = -1; 
+        ret_val = -1
 
-    if (ret_val == 0):
+    if ret_val == 0:
         for index in range(length):
             data_p[index] = result[index]
 
     return ret_val
 
+
 # i2c bus write callback
 def i2c_write(address, reg, data_p, length):
-    ret_val = 0;
+    ret_val = 0
     data = []
 
     for index in range(length):
@@ -63,9 +65,10 @@ def i2c_write(address, reg, data_p, length):
     try:
         i2cbus.write_i2c_block_data(address, reg, data)
     except IOError:
-        ret_val = -1; 
+        ret_val = -1
 
     return ret_val
+
 
 # Load VL53L0X shared lib 
 tof_lib = CDLL(os.path.join(ROOT_DIR, "bin/vl53l0x_python.so"))
@@ -80,6 +83,7 @@ write_func = WRITEFUNC(i2c_write)
 
 # pass i2c read and write function pointers to VL53L0X library
 tof_lib.VL53L0X_set_i2c(read_func, write_func)
+
 
 class VL53L0X(object):
     """VL53L0X ToF."""
@@ -113,8 +117,8 @@ class VL53L0X(object):
         Dev = tof_lib.getDev(self.my_object_number)
         budget = c_uint(0)
         budget_p = pointer(budget)
-        Status =  tof_lib.VL53L0X_GetMeasurementTimingBudgetMicroSeconds(Dev, budget_p)
-        if (Status == 0):
-            return (budget.value + 1000)
+        Status = tof_lib.VL53L0X_GetMeasurementTimingBudgetMicroSeconds(Dev, budget_p)
+        if Status == 0:
+            return budget.value + 1000
         else:
             return 0
