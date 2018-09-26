@@ -59,6 +59,7 @@ def get_data():
     rangeMessage.radiation_type = 1
     rangeMessage.min_range = 0.05
     rangeMessage.max_range = 8
+    rangeMessage.field_of_view = 0.01
     rangeMessage.range = float(distance_in_mm) / 1000
 
     rangePublisher.publish(rangeMessage)
