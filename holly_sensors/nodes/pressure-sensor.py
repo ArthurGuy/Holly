@@ -44,8 +44,12 @@ def get_data():
 while not rospy.is_shutdown():
     try:
         if sensorSetupNeeded:
-            sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
-            sensorSetupNeeded = 0
+            try:
+                sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
+                sensorSetupNeeded = 0
+            except IOError:
+                print 'Error setting up sensor'
+                sensorSetupNeeded = 1
 
         get_data()
 
