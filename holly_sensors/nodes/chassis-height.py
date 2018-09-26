@@ -20,6 +20,10 @@ sensorSetupNeeded = 1
 
 
 def handler(signum, frame):
+    global sensorSetupNeeded
+    print 'Error setting up the range sensor'
+    rospy.logwarn('Error setting up range sensor')
+    sensorSetupNeeded = 1
     raise Exception("timeout")
 
 
@@ -58,19 +62,19 @@ def get_data():
 
 
 while not rospy.is_shutdown():
-    try:
-        # Reset the watchdog to 2 seconds
-        signal.alarm(2)
+    # Reset the watchdog to 2 seconds
+    signal.alarm(2)
 
+    try:
         if sensorSetupNeeded:
-            try:
-                tof = VL53L0X()
-                tof.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
-                sensorSetupNeeded = 0
-            except:
-                print 'Error setting up the range sensor'
-                rospy.logwarn('Error setting up range sensor')
-                sensorSetupNeeded = 1
+            # try:
+            tof = VL53L0X()
+            tof.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
+            sensorSetupNeeded = 0
+            # except:
+            #     print 'Error setting up the range sensor'
+            #     rospy.logwarn('Error setting up range sensor')
+            #     sensorSetupNeeded = 1
 
         get_data()
 
