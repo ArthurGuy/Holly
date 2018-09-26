@@ -20,8 +20,7 @@ sensorSetupNeeded = 1
 
 
 def handler(signum, frame):
-    print "Forever is over!"
-    raise Exception("end of time")
+    raise Exception("timeout")
 
 
 signal.signal(signal.SIGALRM, handler)
@@ -50,8 +49,7 @@ def get_data():
                 rangeMessage.range = float(distance_in_mm) / 1000
 
                 rangePublisher.publish(rangeMessage)
-        except Exception, exc:
-            print exc
+        except:
             rospy.logwarn('Error reading the range sensor')
             sensorSetupNeeded = 1
             # sleep(5)
