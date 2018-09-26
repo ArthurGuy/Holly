@@ -13,7 +13,7 @@ rate = rospy.Rate(0.1)  # 0.1hz
 lightPublisher = rospy.Publisher('/holly/light_sensor', Float32, queue_size=10)
 lightMessage = Float32()
 
-sensorSetupNeeded = 0
+sensorSetupNeeded = 1
 
 
 def get_data():
