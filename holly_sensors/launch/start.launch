@@ -1,3 +1,4 @@
 <launch>
     <node pkg="holly_sensors" type="light-sensor.py" name="light_sensor" output="screen" />
+    <node pkg="holly_sensors" type="pressure-sensor.py" name="pressure_sensor" output="screen" />
 </launch>

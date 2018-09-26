@@ -35,10 +35,10 @@ def get_data():
                 firstReading = 0
                 return
 
-            print 'Temp      = {0:0.2f} deg C'.format(degrees)
-            print 'Pressure  = {0:0.2f} hPa'.format(hectopascals)
-            print 'Humidity  = {0:0.2f} %'.format(humidity)
-            print '-'
+            # print 'Temp      = {0:0.2f} deg C'.format(degrees)
+            # print 'Pressure  = {0:0.2f} hPa'.format(hectopascals)
+            # print 'Humidity  = {0:0.2f} %'.format(humidity)
+            # print '-'
 
             pressureMessage.data = round(hectopascals, 2)
             pressurePublisher.publish(pressureMessage)
