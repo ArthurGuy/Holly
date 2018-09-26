@@ -7,7 +7,7 @@ from std_msgs.msg import Float32
 sys.path.append('.')
 
 rospy.init_node('holly_pressure_sensor')  # public display name of the publisher
-rate = rospy.Rate(1/60)  # every minute
+# rate = rospy.Rate(1/60)  # every minute
 
 pressurePublisher = rospy.Publisher('/environment/air_pressure', Float32, queue_size=10)
 pressureMessage = Float32()
@@ -54,7 +54,7 @@ def get_data():
             sensorSetupNeeded = 1
             # sleep(5)
 
-    rate.sleep()
+        rospy.sleep(60)
 
 
 while not rospy.is_shutdown():

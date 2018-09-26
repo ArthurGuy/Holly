@@ -7,7 +7,7 @@ from std_msgs.msg import Float32
 sys.path.append('.')
 
 rospy.init_node('holly_light_sensor')  # public display name of the publisher
-rate = rospy.Rate(1/30)  # every 30 seconds
+# rate = rospy.Rate(1/30)  # every 30 seconds
 
 lightPublisher = rospy.Publisher('/environment/uv_index', Float32, queue_size=10)
 lightMessage = Float32()
@@ -45,7 +45,7 @@ def get_data():
             rospy.logwarn('Error reading the uv sensor')
             sensorSetupNeeded = 1
 
-    rate.sleep()
+    rospy.sleep(30)
 
 
 while not rospy.is_shutdown():
