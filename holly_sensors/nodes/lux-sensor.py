@@ -46,7 +46,7 @@ while not rospy.is_shutdown():
         if sensorSetupNeeded:
             try:
                 sensor = APDS9301()
-                sensor.init(0x39, GAIN_HIGH, TIMING_13_7)
+                sensor.init(0x39, GAIN_HIGH, TIMING_101)
                 sensorSetupNeeded = 0
                 firstReading = 1
             except IOError:
