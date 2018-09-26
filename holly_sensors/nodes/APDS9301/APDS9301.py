@@ -30,7 +30,7 @@ class APDS9301:
         self.gain = gain
         self.timing = timing
 
-        # I²C connection
+        # I2C connection
         self.bus = smbus.SMBus(1)
 
         try:
