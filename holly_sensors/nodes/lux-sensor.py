@@ -27,7 +27,7 @@ def get_data():
                 # The first reading isn't accurate so ignore that one
                 firstReading = 0
             else:
-                print 'Vis: ' + str(round(lux))
+                # print 'Vis: ' + str(round(lux))
 
                 lightMessage.data = round(lux)
 
