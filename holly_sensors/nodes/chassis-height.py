@@ -32,9 +32,6 @@ def get_data():
 
     if not sensorSetupNeeded:
         try:
-            # Reset the watchdog to 1 second
-            signal.alarm(1)
-
             distance_in_mm = tof.get_distance()  # Grab the range in mm
 
             if distance_in_mm > 0:
@@ -64,16 +61,16 @@ def get_data():
 
 while not rospy.is_shutdown():
     try:
+        # Reset the watchdog to 2 seconds
+        signal.alarm(2)
+
         if sensorSetupNeeded:
-            # Reset the watchdog to 2 seconds
-            signal.alarm(2)
             try:
                 tof = VL53L0X()
                 tof.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
                 sensorSetupNeeded = 0
-            except Exception, exc:
-                # print 'Error setting up pressure sensor'
-                print exc
+            except:
+                print 'Error setting up the range sensor'
                 rospy.logwarn('Error setting up range sensor')
                 sensorSetupNeeded = 1
 
