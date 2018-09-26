@@ -54,7 +54,7 @@ def get_data():
 
     rangeMessage.header.seq = seq
     rangeMessage.header.stamp = rospy.Time.now()
-    rangeMessage.header.frame_id = "base_link"
+    rangeMessage.header.frame_id = "chassis_height_sensor"
 
     rangeMessage.radiation_type = 1
     rangeMessage.min_range = 0.05
