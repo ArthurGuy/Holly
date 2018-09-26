@@ -54,7 +54,7 @@ def get_data():
             sensorSetupNeeded = 1
             # sleep(5)
 
-        rospy.sleep(60)
+    rospy.sleep(60)
 
 
 while not rospy.is_shutdown():
