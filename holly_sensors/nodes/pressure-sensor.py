@@ -3,15 +3,18 @@ import rospy
 import traceback
 import sys
 from BME280.BME280 import *
-from std_msgs.msg import Float64, Float32
-from time import sleep
+from std_msgs.msg import Float32
 sys.path.append('.')
 
 rospy.init_node('holly_pressure_sensor')  # public display name of the publisher
-rate = rospy.Rate(0.5)  # 0.1hz
+rate = rospy.Rate(0.1)  # 0.1hz
 
-pressurePublisher = rospy.Publisher('/holly/pressure_sensor', Float32, queue_size=10)
+pressurePublisher = rospy.Publisher('/environment/air_pressure', Float32, queue_size=10)
 pressureMessage = Float32()
+tempPublisher = rospy.Publisher('/environment/air_temp', Float32, queue_size=10)
+tempMessage = Float32()
+humidityPublisher = rospy.Publisher('/environment/air_humidity', Float32, queue_size=10)
+humidityMessage = Float32()
 
 firstReading = 1
 sensorSetupNeeded = 1
@@ -32,13 +35,19 @@ def get_data():
                 firstReading = 0
                 return
 
-            print 'Temp      = {0:0.3f} deg C'.format(degrees)
+            print 'Temp      = {0:0.2f} deg C'.format(degrees)
             print 'Pressure  = {0:0.2f} hPa'.format(hectopascals)
             print 'Humidity  = {0:0.2f} %'.format(humidity)
+            print '-'
 
             pressureMessage.data = round(hectopascals, 2)
-
             pressurePublisher.publish(pressureMessage)
+
+            tempMessage.data = round(degrees, 2)
+            tempPublisher.publish(tempMessage)
+
+            humidityMessage.data = round(humidity, 2)
+            humidityPublisher.publish(humidityMessage)
         except IOError:
             print 'Error reading sensor'
             sensorSetupNeeded = 1
@@ -51,7 +60,7 @@ while not rospy.is_shutdown():
     try:
         if sensorSetupNeeded:
             try:
-                sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
+                sensor = BME280(t_mode=BME280_OSAMPLE_16, p_mode=BME280_OSAMPLE_16, h_mode=BME280_OSAMPLE_16)
                 sensorSetupNeeded = 0
                 firstReading = 1
             except IOError:
