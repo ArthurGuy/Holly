@@ -2,6 +2,7 @@
 import rospy
 import traceback
 import sys
+import signal
 from VL53L0X.python.VL53L0X import VL53L0X
 from VL53L0X.python.VL53L0X import VL53L0X_BETTER_ACCURACY_MODE
 from sensor_msgs.msg import Range
@@ -16,6 +17,11 @@ rangeMessage = Range()
 seq = 1
 
 sensorSetupNeeded = 1
+
+
+def handler(signum, frame):
+    print "Forever is over!"
+    raise Exception("end of time")
 
 
 def get_data():
@@ -52,12 +58,15 @@ def get_data():
 while not rospy.is_shutdown():
     try:
         if sensorSetupNeeded:
+            signal.signal(signal.SIGALRM, handler)
+            signal.alarm(2)
             try:
                 tof = VL53L0X()
                 tof.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
                 sensorSetupNeeded = 0
-            except:
+            except Exception, exc:
                 # print 'Error setting up pressure sensor'
+                print exc
                 rospy.logwarn('Error setting up range sensor')
                 sensorSetupNeeded = 1
 
