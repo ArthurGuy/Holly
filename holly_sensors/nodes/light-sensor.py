@@ -13,42 +13,45 @@ rate = rospy.Rate(0.1)  # 0.1hz
 lightPublisher = rospy.Publisher('/holly/light_sensor', Float32, queue_size=10)
 lightMessage = Float32()
 
-sensor = SI1145.SI1145()
 sensorSetupNeeded = 0
 
 
 def get_data():
     global sensorSetupNeeded
 
-    try:
+    if not sensorSetupNeeded:
+        try:
+            vis = sensor.readVisible()
+            IR = sensor.readIR()
+            UV = sensor.readUV()
+            uvIndex = UV / 100.0
+            print 'Vis:             ' + str(vis)
+            print 'IR:              ' + str(IR)
+            print 'UV Index:        ' + str(uvIndex)
 
-        vis = sensor.readVisible()
-        IR = sensor.readIR()
-        UV = sensor.readUV()
-        uvIndex = UV / 100.0
-        print 'Vis:             ' + str(vis)
-        print 'IR:              ' + str(IR)
-        print 'UV Index:        ' + str(uvIndex)
+            # lightMessage.vis = vis
+            # lightMessage.ir = IR
+            lightMessage.data = round(uvIndex, 2)
 
-        # lightMessage.vis = vis
-        # lightMessage.ir = IR
-        lightMessage.data = round(uvIndex, 2)
-
-        lightPublisher.publish(lightMessage)
-    except IOError:
-        print 'Error reading sensor'
-        sensorSetupNeeded = 1
+            lightPublisher.publish(lightMessage)
+        except IOError:
+            print 'Error reading sensor'
+            sensorSetupNeeded = 1
 
     rate.sleep()
 
 
 while not rospy.is_shutdown():
     try:
-        get_data()
-
         if sensorSetupNeeded:
-            sensorSetupNeeded = 0
-            sensor = SI1145.SI1145()
+            try:
+                sensor = SI1145.SI1145()
+                sensorSetupNeeded = 0
+            except IOError:
+                print 'Error setting up sensor'
+                sensorSetupNeeded = 1
+
+        get_data()
 
     except (KeyboardInterrupt, SystemExit):
         raise
