@@ -41,7 +41,7 @@ def get_data():
                 rangeMessage.range = float(distance_in_mm) / 1000
 
                 rangePublisher.publish(rangeMessage)
-        except IOError:
+        except:
             rospy.logwarn('Error reading the range sensor')
             sensorSetupNeeded = 1
             # sleep(5)
@@ -56,7 +56,7 @@ while not rospy.is_shutdown():
                 tof = VL53L0X()
                 tof.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
                 sensorSetupNeeded = 0
-            except IOError:
+            except:
                 # print 'Error setting up pressure sensor'
                 rospy.logwarn('Error setting up range sensor')
                 sensorSetupNeeded = 1
