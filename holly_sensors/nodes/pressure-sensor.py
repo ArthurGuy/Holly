@@ -4,16 +4,16 @@ import traceback
 import sys
 from BME280.BME280 import *
 from std_msgs.msg import Float64, Float32
+from time import sleep
 sys.path.append('.')
 
 rospy.init_node('holly_pressure_sensor')  # public display name of the publisher
-rate = rospy.Rate(1)  # 0.1hz
+rate = rospy.Rate(0.5)  # 0.1hz
 
 pressurePublisher = rospy.Publisher('/holly/pressure_sensor', Float32, queue_size=10)
 pressureMessage = Float32()
 
-sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
-sensorSetupNeeded = 0
+sensorSetupNeeded = 1
 
 
 def get_data():
@@ -36,12 +36,17 @@ def get_data():
     except IOError:
         print 'Error reading sensor'
         sensorSetupNeeded = 1
+        # sleep(5)
 
     rate.sleep()
 
 
 while not rospy.is_shutdown():
     try:
+        if sensorSetupNeeded:
+            sensor = BME280(t_mode=BME280_OSAMPLE_8, p_mode=BME280_OSAMPLE_8, h_mode=BME280_OSAMPLE_8)
+            sensorSetupNeeded = 0
+
         get_data()
 
     except (KeyboardInterrupt, SystemExit):
