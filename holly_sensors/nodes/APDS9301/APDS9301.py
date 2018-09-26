@@ -44,7 +44,7 @@ class APDS9301:
                     or (self.bus.read_word_data(self.address, REG_DATA1LOW) == 0):
 
                 time.sleep(0.01)
-                if (time.time() - t_start > 2):
+                if time.time() - t_start > 2:
                     return ERROR_TIMEOUT
 
             # rad current config

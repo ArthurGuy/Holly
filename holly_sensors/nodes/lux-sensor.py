@@ -28,7 +28,7 @@ def get_data():
                 firstReading = 0
                 return
 
-            print 'Vis:             ' + str(lux)
+            print 'Vis: ' + str(round(lux))
 
             lightMessage.data = round(lux)
 
@@ -46,7 +46,7 @@ while not rospy.is_shutdown():
         if sensorSetupNeeded:
             try:
                 sensor = APDS9301()
-                sensor.init(0x39, GAIN_LOW, TIMING_13_7)
+                sensor.init(0x39, GAIN_HIGH, TIMING_13_7)
                 sensorSetupNeeded = 0
                 firstReading = 1
             except IOError:
