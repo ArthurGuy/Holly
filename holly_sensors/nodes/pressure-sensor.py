@@ -49,7 +49,7 @@ def get_data():
             humidityMessage.data = round(humidity, 2)
             humidityPublisher.publish(humidityMessage)
         except IOError:
-            print 'Error reading sensor'
+            print 'Error reading pressure sensor'
             sensorSetupNeeded = 1
             # sleep(5)
 
@@ -64,7 +64,7 @@ while not rospy.is_shutdown():
                 sensorSetupNeeded = 0
                 firstReading = 1
             except IOError:
-                print 'Error setting up sensor'
+                print 'Error setting up pressure sensor'
                 sensorSetupNeeded = 1
 
         get_data()

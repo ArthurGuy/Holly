@@ -31,9 +31,9 @@ def get_data():
                 firstReading = 0
                 return
 
-            print 'Vis:             ' + str(vis)
-            print 'IR:              ' + str(IR)
-            print 'UV Index:        ' + str(uvIndex)
+            # print 'Vis:             ' + str(vis)
+            # print 'IR:              ' + str(IR)
+            # print 'UV Index:        ' + str(uvIndex)
 
             # lightMessage.vis = vis
             # lightMessage.ir = IR
@@ -41,7 +41,7 @@ def get_data():
 
             lightPublisher.publish(lightMessage)
         except IOError:
-            print 'Error reading sensor'
+            print 'Error reading uv sensor'
             sensorSetupNeeded = 1
 
     rate.sleep()
@@ -55,7 +55,7 @@ while not rospy.is_shutdown():
                 sensorSetupNeeded = 0
                 firstReading = 1
             except IOError:
-                print 'Error setting up sensor'
+                print 'Error setting up uv sensor'
                 sensorSetupNeeded = 1
 
         get_data()
