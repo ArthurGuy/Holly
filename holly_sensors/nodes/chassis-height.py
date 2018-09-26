@@ -2,7 +2,8 @@
 import rospy
 import traceback
 import sys
-import VL53L0X.VL53L0X
+from VL53L0X.python.VL53L0X import VL53L0X
+from VL53L0X.python.VL53L0X import VL53L0X_BETTER_ACCURACY_MODE
 from sensor_msgs.msg import Range
 from time import sleep
 sys.path.append('.')
@@ -26,8 +27,8 @@ def setup_sensor():
     if device_setup:
         return
 
-    tof = VL53L0X.VL53L0X()
-    tof.start_ranging(VL53L0X.VL53L0X_BETTER_ACCURACY_MODE)
+    tof = VL53L0X()
+    tof.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
     device_setup = 1
 
     print "Device setup"
