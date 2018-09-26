@@ -38,7 +38,7 @@ def get_data():
             rospy.logwarn('Error reading the lux sensor')
             sensorSetupNeeded = 1
 
-    rospy.sleep(30)
+    rospy.sleep(1)
 
 
 while not rospy.is_shutdown():
