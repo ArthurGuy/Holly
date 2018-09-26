@@ -7,7 +7,7 @@ from std_msgs.msg import Float32
 sys.path.append('.')
 
 rospy.init_node('holly_pressure_sensor')  # public display name of the publisher
-rate = rospy.Rate(0.1)  # 0.1hz
+rate = rospy.Rate(1/60)  # every minute
 
 pressurePublisher = rospy.Publisher('/environment/air_pressure', Float32, queue_size=10)
 pressureMessage = Float32()
@@ -49,7 +49,8 @@ def get_data():
             humidityMessage.data = round(humidity, 2)
             humidityPublisher.publish(humidityMessage)
         except IOError:
-            print 'Error reading pressure sensor'
+            # print 'Error reading pressure sensor'
+            rospy.logwarn('Error reading the pressure sensor')
             sensorSetupNeeded = 1
             # sleep(5)
 
