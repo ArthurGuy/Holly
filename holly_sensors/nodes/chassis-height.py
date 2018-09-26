@@ -49,13 +49,16 @@ def get_data():
     seq += 1
 
     distance_in_mm = tof.get_distance()  # Grab the range in mm
-    print distance_in_mm
+    print float(distance_in_mm) / 100
 
 
     rangeMessage.header.seq = seq
     rangeMessage.header.stamp = rospy.Time.now()
     rangeMessage.header.frame_id = "base_link"
 
+    rangeMessage.radiation_type = 1
+    rangeMessage.min_range = 0.05
+    rangeMessage.max_range = 8
     rangeMessage.range = float(distance_in_mm) / 100
 
     rangePublisher.publish(rangeMessage)
