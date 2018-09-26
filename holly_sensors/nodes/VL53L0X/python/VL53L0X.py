@@ -46,6 +46,7 @@ def i2c_read(address, reg, data_p, length):
     try:
         result = i2cbus.read_i2c_block_data(address, reg, length)
     except IOError:
+        raise
         ret_val = -1
 
     if ret_val == 0:
@@ -66,6 +67,7 @@ def i2c_write(address, reg, data_p, length):
         i2cbus.write_i2c_block_data(address, reg, data)
     except IOError:
         ret_val = -1
+        raise
 
     return ret_val
 
