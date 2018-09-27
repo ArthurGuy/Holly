@@ -107,7 +107,7 @@ def get_data():
         # msg.orientation.y = y
         # msg.orientation.z = x
         # msg.orientation.w = w
-        print('X={0:0.2F} Y={1:0.2F} Z={2:0.2F} W={2:0.2F}'.format(x, y, z, w))
+        print('X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
         # Gyroscope data (in degrees per second):
         x, y, z = imu.read_gyroscope()
