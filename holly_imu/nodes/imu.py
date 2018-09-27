@@ -19,7 +19,7 @@ from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
 
 
-imu = BNO055.BNO055(rst='P9_12')
+imu = BNO055.BNO055(rst=19)
 
 rospy.init_node('holly_imu')
 rate = rospy.Rate(10) # 10hz
@@ -87,22 +87,20 @@ def get_data():
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "base_link"
 
-    quaternion = tf.transformations.quaternion_from_euler(heading, roll, pitch)
-
-    msg.orientation.x = quaternion[0]
-    msg.orientation.y = quaternion[1]
-    msg.orientation.z = quaternion[2]
-    msg.orientation.w = quaternion[3]
+    x, y, z, w = imu.read_quaternion()
+    msg.orientation.x = x
+    msg.orientation.y = y
+    msg.orientation.z = x
+    msg.orientation.w = w
 
     # Gyroscope data (in degrees per second):
-    x,y,z = imu.read_gyroscope()
-
+    x, y, z = imu.read_gyroscope()
     msg.angular_velocity.x = x
     msg.angular_velocity.y = y
     msg.angular_velocity.z = z
 
     # Accelerometer data (in meters per second squared):
-    x,y,z = imu.read_accelerometer()
+    x, y, z = imu.read_accelerometer()
 
     #msg.linear_acceleration.x = accelData[0] * 9.80665
     #msg.linear_acceleration.y = accelData[1] * 9.80665
