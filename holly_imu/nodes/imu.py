@@ -65,14 +65,14 @@ def get_data():
     heading, roll, pitch = imu.read_euler()
 
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
-    system_status, gyro, accel_status, mag_status = imu.get_calibration_status()
+    system_status, gyro_status, accel_status, mag_status = imu.get_calibration_status()
 
     # Print everything out.
     print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
-        heading, roll, pitch, system_status, gyro, accel_status, mag_status))
+        heading, roll, pitch, system_status, gyro_status, accel_status, mag_status))
 
     # Publish the status flags so we can see whats going on
-    statusMsg.data = system_status, gyro, accel_status, mag_status
+    statusMsg.data = system_status, gyro_status, accel_status, mag_status
     statusPub.publish(statusMsg)
 
     seq += 1
@@ -94,7 +94,7 @@ def get_data():
 
         magPub.publish(magMsg)
 
-    if system_status > 1:
+    if system_status > 1 and gyro_status > 1:
 
         # Publish the gyro and accel data
 
@@ -107,13 +107,14 @@ def get_data():
         msg.orientation.y = y
         msg.orientation.z = x
         msg.orientation.w = w
-        print('X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
+        # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
         # Gyroscope data (in degrees per second):
         x, y, z = imu.read_gyroscope()
         msg.angular_velocity.x = x * 1000 / 57296  # Convert to rad/s
         msg.angular_velocity.y = y * 1000 / 57296
         msg.angular_velocity.z = z * 1000 / 57296
+        print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
         # Accelerometer data (in meters per second squared):
         x, y, z = imu.read_accelerometer()
@@ -122,7 +123,7 @@ def get_data():
             msg.linear_acceleration.y = 0 #y
             msg.linear_acceleration.z = 0 #z
 
-            print('X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
+            print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
         imuPub.publish(msg)
 
