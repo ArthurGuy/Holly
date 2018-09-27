@@ -25,7 +25,7 @@ rospy.init_node('holly_imu')
 rate = rospy.Rate(10) # 10hz
 
 # setup publisher and classes
-imuPub = rospy.Publisher('imu/data_raw', Imu, queue_size=10)
+imuPub = rospy.Publisher('imu/data', Imu, queue_size=10)
 msg = Imu()
 
 magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=10)
@@ -73,9 +73,9 @@ def get_data():
 
                 # Magnetometer data (in micro-Teslas):
                 x, y, z = imu.read_magnetometer()
-                magMsg.magnetic_field.x = x * 1000000  # Convert to Teslas
-                magMsg.magnetic_field.y = y * 1000000
-                magMsg.magnetic_field.z = z * 1000000
+                magMsg.magnetic_field.x = x / 1000000  # Convert to Teslas
+                magMsg.magnetic_field.y = y / 1000000
+                magMsg.magnetic_field.z = z / 1000000
                 magMsg.magnetic_field_covariance = [0.1] * 9
 
                 magPub.publish(magMsg)
@@ -93,7 +93,7 @@ def get_data():
                 msg.orientation.y = y
                 msg.orientation.z = x
                 msg.orientation.w = w
-                msg.orientation_covariance = [0.1] * 9
+                msg.orientation_covariance = [0.001] * 9
                 # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
                 # Gyroscope data (in degrees per second):
