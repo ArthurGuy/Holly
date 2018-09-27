@@ -31,7 +31,7 @@ msg = Imu()
 magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=10)
 magMsg = MagneticField()
 
-statusPub = rospy.Publisher('imu/mag', UInt8MultiArray, queue_size=10)
+statusPub = rospy.Publisher('imu/debug', UInt8MultiArray, queue_size=10)
 statusMsg = UInt8MultiArray()
 
 
