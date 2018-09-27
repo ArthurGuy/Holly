@@ -37,108 +37,126 @@ statusMsg = UInt8MultiArray()
 
 seq = 1
 
-if not imu.begin():
-    raise RuntimeError('Failed to initialize BNO055! Is the sensor connected?')
-
-# Print system status and self test result.
-status, self_test, error = imu.get_system_status()
-print('System status: {0}'.format(status))
-print('Self test result (0x0F is normal): 0x{0:02X}'.format(self_test))
-# Print out an error if system status is in error mode.
-if status == 0x01:
-    print('System error: {0}'.format(error))
-    print('See datasheet section 4.3.59 for the meaning.')
-
-# Print BNO055 software revision and other diagnostic data.
-sw, bl, accel, mag, gyro = imu.get_revision()
-print('Software version:   {0}'.format(sw))
-print('Bootloader version: {0}'.format(bl))
-print('Accelerometer ID:   0x{0:02X}'.format(accel))
-print('Magnetometer ID:    0x{0:02X}'.format(mag))
-print('Gyroscope ID:       0x{0:02X}\n'.format(gyro))
+sensorSetupNeeded = True
 
 
 def get_data():
-    global seq
+    global seq, sensorSetupNeeded
 
-    # Read the Euler angles for heading, roll, pitch (all in degrees).
-    heading, roll, pitch = imu.read_euler()
+    if not sensorSetupNeeded:
+        try:
 
-    # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
-    system_status, gyro_status, accel_status, mag_status = imu.get_calibration_status()
+            # Read the Euler angles for heading, roll, pitch (all in degrees).
+            heading, roll, pitch = imu.read_euler()
 
-    # Print everything out.
-    print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
-        heading, roll, pitch, system_status, gyro_status, accel_status, mag_status))
+            # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
+            system_status, gyro_status, accel_status, mag_status = imu.get_calibration_status()
 
-    # Publish the status flags so we can see whats going on
-    statusMsg.data = system_status, gyro_status, accel_status, mag_status
-    statusPub.publish(statusMsg)
+            # Print everything out.
+            print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
+                heading, roll, pitch, system_status, gyro_status, accel_status, mag_status))
 
-    seq += 1
+            # Publish the status flags so we can see whats going on
+            statusMsg.data = system_status, gyro_status, accel_status, mag_status
+            statusPub.publish(statusMsg)
 
-    # Only publish sensor data if its a reasonable quality
-    if mag_status > 1:
+            seq += 1
 
-        # Publish the mag data
+            # Only publish sensor data if its a reasonable quality
+            if mag_status > 1:
 
-        magMsg.header.seq = seq
-        magMsg.header.stamp = rospy.Time.now()
-        magMsg.header.frame_id = "base_link"
+                # Publish the mag data
 
-        # Magnetometer data (in micro-Teslas):
-        x, y, z = imu.read_magnetometer()
-        magMsg.magnetic_field.x = x * 1000000  # Convert to Teslas
-        magMsg.magnetic_field.y = y * 1000000
-        magMsg.magnetic_field.z = z * 1000000
-        magMsg.magnetic_field_covariance = [0.1] * 9
+                magMsg.header.seq = seq
+                magMsg.header.stamp = rospy.Time.now()
+                magMsg.header.frame_id = "base_link"
 
-        magPub.publish(magMsg)
+                # Magnetometer data (in micro-Teslas):
+                x, y, z = imu.read_magnetometer()
+                magMsg.magnetic_field.x = x * 1000000  # Convert to Teslas
+                magMsg.magnetic_field.y = y * 1000000
+                magMsg.magnetic_field.z = z * 1000000
+                magMsg.magnetic_field_covariance = [0.1] * 9
 
-    if system_status > 1 and gyro_status > 1:
+                magPub.publish(magMsg)
 
-        # Publish the gyro and accel data
+            if system_status > 1 and gyro_status > 1:
 
-        msg.header.seq = seq
-        msg.header.stamp = rospy.Time.now()
-        msg.header.frame_id = "base_link"
+                # Publish the gyro and accel data
 
-        x, y, z, w = imu.read_quaternion()
-        msg.orientation.x = x
-        msg.orientation.y = y
-        msg.orientation.z = x
-        msg.orientation.w = w
-        msg.orientation_covariance = [0.1] * 9
-        # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
+                msg.header.seq = seq
+                msg.header.stamp = rospy.Time.now()
+                msg.header.frame_id = "base_link"
 
-        # Gyroscope data (in degrees per second):
-        x, y, z = imu.read_gyroscope()
-        msg.angular_velocity.x = x * 1000 / 57296  # Convert to rad/s
-        msg.angular_velocity.y = y * 1000 / 57296
-        msg.angular_velocity.z = z * 1000 / 57296
-        msg.angular_velocity_covariance = [0.1] * 9
-        print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
+                x, y, z, w = imu.read_quaternion()
+                msg.orientation.x = x
+                msg.orientation.y = y
+                msg.orientation.z = x
+                msg.orientation.w = w
+                msg.orientation_covariance = [0.1] * 9
+                # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
-        # Accelerometer data (in meters per second squared):
-        x, y, z = imu.read_accelerometer()
-        # if accel_status > 1:
-        msg.linear_acceleration.x = x
-        msg.linear_acceleration.y = y
-        msg.linear_acceleration.z = z
-        msg.linear_acceleration_covariance = [10] * 9
+                # Gyroscope data (in degrees per second):
+                x, y, z = imu.read_gyroscope()
+                msg.angular_velocity.x = x * 1000 / 57296  # Convert to rad/s
+                msg.angular_velocity.y = y * 1000 / 57296
+                msg.angular_velocity.z = z * 1000 / 57296
+                msg.angular_velocity_covariance = [0.1] * 9
+                print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
-        print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
+                # Accelerometer data (in meters per second squared):
+                x, y, z = imu.read_accelerometer()
+                # if accel_status > 1:
+                msg.linear_acceleration.x = x
+                msg.linear_acceleration.y = y
+                msg.linear_acceleration.z = z
+                msg.linear_acceleration_covariance = [10] * 9
 
-        imuPub.publish(msg)
+                print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
-    else:
-        rospy.logwarn('Sensor accuracy to low')
+                imuPub.publish(msg)
+
+            else:
+                rospy.logwarn('Sensor accuracy to low')
+
+        except IOError:
+            # print 'Error reading uv sensor'
+            rospy.logwarn('Error reading the imu sensor')
+            sensorSetupNeeded = True
 
     rate.sleep()
 
 
 while not rospy.is_shutdown():
     try:
+        if sensorSetupNeeded:
+            try:
+                if not imu.begin():
+                    raise RuntimeError('Failed to initialize BNO055! Is the sensor connected?')
+
+                # Print system status and self test result.
+                status, self_test, error = imu.get_system_status()
+                print('System status: {0}'.format(status))
+                print('Self test result (0x0F is normal): 0x{0:02X}'.format(self_test))
+                # Print out an error if system status is in error mode.
+                if status == 0x01:
+                    print('System error: {0}'.format(error))
+                    print('See datasheet section 4.3.59 for the meaning.')
+
+                # Print BNO055 software revision and other diagnostic data.
+                sw, bl, accel, mag, gyro = imu.get_revision()
+                print('Software version:   {0}'.format(sw))
+                print('Bootloader version: {0}'.format(bl))
+                print('Accelerometer ID:   0x{0:02X}'.format(accel))
+                print('Magnetometer ID:    0x{0:02X}'.format(mag))
+                print('Gyroscope ID:       0x{0:02X}\n'.format(gyro))
+                sensorSetupNeeded = False
+                firstReading = 1
+            except IOError:
+                # print 'Error setting up uv sensor'
+                rospy.logwarn('Error setting up the imu sensor')
+                sensorSetupNeeded = True
+
         get_data()
 
     except (KeyboardInterrupt, SystemExit):
