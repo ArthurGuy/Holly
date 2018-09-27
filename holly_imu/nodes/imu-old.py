@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 import rospy
-
-from LSM9DS1.LSM9DS1 import IMU
+import tf
 import time
 import traceback
+import math
+import sys, getopt
+
+sys.path.append('.')
+import RTIMU
+import os.path
+import time
 import math
 
 from std_msgs.msg import String, Float32
@@ -11,7 +17,30 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
 
-mag_offsets = [0.0869750976562, 0.0980224609375, -0.05517578125]
+SETTINGS_FILE = "RTIMULib"
+
+print("Using settings file " + SETTINGS_FILE + ".ini")
+if not os.path.exists(SETTINGS_FILE + ".ini"):
+  print("Settings file does not exist, will be created")
+
+s = RTIMU.Settings(SETTINGS_FILE)
+imuSensor = RTIMU.RTIMU(s)
+
+print("IMU Name: " + imuSensor.IMUName())
+
+if (not imuSensor.IMUInit()):
+    print("IMU Init Failed")
+    sys.exit(1)
+else:
+    print("IMU Init Succeeded")
+
+imuSensor.setSlerpPower(0.02)
+imuSensor.setGyroEnable(True)
+imuSensor.setAccelEnable(True)
+imuSensor.setCompassEnable(True)
+
+poll_interval = imuSensor.IMUGetPollInterval()
+print("Recommended Poll Interval: %dmS\n" % poll_interval)
 
 rospy.init_node('holly_imu') #public display name of the publisher
 rate = rospy.Rate(10) # 10hz
@@ -25,77 +54,61 @@ magMsg = MagneticField()
 
 seq = 1
 
-# Setup the IMU
-imu = IMU()
-
-# Initialize IMU
-imu.initialize()
-
-# Enable accel, mag, gyro, and temperature
-imu.enable_accel()
-imu.enable_mag()
-imu.enable_gyro()
-imu.enable_temp()
-
-# Set range on accel, mag, and gyro
-
-# Specify Options: "2G", "4G", "6G", "8G", "16G"
-imu.accel_range("2G")       # leave blank for default of "2G"
-
-# Specify Options: "4GAUSS", "8GAUSS", "12GAUSS"
-imu.mag_range("4GAUSS")     # leave blank for default of "4GAUSS"
-
-# Specify Options: "245DPS", "500DPS", "2000DPS"
-imu.gyro_range("245DPS")    # leave blank for default of "245DPS"
 
 def get_data():
     global seq
 
-    imu.read_accel()
-    imu.read_mag()
-    imu.read_gyro()
-    imu.readTemp()
+    if imuSensor.IMURead():
 
-    seq += 1
+        seq += 1
 
-    # Publish the mag data
+        data = imuSensor.getIMUData()
+        fusionPose = data["fusionPose"]
 
-    magMsg.header.seq = seq
-    magMsg.header.stamp = rospy.Time.now()
-    magMsg.header.frame_id = "base_link"
+        gyroData = data["gyro"]
+        accelData = data["accel"]
+        compassData = data["compass"]
 
-    magMsg.magnetic_field.x = imu.mx - mag_offsets[0]
-    magMsg.magnetic_field.y = imu.my - mag_offsets[1]
-    magMsg.magnetic_field.z = imu.mz - mag_offsets[2]
+        # Publish the mag data
 
-    magPub.publish(magMsg)
+        magMsg.header.seq = seq
+        magMsg.header.stamp = rospy.Time.now()
+        magMsg.header.frame_id = "base_link"
 
+        magMsg.magnetic_field.x = compassData[0]
+        magMsg.magnetic_field.y = compassData[1]
+        magMsg.magnetic_field.z = compassData[2]
 
-    # Publish the gyro and accel data
-
-    msg.header.seq = seq
-    msg.header.stamp = rospy.Time.now()
-    msg.header.frame_id = "base_link"
-
-    msg.orientation.x = 0
-    msg.orientation.y = 0
-    msg.orientation.z = 0
-    msg.orientation.w = 0
-
-    msg.angular_velocity.x = math.radians(imu.gx)
-    msg.angular_velocity.y = math.radians(imu.gy)
-    msg.angular_velocity.z = math.radians(imu.gz)
-
-    msg.linear_acceleration.x = imu.ax * 9.80665
-    msg.linear_acceleration.y = imu.ay * 9.80665
-    msg.linear_acceleration.z = imu.az * 9.80665
-
-    imuPub.publish(msg)
+        magPub.publish(magMsg)
 
 
-    #print "Published new data " + str(seq)
+        # Publish the gyro and accel data
 
-    rate.sleep()
+        msg.header.seq = seq
+        msg.header.stamp = rospy.Time.now()
+        msg.header.frame_id = "base_link"
+
+        quaternion = tf.transformations.quaternion_from_euler(fusionPose[0], fusionPose[1], fusionPose[2])
+
+        msg.orientation.x = quaternion[0]
+        msg.orientation.y = quaternion[1]
+        msg.orientation.z = quaternion[2]
+        msg.orientation.w = quaternion[3]
+
+        msg.angular_velocity.x = gyroData[0]
+        msg.angular_velocity.y = gyroData[1]
+        msg.angular_velocity.z = gyroData[2]
+
+        msg.linear_acceleration.x = accelData[0] * 9.80665
+        msg.linear_acceleration.y = accelData[1] * 9.80665
+        msg.linear_acceleration.z = accelData[2] * 9.80665
+
+        imuPub.publish(msg)
+
+
+        #print "Published new data " + str(seq)
+
+        rate.sleep()
 
 
 while not rospy.is_shutdown():
