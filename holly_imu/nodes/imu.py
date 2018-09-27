@@ -116,9 +116,11 @@ def get_data():
 
         # Accelerometer data (in meters per second squared):
         x, y, z = imu.read_accelerometer()
-        msg.linear_acceleration.x = x
-        msg.linear_acceleration.y = y
-        msg.linear_acceleration.z = z
+        # msg.linear_acceleration.x = x
+        # msg.linear_acceleration.y = y
+        # msg.linear_acceleration.z = z
+
+        print('X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
         imuPub.publish(msg)
 
