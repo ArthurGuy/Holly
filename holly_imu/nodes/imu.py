@@ -13,7 +13,7 @@ import os.path
 import time
 import math
 
-from std_msgs.msg import String, Float32
+from std_msgs.msg import UInt8MultiArray
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
@@ -30,6 +30,10 @@ msg = Imu()
 
 magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=10)
 magMsg = MagneticField()
+
+statusPub = rospy.Publisher('imu/mag', UInt8MultiArray, queue_size=10)
+statusMsg = UInt8MultiArray()
+
 
 seq = 1
 
@@ -59,57 +63,67 @@ def get_data():
 
     # Read the Euler angles for heading, roll, pitch (all in degrees).
     heading, roll, pitch = imu.read_euler()
+
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
-    sys, gyro, accel, mag = imu.get_calibration_status()
+    system_status, gyro, accel, mag_status = imu.get_calibration_status()
+
     # Print everything out.
     print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
-        heading, roll, pitch, sys, gyro, accel, mag))
+        heading, roll, pitch, system_status, gyro, accel, mag_status))
+
+    # Publish the status flags so we can see whats going on
+    statusMsg.data = system_status, gyro, accel, mag_status
+    statusPub.publish(statusMsg)
 
     seq += 1
 
-    # Publish the mag data
+    # Only publish sensor data if its a reasonable quality
+    if mag_status > 1:
 
-    magMsg.header.seq = seq
-    magMsg.header.stamp = rospy.Time.now()
-    magMsg.header.frame_id = "base_link"
+        # Publish the mag data
 
-    # Magnetometer data (in micro-Teslas):
-    x, y, z = imu.read_magnetometer()
-    magMsg.magnetic_field.x = x
-    magMsg.magnetic_field.y = y
-    magMsg.magnetic_field.z = z
+        magMsg.header.seq = seq
+        magMsg.header.stamp = rospy.Time.now()
+        magMsg.header.frame_id = "base_link"
 
-    magPub.publish(magMsg)
+        # Magnetometer data (in micro-Teslas):
+        x, y, z = imu.read_magnetometer()
+        magMsg.magnetic_field.x = x * 1000000  # Convert to Teslas
+        magMsg.magnetic_field.y = y * 1000000
+        magMsg.magnetic_field.z = z * 1000000
 
-    # Publish the gyro and accel data
+        magPub.publish(magMsg)
 
-    msg.header.seq = seq
-    msg.header.stamp = rospy.Time.now()
-    msg.header.frame_id = "base_link"
+    if system_status > 1:
 
-    x, y, z, w = imu.read_quaternion()
-    msg.orientation.x = x
-    msg.orientation.y = y
-    msg.orientation.z = x
-    msg.orientation.w = w
+        # Publish the gyro and accel data
 
-    # Gyroscope data (in degrees per second):
-    x, y, z = imu.read_gyroscope()
-    msg.angular_velocity.x = x
-    msg.angular_velocity.y = y
-    msg.angular_velocity.z = z
+        msg.header.seq = seq
+        msg.header.stamp = rospy.Time.now()
+        msg.header.frame_id = "base_link"
 
-    # Accelerometer data (in meters per second squared):
-    x, y, z = imu.read_accelerometer()
+        x, y, z, w = imu.read_quaternion()
+        msg.orientation.x = x
+        msg.orientation.y = y
+        msg.orientation.z = x
+        msg.orientation.w = w
 
-    #msg.linear_acceleration.x = accelData[0] * 9.80665
-    #msg.linear_acceleration.y = accelData[1] * 9.80665
-    #msg.linear_acceleration.z = accelData[2] * 9.80665
+        # Gyroscope data (in degrees per second):
+        x, y, z = imu.read_gyroscope()
+        msg.angular_velocity.x = x * 1000 / 57296  # Convert to rad/s
+        msg.angular_velocity.y = y * 1000 / 57296
+        msg.angular_velocity.z = z * 1000 / 57296
 
-    imuPub.publish(msg)
+        # Accelerometer data (in meters per second squared):
+        x, y, z = imu.read_accelerometer()
+        msg.linear_acceleration.x = x
+        msg.linear_acceleration.y = y
+        msg.linear_acceleration.z = z
 
+        imuPub.publish(msg)
 
-    #print "Published new data " + str(seq)
+    else:
+        rospy.logwarn('Sensor accuracy to low')
 
     rate.sleep()
 
