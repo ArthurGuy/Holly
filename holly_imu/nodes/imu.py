@@ -107,6 +107,7 @@ def get_data():
         # msg.orientation.y = y
         # msg.orientation.z = x
         # msg.orientation.w = w
+        print('X={0:0.2F} Y={1:0.2F} Z={2:0.2F} W={2:0.2F}'.format(x, y, z, w))
 
         # Gyroscope data (in degrees per second):
         x, y, z = imu.read_gyroscope()
@@ -116,12 +117,12 @@ def get_data():
 
         # Accelerometer data (in meters per second squared):
         x, y, z = imu.read_accelerometer()
-        #if accel_status > 1:
+        if accel_status > 1:
             # msg.linear_acceleration.x = x
             # msg.linear_acceleration.y = y
             # msg.linear_acceleration.z = z
 
-        print('X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
+            print('X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
         imuPub.publish(msg)
 
