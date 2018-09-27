@@ -65,14 +65,14 @@ def get_data():
     heading, roll, pitch = imu.read_euler()
 
     # Read the calibration status, 0=uncalibrated and 3=fully calibrated.
-    system_status, gyro, accel, mag_status = imu.get_calibration_status()
+    system_status, gyro, accel_status, mag_status = imu.get_calibration_status()
 
     # Print everything out.
     print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
-        heading, roll, pitch, system_status, gyro, accel, mag_status))
+        heading, roll, pitch, system_status, gyro, accel_status, mag_status))
 
     # Publish the status flags so we can see whats going on
-    statusMsg.data = system_status, gyro, accel, mag_status
+    statusMsg.data = system_status, gyro, accel_status, mag_status
     statusPub.publish(statusMsg)
 
     seq += 1
@@ -103,10 +103,10 @@ def get_data():
         msg.header.frame_id = "base_link"
 
         x, y, z, w = imu.read_quaternion()
-        msg.orientation.x = x
-        msg.orientation.y = y
-        msg.orientation.z = x
-        msg.orientation.w = w
+        # msg.orientation.x = x
+        # msg.orientation.y = y
+        # msg.orientation.z = x
+        # msg.orientation.w = w
 
         # Gyroscope data (in degrees per second):
         x, y, z = imu.read_gyroscope()
@@ -116,9 +116,10 @@ def get_data():
 
         # Accelerometer data (in meters per second squared):
         x, y, z = imu.read_accelerometer()
-        # msg.linear_acceleration.x = x
-        # msg.linear_acceleration.y = y
-        # msg.linear_acceleration.z = z
+        if accel_status > 1:
+            # msg.linear_acceleration.x = x
+            # msg.linear_acceleration.y = y
+            # msg.linear_acceleration.z = z
 
         print('X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
