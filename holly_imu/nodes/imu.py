@@ -19,7 +19,7 @@ from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
 
 
-imu = BNO055.BNO055(rst=19)
+imu = BNO055.BNO055()
 
 rospy.init_node('holly_imu')
 rate = rospy.Rate(10) # 10hz
