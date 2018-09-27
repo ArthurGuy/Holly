@@ -116,7 +116,7 @@ def get_data():
 
         # Accelerometer data (in meters per second squared):
         x, y, z = imu.read_accelerometer()
-        if accel_status > 1:
+        #if accel_status > 1:
             # msg.linear_acceleration.x = x
             # msg.linear_acceleration.y = y
             # msg.linear_acceleration.z = z
