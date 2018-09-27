@@ -103,10 +103,10 @@ def get_data():
         msg.header.frame_id = "base_link"
 
         x, y, z, w = imu.read_quaternion()
-        # msg.orientation.x = x
-        # msg.orientation.y = y
-        # msg.orientation.z = x
-        # msg.orientation.w = w
+        msg.orientation.x = x
+        msg.orientation.y = y
+        msg.orientation.z = x
+        msg.orientation.w = w
         print('X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
         # Gyroscope data (in degrees per second):
@@ -118,9 +118,9 @@ def get_data():
         # Accelerometer data (in meters per second squared):
         x, y, z = imu.read_accelerometer()
         if accel_status > 1:
-            # msg.linear_acceleration.x = x
-            # msg.linear_acceleration.y = y
-            # msg.linear_acceleration.z = z
+            msg.linear_acceleration.x = 0 #x
+            msg.linear_acceleration.y = 0 #y
+            msg.linear_acceleration.z = 0 #z
 
             print('X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
