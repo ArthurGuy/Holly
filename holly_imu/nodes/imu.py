@@ -91,6 +91,7 @@ def get_data():
         magMsg.magnetic_field.x = x * 1000000  # Convert to Teslas
         magMsg.magnetic_field.y = y * 1000000
         magMsg.magnetic_field.z = z * 1000000
+        magMsg.magnetic_field_covariance = [0.1] * 9
 
         magPub.publish(magMsg)
 
@@ -107,6 +108,7 @@ def get_data():
         msg.orientation.y = y
         msg.orientation.z = x
         msg.orientation.w = w
+        msg.orientation_covariance = [0.1] * 9
         # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
         # Gyroscope data (in degrees per second):
@@ -114,6 +116,7 @@ def get_data():
         msg.angular_velocity.x = x * 1000 / 57296  # Convert to rad/s
         msg.angular_velocity.y = y * 1000 / 57296
         msg.angular_velocity.z = z * 1000 / 57296
+        msg.angular_velocity_covariance = [0.1] * 9
         print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
         # Accelerometer data (in meters per second squared):
@@ -122,6 +125,7 @@ def get_data():
         msg.linear_acceleration.x = x
         msg.linear_acceleration.y = y
         msg.linear_acceleration.z = z
+        msg.linear_acceleration_covariance = [10] * 9
 
         print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
