@@ -24,7 +24,7 @@ from tf.transformations import quaternion_from_euler
 imu = BNO055.BNO055()
 
 rospy.init_node('holly_imu')
-rate = rospy.Rate(10) # 10hz
+rate = rospy.Rate(25)
 
 # setup publisher and classes
 imuPub = rospy.Publisher('imu/data', Imu, queue_size=10)
@@ -90,7 +90,7 @@ def get_data():
                 msg.header.stamp = rospy.Time.now()
                 msg.header.frame_id = "base_link"
 
-                x, y, z, w = imu.read_quaternion()
+                # x, y, z, w = imu.read_quaternion()
                 quaternion = quaternion_from_euler(roll * 1000 / 57296, pitch * 1000 / 57296, heading * 1000 / 57296)
                 msg.orientation.x = quaternion[0]  # x
                 msg.orientation.y = quaternion[1]  # y
@@ -115,7 +115,7 @@ def get_data():
                 msg.linear_acceleration.z = z
                 msg.linear_acceleration_covariance = [10] * 9
 
-                print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
+                #print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
                 imuPub.publish(msg)
 
@@ -136,6 +136,8 @@ while not rospy.is_shutdown():
             try:
                 if not imu.begin():
                     raise RuntimeError('Failed to initialize BNO055! Is the sensor connected?')
+
+                imu.set_external_crystal(True)
 
                 # Print system status and self test result.
                 status, self_test, error = imu.get_system_status()
