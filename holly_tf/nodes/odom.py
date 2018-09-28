@@ -117,13 +117,13 @@ def update_position():
     pose.position.x = abs_x_m
     pose.position.y = abs_y_m
     odomMsg.pose.pose = pose
-    odomMsg.pose.covariance = [0.001] * 9
+    odomMsg.pose.covariance = [0.001] * 36
 
     twist = Twist()
     twist.linear.x = x_speed
     twist.linear.y = y_speed
     odomMsg.twist.twist = twist
-    odomMsg.twist.covariance = [0.1] * 9
+    odomMsg.twist.covariance = [0.1] * 36
 
     odomPublisher.publish(odomMsg)
 
