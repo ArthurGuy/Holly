@@ -41,14 +41,21 @@ seq = 1
 
 sensorSetupNeeded = True
 sensorCalibrationSaved = False
+sensorCalibrationLoaded = False
+sensorCalibrationFetched = False
+cal_data = []
 
 if os.path.exists("imu-cal.txt"):
     sensorCalibrationSaved = True
-    file = open("imu-cal.txt", "r")
+    sensorCalibrationFetched = True
+    with open("imu-cal.txt", "r") as f:
+        for line in f:
+            cal_data.append(int(line.strip()))
+    print "Calibration data loaded"
 
 
 def get_data():
-    global seq, sensorSetupNeeded, sensorCalibrationSaved
+    global seq, sensorSetupNeeded, sensorCalibrationSaved, sensorCalibrationLoaded, cal_data
 
     if not sensorSetupNeeded:
         try:
@@ -67,13 +74,23 @@ def get_data():
             statusMsg.data = system_status, gyro_status, accel_status, mag_status
             statusPub.publish(statusMsg)
 
+            # If we have a successful calibration mark the data as loaded
+            if not sensorCalibrationLoaded and system_status == 3:
+                sensorCalibrationLoaded = True
+
+            # If we have calibration data and it hasn't been loaded then load it
+            if sensorCalibrationFetched and not sensorCalibrationLoaded:
+                imu.set_calibration(cal_data)
+
             if not sensorCalibrationSaved and system_status == 3:
                 sensorCalibrationSaved = True
                 cal_data = imu.get_calibration()
                 print cal_data
-                file = open("imu-cal.txt", "w")
-                file.write(cal_data)
-                file.close()
+                with open("imu-cal.txt", "w") as f:
+                    for cal in cal_data:
+                        f.write(str(cal) + "\n")
+                print "Calibration data saved"
+
 
             seq += 1
 
@@ -172,6 +189,7 @@ while not rospy.is_shutdown():
                 print('Gyroscope ID:       0x{0:02X}\n'.format(gyro))
                 sensorSetupNeeded = False
                 firstReading = 1
+                sensorCalibrationLoaded = False
             except IOError:
                 # print 'Error setting up uv sensor'
                 rospy.logwarn('Error setting up the imu sensor')
