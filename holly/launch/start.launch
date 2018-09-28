@@ -1,4 +1,5 @@
 <launch>
+    <include file="$(find holly_motors)/launch/start.launch" />
     <include file="$(find holly_tf)/launch/start.launch" />
     <include file="$(find holly_status)/launch/start.launch" />
     <include file="$(find holly_sensors)/launch/start.launch" />
