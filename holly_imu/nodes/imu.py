@@ -94,7 +94,7 @@ def get_data():
                 msg.orientation.z = x
                 msg.orientation.w = w
                 msg.orientation_covariance = [0.001] * 9
-                # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
+                print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
                 # Gyroscope data (in degrees per second):
                 x, y, z = imu.read_gyroscope()
@@ -102,7 +102,7 @@ def get_data():
                 msg.angular_velocity.y = y * 1000 / 57296
                 msg.angular_velocity.z = z * 1000 / 57296
                 msg.angular_velocity_covariance = [1] * 9
-                print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
+                # print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
                 # Accelerometer data (in meters per second squared):
                 x, y, z = imu.read_accelerometer()
