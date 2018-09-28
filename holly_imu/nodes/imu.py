@@ -40,9 +40,14 @@ statusMsg = UInt8MultiArray()
 seq = 1
 
 sensorSetupNeeded = True
+sensorCalibrationSaved = False
+
+if os.path.exists("imu-cal.txt"):
+    sensorCalibrationSaved = True
+    file = open("imu-cal.txt", "r")
 
 
-def get_data():
+    def get_data():
     global seq, sensorSetupNeeded
 
     if not sensorSetupNeeded:
@@ -61,6 +66,14 @@ def get_data():
             # Publish the status flags so we can see whats going on
             statusMsg.data = system_status, gyro_status, accel_status, mag_status
             statusPub.publish(statusMsg)
+
+            if not sensorCalibrationSaved and system_status == 3:
+                sensorCalibrationSaved = True
+                cal_data = imu.get_calibration()
+                print cal_data
+                file = open("imu-cal.txt", "w")
+                file.write(cal_data)
+                file.close()
 
             seq += 1
 
