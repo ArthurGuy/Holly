@@ -80,7 +80,7 @@ def get_data():
 
                 magPub.publish(magMsg)
 
-            if system_status > 1 and gyro_status > 1:
+            if system_status > 0 and gyro_status > 1:
 
                 # Publish the gyro and accel data
 
@@ -101,7 +101,7 @@ def get_data():
                 msg.angular_velocity.x = x * 1000 / 57296  # Convert to rad/s
                 msg.angular_velocity.y = y * 1000 / 57296
                 msg.angular_velocity.z = z * 1000 / 57296
-                msg.angular_velocity_covariance = [0.1] * 9
+                msg.angular_velocity_covariance = [1] * 9
                 print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
                 # Accelerometer data (in meters per second squared):
