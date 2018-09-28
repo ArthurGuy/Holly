@@ -29,8 +29,24 @@ def odom_callback(data):
     print('Orientation: Roll={0:0.8F} Pitch={1:0.8F} Yaw={2:0.8F}'.format(roll, pitch, yaw))
 
 
+def imu_callback(data):
+    quaternion = (
+        data.orientation.x,
+        data.orientation.y,
+        data.orientation.z,
+        data.orientation.w)
+    euler = euler_from_quaternion(quaternion)
+    roll = euler[0]
+    pitch = euler[1]
+    yaw = euler[2]
+    print('Orientation: Roll={0:0.8F} Pitch={1:0.8F} Yaw={2:0.8F}'.format(roll, pitch, yaw))
+
+
 odomMsg = Odometry()
 rospy.Subscriber("/odometry/filtered", Odometry, odom_callback)
+
+imuMsg = Imu()
+rospy.Subscriber("/imu/data", Imu, imu_callback)
 
 
 def update_position():
