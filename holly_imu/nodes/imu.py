@@ -106,7 +106,7 @@ def get_data():
                 msg.angular_velocity.y = y * 1000 / 57296
                 msg.angular_velocity.z = z * 1000 / 57296
                 msg.angular_velocity_covariance = [1] * 9
-                # print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
+                print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
                 # Accelerometer data (in meters per second squared):
                 x, y, z = imu.read_accelerometer()
@@ -116,7 +116,7 @@ def get_data():
                 msg.linear_acceleration.z = z
                 msg.linear_acceleration_covariance = [10] * 9
 
-                #print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
+                print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
                 imuPub.publish(msg)
 

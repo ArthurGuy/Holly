@@ -22,10 +22,7 @@ def odom_callback(data):
         data.pose.pose.orientation.y,
         data.pose.pose.orientation.z,
         data.pose.pose.orientation.w)
-    euler = euler_from_quaternion(quaternion)
-    roll = euler[0]
-    pitch = euler[1]
-    yaw = euler[2]
+    (roll, pitch, yaw) = euler_from_quaternion(quaternion)
     print('Orientation ODOM: Roll={0:0.8F} Pitch={1:0.8F} Yaw={2:0.8F}'.format(roll, pitch, yaw))
 
 
@@ -35,10 +32,7 @@ def imu_callback(data):
         data.orientation.y,
         data.orientation.z,
         data.orientation.w)
-    euler = euler_from_quaternion(quaternion)
-    roll = euler[0]
-    pitch = euler[1]
-    yaw = euler[2]
+    (roll, pitch, yaw) = euler_from_quaternion(quaternion)
     print('Orientation  IMU: Roll={0:0.8F} Pitch={1:0.8F} Yaw={2:0.8F}'.format(roll, pitch, yaw))
 
 

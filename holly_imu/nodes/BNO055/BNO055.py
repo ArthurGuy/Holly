@@ -69,11 +69,11 @@ BNO055_GYRO_DATA_Z_LSB_ADDR          = 0X18
 BNO055_GYRO_DATA_Z_MSB_ADDR          = 0X19
 
 # Euler data registers
-BNO055_EULER_H_LSB_ADDR              = 0X1A
+BNO055_EULER_H_LSB_ADDR              = 0X1A  # yaw   = x = heading
 BNO055_EULER_H_MSB_ADDR              = 0X1B
-BNO055_EULER_R_LSB_ADDR              = 0X1C
+BNO055_EULER_R_LSB_ADDR              = 0X1C  # roll  = y
 BNO055_EULER_R_MSB_ADDR              = 0X1D
-BNO055_EULER_P_LSB_ADDR              = 0X1E
+BNO055_EULER_P_LSB_ADDR              = 0X1E  # pitch = z
 BNO055_EULER_P_MSB_ADDR              = 0X1F
 
 # Quaternion data registers
