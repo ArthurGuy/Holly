@@ -30,7 +30,7 @@ def odom_callback(data):
 
 
 odomMsg = Odometry()
-rospy.Subscriber("/odometry/filtered ", Odometry, odom_callback)
+rospy.Subscriber("/odometry/filtered", Odometry, odom_callback)
 
 
 def update_position():
