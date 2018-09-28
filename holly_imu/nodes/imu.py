@@ -48,7 +48,7 @@ if os.path.exists("imu-cal.txt"):
 
 
 def get_data():
-    global seq, sensorSetupNeeded
+    global seq, sensorSetupNeeded, sensorCalibrationSaved
 
     if not sensorSetupNeeded:
         try:
