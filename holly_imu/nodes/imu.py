@@ -18,6 +18,8 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
 
+from tf.transformations import quaternion_from_euler
+
 
 imu = BNO055.BNO055()
 
@@ -89,12 +91,14 @@ def get_data():
                 msg.header.frame_id = "base_link"
 
                 x, y, z, w = imu.read_quaternion()
-                msg.orientation.x = x
-                msg.orientation.y = y
-                msg.orientation.z = x
-                msg.orientation.w = w
+                quaternion = quaternion_from_euler(roll, pitch, heading)
+                msg.orientation = quaternion
+                # msg.orientation.x = x
+                # msg.orientation.y = y
+                # msg.orientation.z = x
+                # msg.orientation.w = w
                 msg.orientation_covariance = [0.001] * 9
-                print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
+                # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
                 # Gyroscope data (in degrees per second):
                 x, y, z = imu.read_gyroscope()
