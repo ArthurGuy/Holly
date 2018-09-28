@@ -1,5 +1,6 @@
 <launch>
     <node pkg="rosserial_python" name="rosserial_python" type="serial_node.py" output="screen" respawn="true" respawn_delay="60">
         <param name="port" value="/dev/rosSerial" />
+        <param name="baud" value="115200" />
     </node>
 </launch>
