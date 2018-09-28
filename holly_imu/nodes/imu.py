@@ -91,7 +91,7 @@ def get_data():
                 msg.header.frame_id = "base_link"
 
                 x, y, z, w = imu.read_quaternion()
-                quaternion = quaternion_from_euler(roll, pitch, heading)
+                quaternion = quaternion_from_euler(roll * 1000 / 57296, pitch * 1000 / 57296, heading * 1000 / 57296)
                 msg.orientation.x = quaternion[0]  # x
                 msg.orientation.y = quaternion[1]  # y
                 msg.orientation.z = quaternion[2]  # x
