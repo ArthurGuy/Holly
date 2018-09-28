@@ -92,11 +92,10 @@ def get_data():
 
                 x, y, z, w = imu.read_quaternion()
                 quaternion = quaternion_from_euler(roll, pitch, heading)
-                msg.orientation = quaternion
-                # msg.orientation.x = x
-                # msg.orientation.y = y
-                # msg.orientation.z = x
-                # msg.orientation.w = w
+                msg.orientation.x = quaternion[0]  # x
+                msg.orientation.y = quaternion[1]  # y
+                msg.orientation.z = quaternion[2]  # x
+                msg.orientation.w = quaternion[3]  # w
                 msg.orientation_covariance = [0.001] * 9
                 # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
