@@ -123,7 +123,7 @@ def get_data():
                 # x, y, z, w = imu.read_quaternion()
                 # Translate the heading, angle needs to be reversed
                 # Roll and pitch are also swapped for some reason
-                quaternion = quaternion_from_euler(pitch * 1000 / 57296, roll * 1000 / 57296, (360 - heading) * 1000 / 57296)
+                quaternion = quaternion_from_euler((pitch * -1) * 1000 / 57296, (roll * -1) * 1000 / 57296, (360 - heading) * 1000 / 57296)
                 msg.orientation.x = quaternion[0]  # x
                 msg.orientation.y = quaternion[1]  # y
                 msg.orientation.z = quaternion[2]  # x
