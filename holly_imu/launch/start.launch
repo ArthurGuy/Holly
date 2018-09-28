@@ -3,7 +3,7 @@
     <node pkg="holly_tf" type="odom-fake.py" name="holly_odom_fake" output="screen" />
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_node" output="screen">
         <param name="imu0" value="/imu/data" />
-        <param name="imu0_relative" value="true"/>
+        <param name="imu0_relative" value="false"/>
         <rosparam param="imu0_config">[false, false, false,
                                true, true, true,
                                false, false, false,
