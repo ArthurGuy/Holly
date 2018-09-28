@@ -4,7 +4,7 @@ import rospy
 import traceback
 import sys
 import time
-from geometry_msgs.msg import Twist, Pose, Point
+from geometry_msgs.msg import Twist, Pose, Point, TwistWithCovariance
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
 from std_msgs.msg import Float64
@@ -117,11 +117,13 @@ def update_position():
     pose.position.x = abs_x_m
     pose.position.y = abs_y_m
     odomMsg.pose.pose = pose
+    odomMsg.pose.covariance = [0.001] * 9
 
     twist = Twist()
     twist.linear.x = x_speed
     twist.linear.y = y_speed
     odomMsg.twist.twist = twist
+    odomMsg.twist.covariance = [0.1] * 9
 
     odomPublisher.publish(odomMsg)
 

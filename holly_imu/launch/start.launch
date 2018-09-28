@@ -1,6 +1,6 @@
 <launch>
     <node pkg="holly_imu" type="imu.py" name="holly_imu" output="screen" />
-    <node pkg="holly_tf" type="odom-fake.py" name="holly_odom_fake" output="screen" />
+    <node pkg="holly_tf" type="odom.py" name="holly_odom" output="screen" />
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_node" output="screen">
         <param name="imu0" value="/imu/data" />
         <param name="imu0_relative" value="false"/>
