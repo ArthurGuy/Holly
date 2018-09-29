@@ -8,6 +8,7 @@ from geometry_msgs.msg import Twist, Pose, Point, TwistWithCovariance
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
 from std_msgs.msg import Float64, Float64MultiArray
+from tf.transformations import euler_from_quaternion
 
 sys.path.append('.')
 
@@ -68,6 +69,17 @@ def wheel_angle_callback(data):
     wheel_angle = data.data
 
 
+def imu_callback(data):
+    global heading
+    quaternion = (
+        data.orientation.x,
+        data.orientation.y,
+        data.orientation.z,
+        data.orientation.w)
+    (roll, pitch, yaw) = euler_from_quaternion(quaternion)
+    heading = yaw
+
+
 odomMsg = Odometry()
 odomPublisher = rospy.Publisher('/odom', Odometry, queue_size=10)
 # rospy.Subscriber("/imu", Imu, imu_callback)
@@ -79,6 +91,7 @@ rospy.Subscriber("/holly/encoders", Float64MultiArray, odom_callback)
 # rospy.Subscriber("/holly/encoder5", Float64, odom_callback_5)
 # rospy.Subscriber("/holly/encoder6", Float64, odom_callback_6)
 rospy.Subscriber("/holly/wheel_angle", Float64, wheel_angle_callback)
+rospy.Subscriber("/imu/data", Imu, imu_callback)
 
 last_update_time = time.time()
 time_delta = 0
@@ -102,8 +115,8 @@ def update_position():
     average_distance_traveled_delta = _average_distance_traveled - average_distance_traveled
     _speed = average_distance_traveled_delta / time_delta
 
-    x_delta = average_distance_traveled_delta * math.cos(wheel_angle)
-    y_delta = average_distance_traveled_delta * math.sin(wheel_angle)
+    x_delta = average_distance_traveled_delta * math.cos(heading)
+    y_delta = average_distance_traveled_delta * math.sin(heading)
 
     x_speed = x_delta / time_delta
     y_speed = y_delta / time_delta
