@@ -22,6 +22,7 @@ wheel_travel_4 = 0
 wheel_travel_5 = 0
 wheel_travel_6 = 0
 wheel_angle = 0
+heading = 0
 
 
 def odom_callback(data):
