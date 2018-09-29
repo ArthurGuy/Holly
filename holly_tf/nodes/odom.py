@@ -7,7 +7,7 @@ import time
 from geometry_msgs.msg import Twist, Pose, Point, TwistWithCovariance
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
-from std_msgs.msg import Float64
+from std_msgs.msg import Float64, Float64MultiArray
 
 sys.path.append('.')
 
@@ -23,34 +23,44 @@ wheel_travel_6 = 0
 wheel_angle = 0
 
 
-def odom_callback_1(data):
-    global wheel_travel_1
-    wheel_travel_1 = data.data
+def odom_callback(data):
+    global wheel_travel_1, wheel_travel_2, wheel_travel_3, wheel_travel_4, wheel_travel_5, wheel_travel_6
+    wheel_travel_1 = data.data[0]
+    wheel_travel_2 = data.data[1]
+    wheel_travel_3 = data.data[2]
+    wheel_travel_4 = data.data[3]
+    wheel_travel_5 = data.data[4]
+    wheel_travel_6 = data.data[5]
 
-
-def odom_callback_2(data):
-    global wheel_travel_2
-    wheel_travel_2 = data.data
-
-
-def odom_callback_3(data):
-    global wheel_travel_3
-    wheel_travel_3 = data.data
-
-
-def odom_callback_4(data):
-    global wheel_travel_4
-    wheel_travel_4 = data.data
-
-
-def odom_callback_5(data):
-    global wheel_travel_5
-    wheel_travel_5 = data.data
-
-
-def odom_callback_6(data):
-    global wheel_travel_6
-    wheel_travel_6 = data.data
+#
+# def odom_callback_1(data):
+#     global wheel_travel_1
+#     wheel_travel_1 = data.data
+#
+#
+# def odom_callback_2(data):
+#     global wheel_travel_2
+#     wheel_travel_2 = data.data
+#
+#
+# def odom_callback_3(data):
+#     global wheel_travel_3
+#     wheel_travel_3 = data.data
+#
+#
+# def odom_callback_4(data):
+#     global wheel_travel_4
+#     wheel_travel_4 = data.data
+#
+#
+# def odom_callback_5(data):
+#     global wheel_travel_5
+#     wheel_travel_5 = data.data
+#
+#
+# def odom_callback_6(data):
+#     global wheel_travel_6
+#     wheel_travel_6 = data.data
 
 
 def wheel_angle_callback(data):
@@ -61,12 +71,13 @@ def wheel_angle_callback(data):
 odomMsg = Odometry()
 odomPublisher = rospy.Publisher('/odom', Odometry, queue_size=10)
 # rospy.Subscriber("/imu", Imu, imu_callback)
-rospy.Subscriber("/holly/encoder1", Float64, odom_callback_1)
-rospy.Subscriber("/holly/encoder2", Float64, odom_callback_2)
-rospy.Subscriber("/holly/encoder3", Float64, odom_callback_3)
-rospy.Subscriber("/holly/encoder4", Float64, odom_callback_4)
-rospy.Subscriber("/holly/encoder5", Float64, odom_callback_5)
-rospy.Subscriber("/holly/encoder6", Float64, odom_callback_6)
+rospy.Subscriber("/holly/encoders", Float64MultiArray, odom_callback)
+# rospy.Subscriber("/holly/encoder1", Float64, odom_callback_1)
+# rospy.Subscriber("/holly/encoder2", Float64, odom_callback_2)
+# rospy.Subscriber("/holly/encoder3", Float64, odom_callback_3)
+# rospy.Subscriber("/holly/encoder4", Float64, odom_callback_4)
+# rospy.Subscriber("/holly/encoder5", Float64, odom_callback_5)
+# rospy.Subscriber("/holly/encoder6", Float64, odom_callback_6)
 rospy.Subscriber("/holly/wheel_angle", Float64, wheel_angle_callback)
 
 last_update_time = time.time()
