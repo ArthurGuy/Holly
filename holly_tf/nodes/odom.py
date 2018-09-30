@@ -104,11 +104,12 @@ def update_position():
         odomMsg.header.seq = seq
         odomMsg.header.stamp = rospy.Time.now()
         odomMsg.header.frame_id = "odom"
-        odomMsg.child_frame_id = "base_link"
+        odomMsg.child_frame_id = "base_footprint"
 
         pose = Pose()
         pose.position.x = abs_x_m
         pose.position.y = abs_y_m
+        pose.position.z = 0
         odomMsg.pose.pose = pose
         odomMsg.pose.covariance = [0.0001] * 36
 
