@@ -145,9 +145,9 @@
     <link name="/laserscan_frame"></link>
 
     <joint name="base_to_laserscan_sensor" type="fixed">
-        <parent link="/base_link" />
+        <parent link="/base_footprint" />
         <child link="/laserscan_frame" />
-        <origin xyz="0.25 0.0 0.0" rpy="0 0 0" />
+        <origin xyz="0.32 0.0 0.0" rpy="0 0 0" />
     </joint>
 
 
