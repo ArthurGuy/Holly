@@ -9,11 +9,11 @@ sys.path.append('.')
 rospy.init_node('holly_light_sensor')  # public display name of the publisher
 # rate = rospy.Rate(1/30)  # every 30 seconds
 
-lightPublisher = rospy.Publisher('/environment/uv_index', Float32, queue_size=10)
 lightMessage = Float32()
 
 firstReading = 1
 sensorSetupNeeded = 1
+publisherSetup = False
 
 
 def get_data():
@@ -59,6 +59,9 @@ while not rospy.is_shutdown():
                 # print 'Error setting up uv sensor'
                 rospy.logwarn('Error setting up the uv sensor')
                 sensorSetupNeeded = 1
+
+        if not sensorSetupNeeded and not publisherSetup:
+            lightPublisher = rospy.Publisher('/environment/uv_index', Float32, queue_size=10)
 
         get_data()
 
