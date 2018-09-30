@@ -1,6 +1,22 @@
 <?xml version="1.0"?>
 <robot name="holly">
 
+    <link name="/base_footprint">
+        <visual>
+            <geometry>
+                <box size="0.64 0.35 0.005"/>
+            </geometry>
+            <material name="grey" />
+            <origin rpy="0 0 0" xyz="0 0 0" />
+        </visual>
+    </link>
+
+    <joint name="base_to_bogie_rear" type="fixed">
+        <parent link="/base_footprint" />
+        <child link="/base_link" />
+        <origin rpy="0 0 0" xyz="0 0 0.21" />
+    </joint>
+
     <link name="/base_link">
         <visual>
             <geometry>
@@ -45,7 +61,7 @@
         <parent link="/base_link" />
         <child link="/bogie_rear" />
         <axis xyz="1 0 0"/>
-        <origin rpy="0 0 0" xyz="-0.27 0 0" />
+        <origin rpy="0 0 0" xyz="-0.27 0 -0.03" />
         <limit lower="-0.261" upper="0.261" effort="1000" velocity="0.5" />
     </joint>
 
@@ -53,7 +69,7 @@
         <parent link="/base_link" />
         <child link="/bogie_left" />
         <axis xyz="0 1 0"/>
-        <origin rpy="0 0 0" xyz="0.12 0.17 0" />
+        <origin rpy="0 0 0" xyz="0.12 0.17 -0.03" />
         <limit lower="-0.261" upper="0.261" effort="1000" velocity="0.5" />
     </joint>
 
@@ -61,7 +77,7 @@
         <parent link="/base_link" />
         <child link="/bogie_right" />
         <axis xyz="0 1 0"/>
-        <origin rpy="0 0 0" xyz="0.12 -0.17 0" />
+        <origin rpy="0 0 0" xyz="0.12 -0.17 -0.03" />
         <limit lower="-0.261" upper="0.261" effort="1000" velocity="0.5" />
     </joint>
 
