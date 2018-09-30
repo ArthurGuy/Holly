@@ -11,7 +11,7 @@
         </visual>
     </link>
 
-    <joint name="base_to_bogie_rear" type="fixed">
+    <joint name="base_to_footprint" type="fixed">
         <parent link="/base_footprint" />
         <child link="/base_link" />
         <origin rpy="0 0 0" xyz="0 0 0.21" />
