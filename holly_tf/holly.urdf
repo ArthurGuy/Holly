@@ -11,12 +11,6 @@
         </visual>
     </link>
 
-    <joint name="base_to_footprint" type="fixed">
-        <parent link="/base_footprint" />
-        <child link="/base_link" />
-        <origin rpy="0 0 0" xyz="0 0 0.21" />
-    </joint>
-
     <link name="/base_link">
         <visual>
             <geometry>
@@ -26,6 +20,12 @@
             <origin rpy="0 0 0" xyz="0 0 0" />
         </visual>
     </link>
+
+    <joint name="base_to_footprint" type="fixed">
+        <parent link="/base_footprint" />
+        <child link="/base_link" />
+        <origin rpy="0 0 0" xyz="0 0 0.21" />
+    </joint>
 
     <link name="/bogie_rear">
         <visual>
