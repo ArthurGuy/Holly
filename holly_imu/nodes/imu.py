@@ -67,8 +67,8 @@ def get_data():
             system_status, gyro_status, accel_status, mag_status = imu.get_calibration_status()
 
             # Print everything out.
-            print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
-                heading, roll, pitch, system_status, gyro_status, accel_status, mag_status))
+            # print('Heading={0:0.2F} Roll={1:0.2F} Pitch={2:0.2F}\tSys_cal={3} Gyro_cal={4} Accel_cal={5} Mag_cal={6}'.format(
+            #     heading, roll, pitch, system_status, gyro_status, accel_status, mag_status))
 
             # Publish the status flags so we can see whats going on
             statusMsg.data = system_status, gyro_status, accel_status, mag_status
