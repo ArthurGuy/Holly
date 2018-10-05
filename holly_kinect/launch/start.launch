@@ -3,14 +3,14 @@
         <arg name="depth_frame_id" value="/kinect_depth_optical_frame" />
         <arg name="rgb_frame_id" value="/kinect_rgb_optical_frame" />
     </include>
-    <node pkg="laserscan_kinect" name="laserscan_kinect" type="laserscan_kinect">
-        <remap from="image" to="/camera/depth/image_raw" />
-        <param name="sensor_mount_height" value="0.54" />
-        <param name="ground_remove_en" value="true" />
-        <param name="tilt_compensation_en" value="true" />
-        <param name="sensor_tilt_angle" value="18" />
-        <param name="ground_margin" value="0.02" />
-        <param name="range_min" value="0.4" />
-        <param name="output_frame_id" value="/laserscan_frame" />
-    </node>
+    <!--<node pkg="laserscan_kinect" name="laserscan_kinect" type="laserscan_kinect">-->
+        <!--<remap from="image" to="/camera/depth/image_raw" />-->
+        <!--<param name="sensor_mount_height" value="0.54" />-->
+        <!--<param name="ground_remove_en" value="true" />-->
+        <!--<param name="tilt_compensation_en" value="true" />-->
+        <!--<param name="sensor_tilt_angle" value="18" />-->
+        <!--<param name="ground_margin" value="0.02" />-->
+        <!--<param name="range_min" value="0.4" />-->
+        <!--<param name="output_frame_id" value="/laserscan_frame" />-->
+    <!--</node>-->
 </launch>
