@@ -34,7 +34,8 @@ def toggle_led():
 
 def imu_status_callback(data):
     global imuProblem
-    if data.data[0] == 3:
+    system_status, gyro_status, accel_status, mag_status = data.data
+    if system_status == 3:
         imuProblem = False
     else:
         imuProblem = True
