@@ -13,7 +13,7 @@ import os.path
 import time
 import math
 
-from std_msgs.msg import UInt8MultiArray
+from std_msgs.msg import UInt8MultiArray, Bool
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
@@ -25,6 +25,15 @@ imu = BNO055.BNO055()
 
 rospy.init_node('holly_imu')
 rate = rospy.Rate(25)
+
+
+def calibration_update_callback(data):
+    global updateCalibration
+    updateCalibration = data.data
+
+
+rospy.Subscriber("/imu/save-cal", Bool, calibration_update_callback)
+
 
 # setup publisher and classes
 imuPub = rospy.Publisher('imu/data', Imu, queue_size=10)
@@ -39,13 +48,14 @@ statusMsg = UInt8MultiArray()
 
 seq = 1
 
+updateCalibration = False
 sensorSetupNeeded = True
 sensorCalibrationSaved = False
 sensorCalibrationLoaded = False
 sensorCalibrationFetched = False
 cal_data = []
 
-rospy.loginfo("IMU calibration file path" + os.path.abspath("imu-cal.txt"))
+rospy.loginfo("IMU calibration file path: " + os.path.abspath("imu-cal.txt"))
 
 if os.path.exists("imu-cal.txt"):
     sensorCalibrationSaved = True
@@ -57,7 +67,7 @@ if os.path.exists("imu-cal.txt"):
 
 
 def get_data():
-    global seq, sensorSetupNeeded, sensorCalibrationSaved, sensorCalibrationLoaded, cal_data
+    global seq, sensorSetupNeeded, sensorCalibrationSaved, sensorCalibrationLoaded, updateCalibration, cal_data
 
     if not sensorSetupNeeded:
         try:
@@ -84,8 +94,9 @@ def get_data():
             if sensorCalibrationFetched and not sensorCalibrationLoaded:
                 imu.set_calibration(cal_data)
 
-            if not sensorCalibrationSaved and system_status == 3:
+            if (not sensorCalibrationSaved or updateCalibration) and system_status == 3:
                 sensorCalibrationSaved = True
+                updateCalibration = False
                 cal_data = imu.get_calibration()
                 print cal_data
                 with open("imu-cal.txt", "w") as f:
