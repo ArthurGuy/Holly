@@ -45,13 +45,15 @@ sensorCalibrationLoaded = False
 sensorCalibrationFetched = False
 cal_data = []
 
+rospy.loginfo("IMU calibration file path" + os.path.abspath("imu-cal.txt"))
+
 if os.path.exists("imu-cal.txt"):
     sensorCalibrationSaved = True
     sensorCalibrationFetched = True
     with open("imu-cal.txt", "r") as f:
         for line in f:
             cal_data.append(int(line.strip()))
-    print "Calibration data loaded"
+    rospy.loginfo("Calibration data loaded")
 
 
 def get_data():
@@ -89,7 +91,7 @@ def get_data():
                 with open("imu-cal.txt", "w") as f:
                     for cal in cal_data:
                         f.write(str(cal) + "\n")
-                print "Calibration data saved"
+                rospy.loginfo("Calibration data saved")
 
 
             seq += 1

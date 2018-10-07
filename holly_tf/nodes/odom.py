@@ -89,8 +89,8 @@ def update_position():
         x_delta = average_distance_traveled_delta * math.cos(heading)
         y_delta = average_distance_traveled_delta * math.sin(heading)
 
-        x_speed = x_delta / time_delta
-        y_speed = y_delta / time_delta
+        # x_speed = x_delta / time_delta
+        # y_speed = y_delta / time_delta
 
         abs_x_m = abs_x_m + x_delta
         abs_y_m = abs_y_m + y_delta
