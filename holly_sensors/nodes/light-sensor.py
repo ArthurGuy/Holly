@@ -61,7 +61,7 @@ while not rospy.is_shutdown():
                 sensorSetupNeeded = 1
 
         if not sensorSetupNeeded and not publisherSetup:
-            lightPublisher = rospy.Publisher('/environment/uv_index', Float32, queue_size=10)
+            lightPublisher = rospy.Publisher('/environment/uv_index', Float32, queue_size=1)
 
         get_data()
 

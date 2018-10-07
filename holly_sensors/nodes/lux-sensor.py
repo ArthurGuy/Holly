@@ -9,7 +9,7 @@ sys.path.append('.')
 rospy.init_node('holly_lux_sensor')  # public display name of the publisher
 # rate = rospy.Rate(1/30)  # every 30 seconds
 
-lightPublisher = rospy.Publisher('/environment/lux_level', Float32, queue_size=10)
+lightPublisher = rospy.Publisher('/environment/lux_level', Float32, queue_size=1)
 lightMessage = Float32()
 
 firstReading = 1

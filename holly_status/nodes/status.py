@@ -37,18 +37,15 @@ def imu_status_callback(imu_status):
 
     print(imu_status)
     print(imu_status.data)
-    print type(imu_status.data)
-    print type(imu_status.data[0])
     print(imu_status.data[0])
-    print(imu_status.data[1])
 
-    system_status, gyro_status, accel_status, mag_status = imu_status.data
-    print('Sys_cal={0} Gyro_cal={1} Accel_cal={2} Mag_cal={3}'.format(system_status, gyro_status, accel_status, mag_status))
+    # system_status, gyro_status, accel_status, mag_status = imu_status.data
+    # print('Sys_cal={0} Gyro_cal={1} Accel_cal={2} Mag_cal={3}'.format(system_status, gyro_status, accel_status, mag_status))
 
-    if system_status == 3:
-        imuProblem = False
-    else:
-        imuProblem = True
+    # if system_status == 3:
+    #     imuProblem = False
+    # else:
+    #     imuProblem = True
 
 
 rospy.init_node('holly_status_output')

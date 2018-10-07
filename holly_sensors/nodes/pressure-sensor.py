@@ -9,11 +9,11 @@ sys.path.append('.')
 rospy.init_node('holly_pressure_sensor')  # public display name of the publisher
 # rate = rospy.Rate(1/60)  # every minute
 
-pressurePublisher = rospy.Publisher('/environment/air_pressure', Float32, queue_size=10)
+pressurePublisher = rospy.Publisher('/environment/air_pressure', Float32, queue_size=1)
 pressureMessage = Float32()
-tempPublisher = rospy.Publisher('/environment/air_temp', Float32, queue_size=10)
+tempPublisher = rospy.Publisher('/environment/air_temp', Float32, queue_size=1)
 tempMessage = Float32()
-humidityPublisher = rospy.Publisher('/environment/air_humidity', Float32, queue_size=10)
+humidityPublisher = rospy.Publisher('/environment/air_humidity', Float32, queue_size=1)
 humidityMessage = Float32()
 
 firstReading = 1
