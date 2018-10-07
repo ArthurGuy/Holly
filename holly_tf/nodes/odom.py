@@ -114,8 +114,8 @@ def update_position():
         odomMsg.pose.covariance = [0.0001] * 36
 
         twist = Twist()
-        twist.linear.x = x_speed
-        twist.linear.y = y_speed
+        twist.linear.x = _speed
+        twist.linear.y = 0
         odomMsg.twist.twist = twist
         odomMsg.twist.covariance = [0.1] * 36
 
