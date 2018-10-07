@@ -36,7 +36,7 @@ def imu_status_callback(imu_status):
     global imuProblem
 
     print(imu_status)
-    print(imu_status.layout)
+    print(imu_status.layout.dim)
     print(imu_status.data[0])
 
     # system_status, gyro_status, accel_status, mag_status = imu_status.data
