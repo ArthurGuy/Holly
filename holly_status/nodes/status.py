@@ -3,8 +3,11 @@ import rospy
 import traceback
 import gpiozero
 from time import sleep
+from std_msgs.msg import UInt8MultiArray
 
 PIN_LED = 21
+
+imuProblem = False
 
 
 # Setup the connection to the optical flow sensor
@@ -12,10 +15,32 @@ led = gpiozero.LED(PIN_LED)
 
 
 def toggle_led():
+    global imuProblem
+
     led.on()
-    sleep(1)
+
+    if imuProblem:
+        sleep(0.2)
+    else:
+        sleep(1)
+
     led.off()
-    sleep(1)
+    
+    if imuProblem:
+        sleep(0.2)
+    else:
+        sleep(1)
+
+
+def imu_status_callback(data):
+    global imuProblem
+    if data.data[0] == 3:
+        imuProblem = False
+    else:
+        imuProblem = True
+
+
+rospy.Subscriber("/imu/debug", UInt8MultiArray, imu_status_callback)
 
 
 while not rospy.is_shutdown():
