@@ -32,13 +32,13 @@ def toggle_led():
         sleep(1)
 
 
-def imu_status_callback(data):
+def imu_status_callback(imu_status):
     global imuProblem
-    print(data)
-    print(data.data)
-    print type(data.data)
-    print(data.data[0])
-    system_status, gyro_status, accel_status, mag_status = data.data
+    print(imu_status)
+    print(imu_status.data)
+    print type(imu_status.data)
+    print(imu_status.data[0])
+    system_status, gyro_status, accel_status, mag_status = imu_status.data
     print(system_status)
     # print('Sys_cal={0} Gyro_cal={1} Accel_cal={2} Mag_cal={3}'.format(system_status, gyro_status, accel_status, mag_status))
     if system_status == 3:
