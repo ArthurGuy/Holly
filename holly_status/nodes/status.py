@@ -32,8 +32,10 @@ def toggle_led():
         sleep(1)
 
 
-def imu_status_callback(imu_status):
+def imu_status_callback(data):
     global imuProblem
+
+    imu_status = data
 
     print(imu_status)
     print(imu_status.layout.dim)
