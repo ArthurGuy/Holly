@@ -25,7 +25,7 @@ def toggle_led():
         sleep(1)
 
     led.off()
-    
+
     if imuProblem:
         sleep(0.2)
     else:
@@ -39,6 +39,8 @@ def imu_status_callback(data):
     else:
         imuProblem = True
 
+
+rospy.init_node('holly_status_output')
 
 rospy.Subscriber("/imu/debug", UInt8MultiArray, imu_status_callback)
 
