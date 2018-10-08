@@ -13,7 +13,7 @@ import os.path
 import time
 import math
 
-from std_msgs.msg import UInt8MultiArray, Bool
+from std_msgs.msg import Int8MultiArray, Bool
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
@@ -36,14 +36,14 @@ rospy.Subscriber("/imu/save-cal", Bool, calibration_update_callback)
 
 
 # setup publisher and classes
-imuPub = rospy.Publisher('imu/data', Imu, queue_size=10)
+imuPub = rospy.Publisher('imu/data', Imu, queue_size=5)
 msg = Imu()
 
-magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=10)
+magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=5)
 magMsg = MagneticField()
 
-statusPub = rospy.Publisher('imu/debug', UInt8MultiArray, queue_size=1)
-statusMsg = UInt8MultiArray()
+statusPub = rospy.Publisher('imu/debug', Int8MultiArray, queue_size=1)
+statusMsg = Int8MultiArray()
 
 
 seq = 1
