@@ -3,7 +3,7 @@ import rospy
 import traceback
 import gpiozero
 from time import sleep
-from std_msgs.msg import UInt8MultiArray
+from std_msgs.msg import UInt8MultiArray, Float64MultiArray
 
 PIN_LED = 21
 
@@ -48,9 +48,16 @@ def imu_status_callback(imu_status):
     #     imuProblem = True
 
 
+def odom_callback(imu_status):
+    print(imu_status)
+    print(imu_status.layout.dim)
+    print(imu_status.data)
+
+
 rospy.init_node('holly_status_output')
 
 rospy.Subscriber("/imu/debug", UInt8MultiArray, imu_status_callback)
+rospy.Subscriber("/holly/encoders", Float64MultiArray, odom_callback)
 
 
 while not rospy.is_shutdown():
