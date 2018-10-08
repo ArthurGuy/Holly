@@ -93,6 +93,7 @@ def get_data():
             # If we have calibration data and it hasn't been loaded then load it
             if sensorCalibrationFetched and not sensorCalibrationLoaded:
                 imu.set_calibration(cal_data)
+                rospy.sleep(3)
 
             if (not sensorCalibrationSaved or updateCalibration) and system_status == 3:
                 sensorCalibrationSaved = True
