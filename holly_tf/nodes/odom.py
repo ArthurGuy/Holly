@@ -12,8 +12,8 @@ from tf.transformations import euler_from_quaternion
 
 sys.path.append('.')
 
-rospy.init_node('holly_odom_calculator') #public display name of the publisher
-rate = rospy.Rate(10) # 10hz
+rospy.init_node('holly_odom_calculator')  # public display name of the publisher
+rate = rospy.Rate(10)  # 10hz
 
 newOdomData = False
 

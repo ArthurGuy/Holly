@@ -8,8 +8,8 @@ import time
 from sensor_msgs.msg import JointState
 sys.path.append('.')
 
-rospy.init_node('holly_bogie_position') #public display name of the publisher
-rate = rospy.Rate(10) # 10hz
+rospy.init_node('holly_bogie_position') # public display name of the publisher
+rate = rospy.Rate(5) # 10hz
 
 jointPublisher = rospy.Publisher('/holly/joint_states', JointState, queue_size=10)
 jointMessage = JointState()
@@ -18,7 +18,7 @@ seq = 1
 
 # Note you can change the I2C address from its default (0x48), and/or the I2C
 # bus by passing in these optional parameters:
-#adc = Adafruit_ADS1x15.ADS1015(address=0x49, busnum=1)
+# adc = Adafruit_ADS1x15.ADS1015(address=0x49, busnum=1)
 adc = Adafruit_ADS1x15.ADS1115()
 
 # Gain
@@ -39,6 +39,7 @@ bits_per_rad = 10000.0
 center_left = (adc.read_adc(0, gain=1) * -1) / bits_per_rad
 center_right = (adc.read_adc(1, gain=1) * -1) / bits_per_rad
 center_rear = adc.read_adc(2, gain=1) / bits_per_rad
+
 
 def get_data():
     global seq
