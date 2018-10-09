@@ -108,65 +108,85 @@ def get_data():
 
             seq += 1
 
-            # Only publish sensor data if its a reasonable quality
-            if mag_status > 1:
+            # Publish the mag data #
 
-                # Publish the mag data
+            magMsg.header.seq = seq
+            magMsg.header.stamp = rospy.Time.now()
+            magMsg.header.frame_id = "base_link"
 
-                magMsg.header.seq = seq
-                magMsg.header.stamp = rospy.Time.now()
-                magMsg.header.frame_id = "base_link"
-
-                # Magnetometer data (in micro-Teslas):
-                x, y, z = imu.read_magnetometer()
-                magMsg.magnetic_field.x = x / 1000000  # Convert to Teslas
-                magMsg.magnetic_field.y = y / 1000000
-                magMsg.magnetic_field.z = z / 1000000
+            # Magnetometer data (in micro-Teslas):
+            x, y, z = imu.read_magnetometer()
+            magMsg.magnetic_field.x = x / 1000000  # Convert to Teslas
+            magMsg.magnetic_field.y = y / 1000000
+            magMsg.magnetic_field.z = z / 1000000
+            if mag_status == 3:
+                magMsg.magnetic_field_covariance = [1] * 9
+            elif mag_status == 2:
                 magMsg.magnetic_field_covariance = [0.1] * 9
+            elif mag_status == 1:
+                magMsg.magnetic_field_covariance = [0.01] * 9
+            elif mag_status == 0:
+                magMsg.magnetic_field_covariance = [0.0001] * 9
 
-                magPub.publish(magMsg)
+            magPub.publish(magMsg)
 
-            if system_status > 0 and gyro_status > 1:
+            # Publish the gyro and accel data #
 
-                # Publish the gyro and accel data
+            msg.header.seq = seq
+            msg.header.stamp = rospy.Time.now()
+            msg.header.frame_id = "base_link"
 
-                msg.header.seq = seq
-                msg.header.stamp = rospy.Time.now()
-                msg.header.frame_id = "base_link"
-
-                # x, y, z, w = imu.read_quaternion()
-                # Translate the heading, angle needs to be reversed
-                # Roll and pitch are also swapped for some reason
-                quaternion = quaternion_from_euler((pitch * -1) * 1000 / 57296, (roll * -1) * 1000 / 57296, (360 - heading) * 1000 / 57296)
-                msg.orientation.x = quaternion[0]  # x
-                msg.orientation.y = quaternion[1]  # y
-                msg.orientation.z = quaternion[2]  # x
-                msg.orientation.w = quaternion[3]  # w
+            # x, y, z, w = imu.read_quaternion()
+            # Translate the heading, angle needs to be reversed
+            # Roll and pitch are also swapped for some reason
+            quaternion = quaternion_from_euler((pitch * -1) * 1000 / 57296, (roll * -1) * 1000 / 57296, (360 - heading) * 1000 / 57296)
+            msg.orientation.x = quaternion[0]  # x
+            msg.orientation.y = quaternion[1]  # y
+            msg.orientation.z = quaternion[2]  # x
+            msg.orientation.w = quaternion[3]  # w
+            if system_status == 3:
+                msg.orientation_covariance = [0.01] * 9
+            elif system_status == 2:
                 msg.orientation_covariance = [0.001] * 9
-                # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
+            elif system_status == 1:
+                msg.orientation_covariance = [0.001] * 9
+            elif system_status == 0:
+                msg.orientation_covariance = [0.0001] * 9
+            # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
-                # Gyroscope data (in degrees per second):
-                x, y, z = imu.read_gyroscope()
-                msg.angular_velocity.x = x * 1000 / 57296  # Convert to rad/s
-                msg.angular_velocity.y = y * 1000 / 57296
-                msg.angular_velocity.z = z * 1000 / 57296
+            # Gyroscope data (in degrees per second):
+            x, y, z = imu.read_gyroscope()
+            msg.angular_velocity.x = x * 1000 / 57296  # Convert to rad/s
+            msg.angular_velocity.y = y * 1000 / 57296
+            msg.angular_velocity.z = z * 1000 / 57296
+            if gyro_status == 3:
                 msg.angular_velocity_covariance = [1] * 9
-                # print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
+            elif gyro_status == 2:
+                msg.angular_velocity_covariance = [0.1] * 9
+            elif gyro_status == 1:
+                msg.angular_velocity_covariance = [0.01] * 9
+            elif gyro_status == 0:
+                msg.angular_velocity_covariance = [0.0001] * 9
+            # print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
-                # Accelerometer data (in meters per second squared):
-                x, y, z = imu.read_accelerometer()
-                # if accel_status > 1:
-                msg.linear_acceleration.x = x
-                msg.linear_acceleration.y = y
-                msg.linear_acceleration.z = z
+            # Accelerometer data (in meters per second squared):
+            x, y, z = imu.read_accelerometer()
+            # if accel_status > 1:
+            msg.linear_acceleration.x = x
+            msg.linear_acceleration.y = y
+            msg.linear_acceleration.z = z
+            if accel_status == 3:
                 msg.linear_acceleration_covariance = [10] * 9
+            elif accel_status == 2:
+                msg.linear_acceleration_covariance = [1] * 9
+            elif accel_status == 1:
+                msg.linear_acceleration_covariance = [0.01] * 9
+            elif accel_status == 0:
+                msg.linear_acceleration_covariance = [0.0001] * 99
 
-                # print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
+            # print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
-                imuPub.publish(msg)
-
-            else:
-                rospy.logwarn('Sensor accuracy to low')
+            imuPub.publish(msg)
 
         except IOError:
             # print 'Error reading uv sensor'
