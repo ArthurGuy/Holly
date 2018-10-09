@@ -1,5 +1,7 @@
 <launch>
 
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find holly_navigation)/config/map.yaml"/>
+    
     <include file="$(find amcl)/examples/amcl_omni.launch" />
 
     <node pkg="costmap_2d" type="costmap_2d_node" name="nav_test" output="screen">
