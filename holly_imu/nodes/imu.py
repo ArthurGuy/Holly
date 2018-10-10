@@ -182,7 +182,7 @@ def get_data():
             elif accel_status == 1:
                 msg.linear_acceleration_covariance = [0.01] * 9
             elif accel_status == 0:
-                msg.linear_acceleration_covariance = [0.0001] * 99
+                msg.linear_acceleration_covariance = [0.0001] * 9
 
             # print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
