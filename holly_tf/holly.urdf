@@ -1,6 +1,22 @@
 <?xml version="1.0"?>
 <robot name="holly">
 
+    <link name="/base_footprint">
+        <visual>
+            <geometry>
+                <box size="0.65 0.38 0.01"/>
+            </geometry>
+            <material name="grey" />
+            <origin rpy="0 0 0" xyz="0 0 0" />
+        </visual>
+    </link>
+
+    <joint name="base_to_bogie_rear" type="fixed">
+        <parent link="/base_link" />
+        <child link="/base_footprint" />
+        <origin xyz="0 0 -0.2" />
+    </joint>
+
     <link name="/base_link">
         <visual>
             <geometry>
