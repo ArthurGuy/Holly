@@ -1,11 +1,22 @@
 TrajectoryPlannerROS:
-  max_vel_x: 0.45
-  min_vel_x: 0.1
-  max_vel_theta: 1.0
-  min_in_place_vel_theta: 0.4
-
+  #Set the acceleration limits of the robot
   acc_lim_theta: 3.2
   acc_lim_x: 2.5
   acc_lim_y: 0
 
-  holonomic_robot: true
+  #Set the velocity limits of the robot
+  max_vel_x: 0.4
+  min_vel_x: 0.1
+  min_in_place_vel_theta: 0.4
+  max_vel_theta: 0.4
+  max_rotational_vel: 0.4
+
+  #Set the tolerance on achieving a goal
+  xy_goal_tolerance: 0.15
+  yaw_goal_tolerance: 0.17
+  latch_xy_goal_tolerance: false
+
+  holonomic_robot: false
+
+  #The frequency at which the local planner gets called
+  controller_frequency: 5
