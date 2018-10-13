@@ -104,7 +104,7 @@ def update_position():
         odomMsg.header.seq = seq
         odomMsg.header.stamp = rospy.Time.now()
         odomMsg.header.frame_id = "odom"
-        odomMsg.child_frame_id = "base_link"
+        odomMsg.child_frame_id = "base_footprint"
 
         pose = Pose()
         pose.position.x = abs_x_m
