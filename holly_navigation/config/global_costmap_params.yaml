@@ -4,3 +4,6 @@ global_costmap:
   update_frequency: 1.0
   static_map: true
   resolution: 0.1
+
+  # Specifies the delay in transform (tf) data that is tolerable in seconds.
+  transform_tolerance: 0.5
