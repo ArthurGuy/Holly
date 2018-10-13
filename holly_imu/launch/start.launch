@@ -19,6 +19,5 @@
                                 false, false, false]</rosparam>
         <param name="print_diagnostics" value="true" />
         <param name="two_d_mode" value="false" />
-        <param name="base_link_frame" value="base_footprint" />
     </node>
 </launch>
