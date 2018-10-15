@@ -95,7 +95,7 @@ def get_data():
                 imu.set_calibration(cal_data)
                 rospy.sleep(3)
 
-            if (not sensorCalibrationSaved or updateCalibration) and system_status == 3:
+            if (not sensorCalibrationSaved or updateCalibration) and system_status == 3 and gyro_status == 3 and accel_status == 3 and mag_status == 3:
                 sensorCalibrationSaved = True
                 updateCalibration = False
                 cal_data = imu.get_calibration()
