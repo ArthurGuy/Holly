@@ -32,7 +32,7 @@ def calibration_update_callback(data):
     updateCalibration = data.data
 
 
-rospy.Subscriber("/imu/save-cal", Bool, calibration_update_callback)
+rospy.Subscriber("/imu/save_cal", Bool, calibration_update_callback)
 
 
 # setup publisher and classes
