@@ -203,7 +203,7 @@ while not rospy.is_shutdown():
                 if not imu.begin():
                     raise RuntimeError('Failed to initialize BNO055! Is the sensor connected?')
 
-                imu.set_external_crystal(True)
+                # imu.set_external_crystal(True)
 
                 # Print system status and self test result.
                 status, self_test, error = imu.get_system_status()
