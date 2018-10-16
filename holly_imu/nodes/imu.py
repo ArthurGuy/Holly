@@ -94,16 +94,22 @@ def get_data():
             if sensorCalibrationFetched and not sensorCalibrationLoaded:
                 imu.set_calibration(cal_data)
                 rospy.sleep(3)
+                system_status, gyro_status, accel_status, mag_status = imu.get_calibration_status()
 
             if (not sensorCalibrationSaved or updateCalibration) and system_status == 3 and gyro_status == 3 and accel_status == 3 and mag_status == 3:
                 sensorCalibrationSaved = True
                 updateCalibration = False
+                rospy.sleep(3)  # Give the last few readings time to save
                 cal_data = imu.get_calibration()
                 print cal_data
                 with open("imu-cal.txt", "w") as f:
                     for cal in cal_data:
                         f.write(str(cal) + "\n")
                 rospy.loginfo("Calibration data saved")
+
+            if sensorCalibrationLoaded and sensorCalibrationFetched and sensorCalibrationSaved and system_status == 0:
+                sensorCalibrationLoaded = False
+                rospy.loginfo("Bad sensor data, reloading calibration")
 
 
             seq += 1
@@ -124,9 +130,9 @@ def get_data():
             elif mag_status == 2:
                 magMsg.magnetic_field_covariance = [0.1] * 9
             elif mag_status == 1:
-                magMsg.magnetic_field_covariance = [0.01] * 9
+                magMsg.magnetic_field_covariance = [0.001] * 9
             elif mag_status == 0:
-                magMsg.magnetic_field_covariance = [0.0001] * 9
+                magMsg.magnetic_field_covariance = [0.00001] * 9
 
             magPub.publish(magMsg)
 
@@ -149,9 +155,9 @@ def get_data():
             elif system_status == 2:
                 msg.orientation_covariance = [0.001] * 9
             elif system_status == 1:
-                msg.orientation_covariance = [0.001] * 9
-            elif system_status == 0:
                 msg.orientation_covariance = [0.0001] * 9
+            elif system_status == 0:
+                msg.orientation_covariance = [0.00001] * 9
             # print('Orientation: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} W={2:0.8F}'.format(x, y, z, w))
 
             # Gyroscope data (in degrees per second):
@@ -164,9 +170,9 @@ def get_data():
             elif gyro_status == 2:
                 msg.angular_velocity_covariance = [0.1] * 9
             elif gyro_status == 1:
-                msg.angular_velocity_covariance = [0.01] * 9
+                msg.angular_velocity_covariance = [0.001] * 9
             elif gyro_status == 0:
-                msg.angular_velocity_covariance = [0.0001] * 9
+                msg.angular_velocity_covariance = [0.00001] * 9
             # print('Gyro: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
             # Accelerometer data (in meters per second squared):
@@ -180,9 +186,9 @@ def get_data():
             elif accel_status == 2:
                 msg.linear_acceleration_covariance = [1] * 9
             elif accel_status == 1:
-                msg.linear_acceleration_covariance = [0.01] * 9
+                msg.linear_acceleration_covariance = [0.001] * 9
             elif accel_status == 0:
-                msg.linear_acceleration_covariance = [0.0001] * 9
+                msg.linear_acceleration_covariance = [0.00001] * 9
 
             # print('Accelerometer: X={0:0.2F} Y={1:0.2F} Z={2:0.2F}'.format(x, y, z))
 
