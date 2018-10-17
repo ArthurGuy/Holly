@@ -8,10 +8,10 @@ from VL53L0X.python.VL53L0X import VL53L0X_BETTER_ACCURACY_MODE
 from sensor_msgs.msg import Range
 sys.path.append('.')
 
-rospy.init_node('holly_chassis_height') #public display name of the publisher
+rospy.init_node('front_distance_sensor') #public display name of the publisher
 rate = rospy.Rate(10) # 10hz
 
-rangePublisher = rospy.Publisher('/holly/chassis_height', Range, queue_size=10)
+rangePublisher = rospy.Publisher('/holly/range/front', Range, queue_size=10)
 rangeMessage = Range()
 
 seq = 1
@@ -44,11 +44,11 @@ def get_data():
 
                 rangeMessage.header.seq = seq
                 rangeMessage.header.stamp = rospy.Time.now()
-                rangeMessage.header.frame_id = "chassis_height_sensor"
+                rangeMessage.header.frame_id = "front_distance_sensor"
 
                 rangeMessage.radiation_type = 1
                 rangeMessage.min_range = 0.05
-                rangeMessage.max_range = 8
+                rangeMessage.max_range = 2
                 rangeMessage.field_of_view = 0.436 # 25 degrees
                 rangeMessage.range = float(distance_in_mm) / 1000
 

@@ -127,7 +127,7 @@
         <limit lower="-0.785" upper="0.785" effort="1000" velocity="0.5" />
     </joint>
 
-    <link name="/chassis_height_sensor">
+    <link name="/front_distance_sensor">
          <visual>
             <geometry>
                 <box size="0.05 0.05 0.05" />
@@ -136,10 +136,10 @@
         </visual>
     </link>
 
-    <joint name="base_to_chassis_height_sensor" type="fixed">
+    <joint name="base_to_front_distance_sensor" type="fixed">
         <parent link="/base_link" />
-        <child link="/chassis_height_sensor" />
-        <origin xyz="0 0.0 0.0" rpy="0 1.570895 0" />
+        <child link="/front_distance_sensor" />
+        <origin xyz="0.32 0.0 0.0" rpy="0 0 0" />
     </joint>
 
     <link name="/laserscan_frame"></link>
