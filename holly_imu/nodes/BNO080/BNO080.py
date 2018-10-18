@@ -368,3 +368,6 @@ class BNO080(object):
         else:
             return response
 
+    def get_data_array(self):
+        return self.receivedData
+
