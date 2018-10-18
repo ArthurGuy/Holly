@@ -299,6 +299,7 @@ class BNO080(object):
         i = 0
         while i < numberOfBytesToRead + 4:
             data.append(self._i2c_device.readRaw8())
+            i += 1
         return data
 
     def _receive_packet(self):
