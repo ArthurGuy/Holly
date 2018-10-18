@@ -116,6 +116,7 @@ class BNO080(object):
 
         data = [packetLength & 0xFF, packetLength >> 8, channelNumber, self.sequenceNumber[channelNumber]] + data
 
+        print ''
         print 'Sending packet'
         print ' '.join('{:02x}'.format(x) for x in data)
         self._i2c_device.writeList(0, data)
@@ -141,6 +142,7 @@ class BNO080(object):
         # Store the header info.
         shtpHeader = [data[0], data[1], data[2], data[3]]
 
+        print ''
         print 'Received packet, header:'
         print ' '.join('{:02x}'.format(x) for x in shtpHeader)
 
