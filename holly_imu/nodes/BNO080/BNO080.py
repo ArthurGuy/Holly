@@ -295,15 +295,10 @@ class BNO080(object):
             i += 1
 
     def _read_data(self, numberOfBytesToRead):
-        data = []
-        i = 0
-        while i < numberOfBytesToRead + 4:
-            data.append(self._i2c_device.readRaw8())
-            i += 1
-        return data
+        return self._i2c_device.readList(0, numberOfBytesToRead + 4)
 
     def _receive_packet(self):
-        data = self._i2c_device.readList(BNO080_ADDRESS_B, 4)
+        data = self._i2c_device.readList(0, 4)
         # Store the header info.
         shtpHeader = [data[0], data[1], data[2], data[3]]
 
