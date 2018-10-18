@@ -297,7 +297,7 @@ class BNO080(object):
         data = []
         i = 0
         while i < numberOfBytesToRead + 4:
-            data[i] = self._i2c_device.readRaw8()
+            data.push(self._i2c_device.readRaw8())
         return data
 
     def _receive_packet(self):
@@ -325,32 +325,30 @@ class BNO080(object):
         timeBetweenReports = 500
 
         data = []
-        data[0] = SHTP_REPORT_SET_FEATURE_COMMAND
-        data[1] = reportID
-        data[2] = 0  # Feature flags
-        data[3] = 0  # Change sensitivity (LSB)
-        data[4] = 0  # Change sensitivity (MSB)
-        data[5] = (timeBetweenReports >> 0) & 0xFF   # Report interval (LSB) in microseconds. 0x7A120 = 500ms
-        data[6] = (timeBetweenReports >> 8) & 0xFF   # Report interval
-        data[7] = (timeBetweenReports >> 16) & 0xFF  # Report interval
-        data[8] = (timeBetweenReports >> 24) & 0xFF  # Report interval (MSB)
-        data[9] = 0  # Batch Interval (LSB)
-        data[10] = 0  # Batch Interval
-        data[11] = 0  # Batch Interval
-        data[12] = 0  # Batch Interval (MSB)
-        data[13] = (specificConfig >> 0) & 0xFF   # Sensor-specific config (LSB)
-        data[14] = (specificConfig >> 8) & 0xFF   # Sensor-specific config
-        data[15] = (specificConfig >> 16) & 0xFF  # Sensor-specific config
-        data[16] = (specificConfig >> 24) & 0xFF  # Sensor-specific config (MSB)
+        data.push(SHTP_REPORT_SET_FEATURE_COMMAND)
+        data.push(reportID)
+        data.push(0)  # Feature flags
+        data.push(0)  # Change sensitivity (LSB)
+        data.push(0)  # Change sensitivity (MSB)
+        data.push((timeBetweenReports >> 0) & 0xFF)   # Report interval (LSB) in microseconds. 0x7A120 = 500ms
+        data.push((timeBetweenReports >> 8) & 0xFF)   # Report interval
+        data.push((timeBetweenReports >> 16) & 0xFF)  # Report interval
+        data.push((timeBetweenReports >> 24) & 0xFF)  # Report interval (MSB)
+        data.push(0)  # Batch Interval (LSB)
+        data.push(0)  # Batch Interval
+        data.push(0)  # Batch Interval
+        data.push(0)  # Batch Interval (MSB)
+        data.push((specificConfig >> 0) & 0xFF)   # Sensor-specific config (LSB)
+        data.push((specificConfig >> 8) & 0xFF)   # Sensor-specific config
+        data.push((specificConfig >> 16) & 0xFF)  # Sensor-specific config
+        data.push((specificConfig >> 24) & 0xFF)  # Sensor-specific config (MSB)
         self._send_shtp_command(CHANNEL_CONTROL, 17, data)
 
     def begin(self):
         # reset
 
         # Check communication with device
-        data = []
-        data[0] = SHTP_REPORT_PRODUCT_ID_REQUEST
-        data[1] = 0
+        data = [SHTP_REPORT_PRODUCT_ID_REQUEST, 0]
         # Transmit packet on channel 2, 2 bytes
         self._send_shtp_command(CHANNEL_CONTROL, 2, data)
 
