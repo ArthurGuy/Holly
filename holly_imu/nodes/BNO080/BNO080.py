@@ -291,7 +291,7 @@ class BNO080(object):
         self._i2c_device.writeRaw8(self.sequenceNumber[channelNumber])  # Send the sequence number, increments with each packet sent, different counter for each channel
         i = 0
         while i < dataLength:
-            self._i2c_device.write8(0x0, data[i])
+            self._i2c_device.write8(i + 4, data[i])
             i += 1
 
     def _read_data(self, numberOfBytesToRead):
