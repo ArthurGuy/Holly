@@ -304,11 +304,7 @@ class BNO080(object):
     def _receive_packet(self):
         data = self._i2c_device.readList(BNO080_ADDRESS_B, 4)
         # Store the header info.
-        shtpHeader = []
-        shtpHeader[0] = data[0]
-        shtpHeader[1] = data[1]
-        shtpHeader[2] = data[2]
-        shtpHeader[3] = data[3]
+        shtpHeader = [data[0], data[1], data[2], data[3]]
 
         # Calculate the number of data bytes in this packet
         dataLength = shtpHeader[1] << 8 | shtpHeader[0]
