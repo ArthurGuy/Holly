@@ -181,15 +181,16 @@ class BNO080(object):
     def soft_reset(self):
         self._send_shtp_command(CHANNEL_EXECUTABLE, 1, [1])
         time.sleep(0.05)
-        receiving_data = True
-        while receiving_data:
-            receiving_data = self._receive_packet()
-            time.sleep(0.01)
         self._receive_packet()
+        time.sleep(0.05)
+        self._receive_packet()
+        time.sleep(0.05)
 
     def begin(self):
         # reset
+        print 'Resetting'
         self.soft_reset()
+        print 'Reset complete'
 
         # Check communication with device
         data = [SHTP_REPORT_PRODUCT_ID_REQUEST, 0]
