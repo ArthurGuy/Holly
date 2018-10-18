@@ -182,7 +182,7 @@ class BNO080(object):
         receiving_data = True
         while receiving_data:
             receiving_data = self._receive_packet()
-        time.sleep(0.05)
+            time.sleep(0.01)
         self._receive_packet()
 
     def begin(self):
