@@ -298,7 +298,7 @@ class BNO080(object):
         data = []
         i = 0
         while i < numberOfBytesToRead + 4:
-            data.push(self._i2c_device.readRaw8())
+            data.append(self._i2c_device.readRaw8())
         return data
 
     def _receive_packet(self):
@@ -322,23 +322,23 @@ class BNO080(object):
         timeBetweenReports = 500
 
         data = []
-        data.push(SHTP_REPORT_SET_FEATURE_COMMAND)
-        data.push(reportID)
-        data.push(0)  # Feature flags
-        data.push(0)  # Change sensitivity (LSB)
-        data.push(0)  # Change sensitivity (MSB)
-        data.push((timeBetweenReports >> 0) & 0xFF)   # Report interval (LSB) in microseconds. 0x7A120 = 500ms
-        data.push((timeBetweenReports >> 8) & 0xFF)   # Report interval
-        data.push((timeBetweenReports >> 16) & 0xFF)  # Report interval
-        data.push((timeBetweenReports >> 24) & 0xFF)  # Report interval (MSB)
-        data.push(0)  # Batch Interval (LSB)
-        data.push(0)  # Batch Interval
-        data.push(0)  # Batch Interval
-        data.push(0)  # Batch Interval (MSB)
-        data.push((specificConfig >> 0) & 0xFF)   # Sensor-specific config (LSB)
-        data.push((specificConfig >> 8) & 0xFF)   # Sensor-specific config
-        data.push((specificConfig >> 16) & 0xFF)  # Sensor-specific config
-        data.push((specificConfig >> 24) & 0xFF)  # Sensor-specific config (MSB)
+        data.append(SHTP_REPORT_SET_FEATURE_COMMAND)
+        data.append(reportID)
+        data.append(0)  # Feature flags
+        data.append(0)  # Change sensitivity (LSB)
+        data.append(0)  # Change sensitivity (MSB)
+        data.append((timeBetweenReports >> 0) & 0xFF)   # Report interval (LSB) in microseconds. 0x7A120 = 500ms
+        data.append((timeBetweenReports >> 8) & 0xFF)   # Report interval
+        data.append((timeBetweenReports >> 16) & 0xFF)  # Report interval
+        data.append((timeBetweenReports >> 24) & 0xFF)  # Report interval (MSB)
+        data.append(0)  # Batch Interval (LSB)
+        data.append(0)  # Batch Interval
+        data.append(0)  # Batch Interval
+        data.append(0)  # Batch Interval (MSB)
+        data.append((specificConfig >> 0) & 0xFF)   # Sensor-specific config (LSB)
+        data.append((specificConfig >> 8) & 0xFF)   # Sensor-specific config
+        data.append((specificConfig >> 16) & 0xFF)  # Sensor-specific config
+        data.append((specificConfig >> 24) & 0xFF)  # Sensor-specific config (MSB)
         self._send_shtp_command(CHANNEL_CONTROL, 17, data)
 
     def begin(self):
