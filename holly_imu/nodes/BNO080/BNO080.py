@@ -179,7 +179,9 @@ class BNO080(object):
     def soft_reset(self):
         self._send_shtp_command(CHANNEL_EXECUTABLE, 1, [1])
         time.sleep(0.05)
-        self._receive_packet()
+        receiving_data = True
+        while receiving_data:
+            receiving_data = self._receive_packet()
         time.sleep(0.05)
         self._receive_packet()
 
