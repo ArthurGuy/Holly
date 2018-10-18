@@ -271,6 +271,7 @@ CALIBRATE_STOP = 5
 
 class BNO080(object):
     receivedData = []
+    sequenceNumber = [0, 0, 0, 0, 0, 0]
 
     def __init__(self, address=BNO080_ADDRESS_A, gpio=None, **kwargs):
         self._rst = None
@@ -280,14 +281,6 @@ class BNO080(object):
         i2c = I2C
         # Save a reference to the I2C device instance for later communication.
         self._i2c_device = i2c.get_i2c_device(address, **kwargs)
-
-        self.sequenceNumber = []
-        self.sequenceNumber[0] = 0
-        self.sequenceNumber[1] = 0
-        self.sequenceNumber[2] = 0
-        self.sequenceNumber[3] = 0
-        self.sequenceNumber[4] = 0
-        self.sequenceNumber[5] = 0
 
     def _send_shtp_command(self, channelNumber, dataLength, data):
         packetLength = dataLength + 4
