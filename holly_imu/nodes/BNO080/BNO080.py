@@ -352,7 +352,7 @@ class BNO080(object):
 
         # Now we wait for response
         if self._receive_packet():
-            if self.receivedData[0] is SHTP_REPORT_PRODUCT_ID_RESPONSE:
+            if self.receivedData[0] == SHTP_REPORT_PRODUCT_ID_RESPONSE:
                 return True
 
         return False
