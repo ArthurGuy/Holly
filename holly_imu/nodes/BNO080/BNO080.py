@@ -176,8 +176,16 @@ class BNO080(object):
         data.append((specificConfig >> 24) & 0xFF)  # Sensor-specific config (MSB)
         self._send_shtp_command(CHANNEL_CONTROL, 17, data)
 
+    def soft_reset(self):
+        self._send_shtp_command(CHANNEL_EXECUTABLE, 1, [1])
+        time.sleep(0.05)
+        self._receive_packet()
+        time.sleep(0.05)
+        self._receive_packet()
+
     def begin(self):
         # reset
+        self.soft_reset()
 
         # Check communication with device
         data = [SHTP_REPORT_PRODUCT_ID_REQUEST, 0]
