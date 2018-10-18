@@ -285,14 +285,16 @@ class BNO080(object):
     def _send_shtp_command(self, channelNumber, dataLength, data):
         packetLength = dataLength + 4
         self.sequenceNumber[channelNumber] = self.sequenceNumber[channelNumber] + 1
-        self._i2c_device.writeRaw8(packetLength & 0xFF)  # Packet length LSB
-        self._i2c_device.writeRaw8(packetLength >> 8)    # Packet length MSB
-        self._i2c_device.writeRaw8(channelNumber)
-        self._i2c_device.writeRaw8(self.sequenceNumber[channelNumber])  # Send the sequence number, increments with each packet sent, different counter for each channel
-        i = 0
-        while i < dataLength:
-            self._i2c_device.write8(i + 4, data[i])
-            i += 1
+        data = [packetLength & 0xFF, packetLength >> 8, channelNumber, self.sequenceNumber[channelNumber]] + data
+        self._i2c_device.writeList(0, data)
+        # self._i2c_device.writeRaw8(packetLength & 0xFF)  # Packet length LSB
+        # self._i2c_device.writeRaw8(packetLength >> 8)    # Packet length MSB
+        # self._i2c_device.writeRaw8(channelNumber)
+        # self._i2c_device.writeRaw8(self.sequenceNumber[channelNumber])  # Send the sequence number, increments with each packet sent, different counter for each channel
+        # i = 0
+        # while i < dataLength:
+        #     self._i2c_device.write8(i + 4, data[i])
+        #     i += 1
 
     def _read_data(self, numberOfBytesToRead):
         return self._i2c_device.readList(0, numberOfBytesToRead + 4)
