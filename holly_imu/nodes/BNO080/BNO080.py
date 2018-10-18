@@ -273,7 +273,7 @@ class BNO080(object):
     receivedData = []
     sequenceNumber = [0, 0, 0, 0, 0, 0]
 
-    def __init__(self, address=BNO080_ADDRESS_A, gpio=None, **kwargs):
+    def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
         self._rst = None
         self._serial = None
         self._i2c_device = None
@@ -301,7 +301,7 @@ class BNO080(object):
         return data
 
     def _receive_packet(self):
-        data = self._i2c_device.readList(BNO080_ADDRESS_A, 4)
+        data = self._i2c_device.readList(BNO080_ADDRESS_B, 4)
         # Store the header info.
         shtpHeader = []
         shtpHeader[0] = data[0]
