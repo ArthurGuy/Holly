@@ -135,11 +135,14 @@ class BNO080(object):
     def _receive_packet(self):
         data = self._i2c_device.readList(0, 100)
 
-        print 'Received packet, header:'
-        print ' '.join('{:02x}'.format(x) for x in data[0:4])
+        print 'Received packet:'
+        print ' '.join('{:02x}'.format(x) for x in data)
 
         # Store the header info.
         shtpHeader = [data[0], data[1], data[2], data[3]]
+
+        print 'Received packet, header:'
+        print ' '.join('{:02x}'.format(x) for x in shtpHeader)
 
         # Calculate the number of data bytes in this packet
         dataLength = shtpHeader[1] << 8 | shtpHeader[0]
@@ -148,8 +151,7 @@ class BNO080(object):
         if dataLength == 0:
             return False
         else:
-            dataLength = dataLength - 4
-            self.receivedData = data[4:(dataLength + 4)]
+            self.receivedData = data[4:(dataLength)]
             print 'Received packet, body:'
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             return True
