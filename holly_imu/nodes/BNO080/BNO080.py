@@ -153,6 +153,7 @@ class BNO080(object):
         else:
             self.receivedData = self._i2c_device.readList(0, dataLength)
             print 'Received packet, body:'
+            print self.receivedData
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             return True
 
