@@ -130,7 +130,7 @@ class BNO080(object):
         #     i += 1
 
     def _read_data(self, numberOfBytesToRead):
-        return self._i2c_device.readList(0, numberOfBytesToRead + 4)
+        return self._i2c_device.readList(4, numberOfBytesToRead + 4)
 
     def _receive_packet(self):
         data = self._i2c_device.readList(0, 4)
@@ -150,6 +150,8 @@ class BNO080(object):
         else:
             dataLength = dataLength - 4
             self.receivedData = self._read_data(dataLength)
+            print 'Received packet, body:'
+            print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             return True
 
     def _set_feature_command(self, reportID, specificConfig):
