@@ -31,180 +31,6 @@ BNO080_ADDRESS_A                     = 0x4A
 BNO080_ADDRESS_B                     = 0x4B
 BNO080_ID                            = 0xF8
 
-# Page id register definition
-BNO080_PAGE_ID_ADDR                  = 0X07
-
-# PAGE0 REGISTER DEFINITION START
-BNO080_CHIP_ID_ADDR                  = 0xF9
-BNO080_ACCEL_REV_ID_ADDR             = 0x01
-BNO080_MAG_REV_ID_ADDR               = 0x02
-BNO080_GYRO_REV_ID_ADDR              = 0x03
-BNO080_SW_REV_ID_LSB_ADDR            = 0x04
-BNO080_SW_REV_ID_MSB_ADDR            = 0x05
-BNO080_BL_REV_ID_ADDR                = 0X06
-
-# Accel data register
-BNO080_ACCEL_DATA_X_LSB_ADDR         = 0X08
-BNO080_ACCEL_DATA_X_MSB_ADDR         = 0X09
-BNO080_ACCEL_DATA_Y_LSB_ADDR         = 0X0A
-BNO080_ACCEL_DATA_Y_MSB_ADDR         = 0X0B
-BNO080_ACCEL_DATA_Z_LSB_ADDR         = 0X0C
-BNO080_ACCEL_DATA_Z_MSB_ADDR         = 0X0D
-
-# Mag data register
-BNO080_MAG_DATA_X_LSB_ADDR           = 0X0E
-BNO080_MAG_DATA_X_MSB_ADDR           = 0X0F
-BNO080_MAG_DATA_Y_LSB_ADDR           = 0X10
-BNO080_MAG_DATA_Y_MSB_ADDR           = 0X11
-BNO080_MAG_DATA_Z_LSB_ADDR           = 0X12
-BNO080_MAG_DATA_Z_MSB_ADDR           = 0X13
-
-# Gyro data registers
-BNO080_GYRO_DATA_X_LSB_ADDR          = 0X14
-BNO080_GYRO_DATA_X_MSB_ADDR          = 0X15
-BNO080_GYRO_DATA_Y_LSB_ADDR          = 0X16
-BNO080_GYRO_DATA_Y_MSB_ADDR          = 0X17
-BNO080_GYRO_DATA_Z_LSB_ADDR          = 0X18
-BNO080_GYRO_DATA_Z_MSB_ADDR          = 0X19
-
-# Euler data registers
-BNO080_EULER_H_LSB_ADDR              = 0X1A  # yaw   = x = heading
-BNO080_EULER_H_MSB_ADDR              = 0X1B
-BNO080_EULER_R_LSB_ADDR              = 0X1C  # roll  = y
-BNO080_EULER_R_MSB_ADDR              = 0X1D
-BNO080_EULER_P_LSB_ADDR              = 0X1E  # pitch = z
-BNO080_EULER_P_MSB_ADDR              = 0X1F
-
-# Quaternion data registers
-BNO080_QUATERNION_DATA_W_LSB_ADDR    = 0X20
-BNO080_QUATERNION_DATA_W_MSB_ADDR    = 0X21
-BNO080_QUATERNION_DATA_X_LSB_ADDR    = 0X22
-BNO080_QUATERNION_DATA_X_MSB_ADDR    = 0X23
-BNO080_QUATERNION_DATA_Y_LSB_ADDR    = 0X24
-BNO080_QUATERNION_DATA_Y_MSB_ADDR    = 0X25
-BNO080_QUATERNION_DATA_Z_LSB_ADDR    = 0X26
-BNO080_QUATERNION_DATA_Z_MSB_ADDR    = 0X27
-
-# Linear acceleration data registers
-BNO080_LINEAR_ACCEL_DATA_X_LSB_ADDR  = 0X28
-BNO080_LINEAR_ACCEL_DATA_X_MSB_ADDR  = 0X29
-BNO080_LINEAR_ACCEL_DATA_Y_LSB_ADDR  = 0X2A
-BNO080_LINEAR_ACCEL_DATA_Y_MSB_ADDR  = 0X2B
-BNO080_LINEAR_ACCEL_DATA_Z_LSB_ADDR  = 0X2C
-BNO080_LINEAR_ACCEL_DATA_Z_MSB_ADDR  = 0X2D
-
-# Gravity data registers
-BNO080_GRAVITY_DATA_X_LSB_ADDR       = 0X2E
-BNO080_GRAVITY_DATA_X_MSB_ADDR       = 0X2F
-BNO080_GRAVITY_DATA_Y_LSB_ADDR       = 0X30
-BNO080_GRAVITY_DATA_Y_MSB_ADDR       = 0X31
-BNO080_GRAVITY_DATA_Z_LSB_ADDR       = 0X32
-BNO080_GRAVITY_DATA_Z_MSB_ADDR       = 0X33
-
-# Temperature data register
-BNO080_TEMP_ADDR                     = 0X34
-
-# Status registers
-BNO080_CALIB_STAT_ADDR               = 0X35
-BNO080_SELFTEST_RESULT_ADDR          = 0X36
-BNO080_INTR_STAT_ADDR                = 0X37
-
-BNO080_SYS_CLK_STAT_ADDR             = 0X38
-BNO080_SYS_STAT_ADDR                 = 0X39
-BNO080_SYS_ERR_ADDR                  = 0X3A
-
-# Unit selection register
-BNO080_UNIT_SEL_ADDR                 = 0X3B
-BNO080_DATA_SELECT_ADDR              = 0X3C
-
-# Mode registers
-BNO080_OPR_MODE_ADDR                 = 0X3D
-BNO080_PWR_MODE_ADDR                 = 0X3E
-
-BNO080_SYS_TRIGGER_ADDR              = 0X3F
-BNO080_TEMP_SOURCE_ADDR              = 0X40
-
-# Axis remap registers
-BNO080_AXIS_MAP_CONFIG_ADDR          = 0X41
-BNO080_AXIS_MAP_SIGN_ADDR            = 0X42
-
-# Axis remap values
-AXIS_REMAP_X                         = 0x00
-AXIS_REMAP_Y                         = 0x01
-AXIS_REMAP_Z                         = 0x02
-AXIS_REMAP_POSITIVE                  = 0x00
-AXIS_REMAP_NEGATIVE                  = 0x01
-
-# SIC registers
-BNO080_SIC_MATRIX_0_LSB_ADDR         = 0X43
-BNO080_SIC_MATRIX_0_MSB_ADDR         = 0X44
-BNO080_SIC_MATRIX_1_LSB_ADDR         = 0X45
-BNO080_SIC_MATRIX_1_MSB_ADDR         = 0X46
-BNO080_SIC_MATRIX_2_LSB_ADDR         = 0X47
-BNO080_SIC_MATRIX_2_MSB_ADDR         = 0X48
-BNO080_SIC_MATRIX_3_LSB_ADDR         = 0X49
-BNO080_SIC_MATRIX_3_MSB_ADDR         = 0X4A
-BNO080_SIC_MATRIX_4_LSB_ADDR         = 0X4B
-BNO080_SIC_MATRIX_4_MSB_ADDR         = 0X4C
-BNO080_SIC_MATRIX_5_LSB_ADDR         = 0X4D
-BNO080_SIC_MATRIX_5_MSB_ADDR         = 0X4E
-BNO080_SIC_MATRIX_6_LSB_ADDR         = 0X4F
-BNO080_SIC_MATRIX_6_MSB_ADDR         = 0X50
-BNO080_SIC_MATRIX_7_LSB_ADDR         = 0X51
-BNO080_SIC_MATRIX_7_MSB_ADDR         = 0X52
-BNO080_SIC_MATRIX_8_LSB_ADDR         = 0X53
-BNO080_SIC_MATRIX_8_MSB_ADDR         = 0X54
-
-# Accelerometer Offset registers
-ACCEL_OFFSET_X_LSB_ADDR              = 0X55
-ACCEL_OFFSET_X_MSB_ADDR              = 0X56
-ACCEL_OFFSET_Y_LSB_ADDR              = 0X57
-ACCEL_OFFSET_Y_MSB_ADDR              = 0X58
-ACCEL_OFFSET_Z_LSB_ADDR              = 0X59
-ACCEL_OFFSET_Z_MSB_ADDR              = 0X5A
-
-# Magnetometer Offset registers
-MAG_OFFSET_X_LSB_ADDR                = 0X5B
-MAG_OFFSET_X_MSB_ADDR                = 0X5C
-MAG_OFFSET_Y_LSB_ADDR                = 0X5D
-MAG_OFFSET_Y_MSB_ADDR                = 0X5E
-MAG_OFFSET_Z_LSB_ADDR                = 0X5F
-MAG_OFFSET_Z_MSB_ADDR                = 0X60
-
-# Gyroscope Offset register s
-GYRO_OFFSET_X_LSB_ADDR               = 0X61
-GYRO_OFFSET_X_MSB_ADDR               = 0X62
-GYRO_OFFSET_Y_LSB_ADDR               = 0X63
-GYRO_OFFSET_Y_MSB_ADDR               = 0X64
-GYRO_OFFSET_Z_LSB_ADDR               = 0X65
-GYRO_OFFSET_Z_MSB_ADDR               = 0X66
-
-# Radius registers
-ACCEL_RADIUS_LSB_ADDR                = 0X67
-ACCEL_RADIUS_MSB_ADDR                = 0X68
-MAG_RADIUS_LSB_ADDR                  = 0X69
-MAG_RADIUS_MSB_ADDR                  = 0X6A
-
-# Power modes
-POWER_MODE_NORMAL                    = 0X00
-POWER_MODE_LOWPOWER                  = 0X01
-POWER_MODE_SUSPEND                   = 0X02
-
-# Operation mode settings
-OPERATION_MODE_CONFIG                = 0X00
-OPERATION_MODE_ACCONLY               = 0X01
-OPERATION_MODE_MAGONLY               = 0X02
-OPERATION_MODE_GYRONLY               = 0X03
-OPERATION_MODE_ACCMAG                = 0X04
-OPERATION_MODE_ACCGYRO               = 0X05
-OPERATION_MODE_MAGGYRO               = 0X06
-OPERATION_MODE_AMG                   = 0X07
-OPERATION_MODE_IMUPLUS               = 0X08
-OPERATION_MODE_COMPASS               = 0X09
-OPERATION_MODE_M4G                   = 0X0A
-OPERATION_MODE_NDOF_FMC_OFF          = 0X0B
-OPERATION_MODE_NDOF                  = 0X0C
-
 
 # SHTP = Sensor Hub Transport Protocol
 
@@ -283,10 +109,17 @@ class BNO080(object):
         self._i2c_device = i2c.get_i2c_device(address, **kwargs)
 
     def _send_shtp_command(self, channelNumber, dataLength, data):
+
         packetLength = dataLength + 4
+
         self.sequenceNumber[channelNumber] = self.sequenceNumber[channelNumber] + 1
+
         data = [packetLength & 0xFF, packetLength >> 8, channelNumber, self.sequenceNumber[channelNumber]] + data
+
+        print 'Sending packet'
+        print ' '.join('{:02x}'.format(x) for x in data)
         self._i2c_device.writeList(0, data)
+
         # self._i2c_device.writeRaw8(packetLength & 0xFF)  # Packet length LSB
         # self._i2c_device.writeRaw8(packetLength >> 8)    # Packet length MSB
         # self._i2c_device.writeRaw8(channelNumber)
@@ -301,6 +134,10 @@ class BNO080(object):
 
     def _receive_packet(self):
         data = self._i2c_device.readList(0, 4)
+
+        print 'Received packet, header:'
+        print ' '.join('{:02x}'.format(x) for x in data)
+
         # Store the header info.
         shtpHeader = [data[0], data[1], data[2], data[3]]
 
