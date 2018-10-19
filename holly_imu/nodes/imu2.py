@@ -24,7 +24,7 @@ from tf.transformations import euler_from_quaternion
 imu = BNO080.BNO080()
 
 rospy.init_node('holly_imu2')
-rate = rospy.Rate(20)
+rate = rospy.Rate(10)
 
 
 # setup publisher and classes
@@ -61,7 +61,7 @@ imu.calibrate_all()
 while not rospy.is_shutdown():
     try:
         if imu.data_available():
-            print('IMU data available')
+            # print('IMU data available')
             mag_accuracy = imu.get_mag_accuracy()
             sensor_accuracy = imu.get_quat_accuracy()
             print('Sys_cal={0} Mag_cal={1}'.format(sensor_accuracy, mag_accuracy))
