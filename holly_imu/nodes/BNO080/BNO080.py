@@ -369,6 +369,7 @@ class BNO080(object):
             self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
         elif report_id == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
             print 'SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR'
+            print self.receivedData
         elif report_id == SENSOR_REPORTID_STEP_COUNTER:
             print 'SENSOR_REPORTID_STEP_COUNTER'
             self.stepCount = data3
