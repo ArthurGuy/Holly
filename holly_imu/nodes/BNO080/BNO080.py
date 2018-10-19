@@ -277,9 +277,9 @@ class BNO080(object):
         if response is False:
             return False
         else:
-            if self.receivedHeader == CHANNEL_REPORTS:
+            if self.receivedHeader[2] == CHANNEL_REPORTS:
                 self._parse_input_report()
-            elif self.receivedHeader == CHANNEL_CONTROL:
+            elif self.receivedHeader[2] == CHANNEL_CONTROL:
                 self._parse_command_report()
             return True
 
