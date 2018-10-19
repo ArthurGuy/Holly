@@ -154,7 +154,7 @@ class BNO080(object):
             return False
         else:
             print ''
-            print 'Received packet, header:'
+            print 'Received packet:'
             # print ' '.join('{:02x}'.format(x) for x in shtpHeader)
             print('Length: {0}'.format(dataLength - 4))
             print('Channel: {0}'.format(shtpHeader[2]))
@@ -162,10 +162,7 @@ class BNO080(object):
             # receivedData = self._i2c_device.readList(0, dataLength)
             (count, receivedData) = self.pi.i2c_read_device(self.h, dataLength)
             self.receivedData = receivedData[4:dataLength]
-            print 'Received packet, body:'
-            # print self.receivedData
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
-            # print ''.join(chr(x) for x in self.receivedData)
             return True
 
     def _set_feature_command(self, reportID, specificConfig):
