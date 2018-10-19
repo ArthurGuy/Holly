@@ -264,6 +264,7 @@ class BNO080(object):
         return False
 
     def stop(self):
+        print 'Stopping IMU'
         self.pi.stop()
 
     def enable_rotation_vector(self, update_time):
