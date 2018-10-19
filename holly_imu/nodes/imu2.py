@@ -24,7 +24,7 @@ from tf.transformations import quaternion_from_euler
 imu = BNO080.BNO080()
 
 rospy.init_node('holly_imu2')
-rate = rospy.Rate(10)
+rate = rospy.Rate(20)
 
 
 # setup publisher and classes
@@ -52,7 +52,7 @@ rospy.loginfo("IMU2 starting")
 if not imu.begin():
     raise RuntimeError('Failed to initialize BNO080. Is the sensor connected?')
 
-imu.enable_rotation_vector(50)  # Send data update every 50ms
+imu.enable_rotation_vector(100)  # Send data update every 100ms
 
 
 while not rospy.is_shutdown():

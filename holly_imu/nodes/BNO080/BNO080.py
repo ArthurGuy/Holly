@@ -161,6 +161,7 @@ class BNO080(object):
 
             # receivedData = self._i2c_device.readList(0, dataLength)
             (count, receivedData) = self.pi.i2c_read_device(self.h, dataLength)
+            self.receivedHeader = receivedData[0:4]
             self.receivedData = receivedData[4:dataLength]
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             return True
@@ -224,8 +225,72 @@ class BNO080(object):
         if response is False:
             return False
         else:
-            return response
+            if self.receivedHeader == CHANNEL_REPORTS:
+                self._parse_input_report()
+            elif self.receivedHeader == CHANNEL_CONTROL:
+                self._parse_command_report()
+            return True
 
     def get_data_array(self):
         return self.receivedData
 
+    def _parse_input_report(self):
+        report_id = self.receivedData[5]
+        sequence_number = self.receivedData[6]
+        status = self.receivedData[7] & 0x03
+        data1 = self.receivedData[10] << 8 | self.receivedData[9]
+        data2 = self.receivedData[12] << 8 | self.receivedData[11]
+        data3 = self.receivedData[14] << 8 | self.receivedData[13]
+        data4 = 0
+        data5 = 0
+        if len(self.receivedData) > 14:
+            data4 = self.receivedData[16] << 8 | self.receivedData[15]
+        if len(self.receivedData) > 16:
+            data5 = self.receivedData[18] << 8 | self.receivedData[17]
+
+        if report_id == SENSOR_REPORTID_ACCELEROMETER:
+            self.accelAccuracy = status
+            self.rawAccelX = data1
+            self.rawAccelY = data2
+            self.rawAccelZ = data3
+        elif report_id == SENSOR_REPORTID_LINEAR_ACCELERATION:
+            self.accelLinAccuracy = status
+            self.rawLinAccelX = data1
+            self.rawLinAccelY = data2
+            self.rawLinAccelZ = data3
+        elif report_id == SENSOR_REPORTID_GYROSCOPE:
+            self.gyroAccuracy = status
+            self.rawGyroX = data1
+            self.rawGyroY = data2
+            self.rawGyroZ = data3
+        elif report_id == SENSOR_REPORTID_MAGNETIC_FIELD:
+            self.magAccuracy = status
+            self.rawMagX = data1
+            self.rawMagY = data2
+            self.rawMagZ = data3
+        elif report_id == SENSOR_REPORTID_ROTATION_VECTOR or report_id == SENSOR_REPORTID_GAME_ROTATION_VECTOR:
+            self.quatAccuracy = status
+            self.rawQuatI = data1
+            self.rawQuatJ = data2
+            self.rawQuatK = data3
+            self.rawQuatReal = data4
+            self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
+        elif report_id == SENSOR_REPORTID_STEP_COUNTER:
+            self.stepCount = data3
+        elif report_id == SENSOR_REPORTID_STABILITY_CLASSIFIER:
+            self.stabilityClassifier = self.receivedData[9]
+        elif report_id == SENSOR_REPORTID_PERSONAL_ACTIVITY_CLASSIFIER:
+            self.activityClassifier = self.receivedData[10]
+        elif report_id == SHTP_REPORT_COMMAND_RESPONSE:
+            # The BNO080 responds with this report to command requests.
+            # It's up to use to remember which command we issued.
+            command = self.receivedData[7]  # This is the Command byte of the response
+            if command == COMMAND_ME_CALIBRATE:
+                # Calibration report found
+                self.calibrationStatus = self.receivedData[10]  # R0 - Status (0 = success, non-zero = fail)
+
+    def _parse_command_report(self):
+        if self.receivedData[0] == SHTP_REPORT_COMMAND_RESPONSE:
+            command = self.receivedData[2]
+            if command == COMMAND_ME_CALIBRATE:
+                self.calibrationStatus = self.receivedData[4]
