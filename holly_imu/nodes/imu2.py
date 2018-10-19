@@ -65,6 +65,8 @@ while not rospy.is_shutdown():
             mag_accuracy = imu.get_mag_accuracy()
             sensor_accuracy = imu.get_quat_accuracy()
             print('Sys_cal={0} Mag_cal={1}'.format(sensor_accuracy, mag_accuracy))
+            i, j, k, real = imu.get_rotation_quaternion()
+            print('Orientation: I={0:0.8F} J={1:0.8F} K={2:0.8F} Real={2:0.8F}'.format(i, j, k, real))
         else:
             print('No IMU data available')
 

@@ -272,6 +272,13 @@ class BNO080(object):
     def calibrate_all(self):
         self._set_calibrate_command(CALIBRATE_ACCEL_GYRO_MAG)
 
+    def end_calibrate(self):
+        self._set_calibrate_command(CALIBRATE_STOP)
+
+    def save_calibration(self):
+        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self._send_command(COMMAND_DCD, data)
+
     def data_available(self):
         response = self._receive_packet()
         if response is False:
@@ -291,6 +298,14 @@ class BNO080(object):
 
     def get_data_array(self):
         return self.receivedData
+
+    def get_rotation_quaternion(self):
+        i = self.rawQuatI
+        j= self.rawQuatJ
+        k = self.rawQuatK
+        real = self.rawQuatReal
+
+        return [i, j, k, real]
 
     def _parse_input_report(self):
         report_id = self.receivedData[5]
