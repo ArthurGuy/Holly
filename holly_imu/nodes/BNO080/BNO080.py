@@ -303,10 +303,10 @@ class BNO080(object):
         k = self.rawQuatK
         real = self.rawQuatReal
 
-        i = i * pow(i, ROTATION_VECTOR_Q * -1)
-        j = j * pow(j, ROTATION_VECTOR_Q * -1)
-        k = k * pow(k, ROTATION_VECTOR_Q * -1)
-        real = real * pow(real, ROTATION_VECTOR_Q * -1)
+        i = i * pow(2, ROTATION_VECTOR_Q * -1)
+        j = j * pow(2, ROTATION_VECTOR_Q * -1)
+        k = k * pow(2, ROTATION_VECTOR_Q * -1)
+        real = real * pow(2, ROTATION_VECTOR_Q * -1)
 
         return [i, j, k, real]
 

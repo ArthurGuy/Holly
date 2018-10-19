@@ -18,7 +18,7 @@ from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
 
-from tf.transformations import quaternion_from_euler
+from tf.transformations import euler_from_quaternion
 
 
 imu = BNO080.BNO080()
@@ -66,7 +66,9 @@ while not rospy.is_shutdown():
             sensor_accuracy = imu.get_quat_accuracy()
             print('Sys_cal={0} Mag_cal={1}'.format(sensor_accuracy, mag_accuracy))
             i, j, k, real = imu.get_rotation_quaternion()
+            angles = euler_from_quaternion([i, j, k, real])
             print('Orientation: I={0:0.8F} J={1:0.8F} K={2:0.8F} Real={2:0.8F}'.format(i, j, k, real))
+            print angles
         else:
             print('No IMU data available')
 
