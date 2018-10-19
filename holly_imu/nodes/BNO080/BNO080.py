@@ -264,6 +264,10 @@ class BNO080(object):
         # This is the 3d fusion mode
         self._set_feature_command(SENSOR_REPORTID_ROTATION_VECTOR, update_time * 1000)
 
+    def enable_mag_rotation_vector(self, update_time):
+        # This is the 3d fusion mode
+        self._set_feature_command(SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR, update_time * 1000)
+
     def enable_magnetometer(self, update_time):
         self._set_feature_command(SENSOR_REPORTID_MAGNETIC_FIELD, update_time * 1000)
 
