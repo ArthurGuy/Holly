@@ -122,7 +122,8 @@ class BNO080(object):
         print ''
         print 'Sending packet'
         print ' '.join('{:02x}'.format(x) for x in data)
-        self._i2c_device.writeList(0, data)
+        # self._i2c_device.writeList(0, data)
+        self.pi.i2c_write_device(self.h, data)
 
         # Increment the sequence counter
         self.sequenceNumber[channelNumber] = self.sequenceNumber[channelNumber] + 1
