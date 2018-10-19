@@ -96,6 +96,8 @@ CALIBRATE_PLANAR_ACCEL = 3
 CALIBRATE_ACCEL_GYRO_MAG = 4
 CALIBRATE_STOP = 5
 
+ROTATION_VECTOR_Q = 14
+
 
 class BNO080(object):
     receivedData = []
@@ -125,10 +127,6 @@ class BNO080(object):
     rawQuatRadianAccuracy = None
 
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
-        # self._rst = None
-        # self._serial = None
-        # self._i2c_device = None
-
         self.pi = pigpio.pi()
         self.h = self.pi.i2c_open(1, address)
 
@@ -301,9 +299,14 @@ class BNO080(object):
 
     def get_rotation_quaternion(self):
         i = self.rawQuatI
-        j= self.rawQuatJ
+        j = self.rawQuatJ
         k = self.rawQuatK
         real = self.rawQuatReal
+
+        i = i * pow(i, ROTATION_VECTOR_Q * -1)
+        j = j * pow(j, ROTATION_VECTOR_Q * -1)
+        k = k * pow(k, ROTATION_VECTOR_Q * -1)
+        real = real * pow(real, ROTATION_VECTOR_Q * -1)
 
         return [i, j, k, real]
 
