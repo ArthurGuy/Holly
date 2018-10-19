@@ -260,6 +260,9 @@ class BNO080(object):
 
         return False
 
+    def stop(self):
+        self.pi.stop()
+
     def enable_rotation_vector(self, update_time):
         # This is the 3d fusion mode
         self._set_feature_command(SENSOR_REPORTID_ROTATION_VECTOR, update_time * 1000)
