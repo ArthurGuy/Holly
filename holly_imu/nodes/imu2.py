@@ -77,9 +77,11 @@ while not rospy.is_shutdown():
 
     except (KeyboardInterrupt, SystemExit):
         print 'Exiting'
+        imu.stop()
+        print 'Finished'
+        sys.exit()
     except:
         traceback.print_exc()
-    finally:
         imu.stop()
         print 'Finished'
         sys.exit()
