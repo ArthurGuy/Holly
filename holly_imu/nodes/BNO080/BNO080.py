@@ -141,6 +141,8 @@ class BNO080(object):
 
     def _receive_packet(self):
         (count, data) = self.pi.i2c_read_device(self.h, 4)
+        if count < 0:
+            return False
         # data = self._i2c_device.readList(0, 4)
 
         # Store the header info.
@@ -193,15 +195,7 @@ class BNO080(object):
         self._send_shtp_command(CHANNEL_CONTROL, 17, data)
 
     def soft_reset(self):
-        time.sleep(0.1)
-        self._receive_packet()
-        time.sleep(0.1)
-        
         self._send_shtp_command(CHANNEL_EXECUTABLE, 1, [1])
-        time.sleep(0.1)
-        self._receive_packet()
-        time.sleep(0.1)
-        self._receive_packet()
         time.sleep(0.1)
         new_data = True
         while new_data:
