@@ -82,3 +82,4 @@ while not rospy.is_shutdown():
     finally:
         imu.stop()
         print 'Finished'
+        sys.exit()
