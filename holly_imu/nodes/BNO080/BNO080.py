@@ -303,10 +303,10 @@ class BNO080(object):
         k = self.rawQuatK  # z
         real = self.rawQuatReal
 
-        i = i * pow(2, ROTATION_VECTOR_Q * -1)
-        j = j * pow(2, ROTATION_VECTOR_Q * -1)
-        k = k * pow(2, ROTATION_VECTOR_Q * -1)
-        real = real * pow(2, ROTATION_VECTOR_Q * -1)
+        i = i * pow(2, (ROTATION_VECTOR_Q * -1))
+        j = j * pow(2, (ROTATION_VECTOR_Q * -1))
+        k = k * pow(2, (ROTATION_VECTOR_Q * -1))
+        real = real * pow(2, (ROTATION_VECTOR_Q * -1))
 
         return [i, j, k, real]
 
@@ -325,39 +325,50 @@ class BNO080(object):
             data5 = self.receivedData[18] << 8 | self.receivedData[17]
 
         if report_id == SENSOR_REPORTID_ACCELEROMETER:
+            print 'SENSOR_REPORTID_ACCELEROMETER'
             self.accelAccuracy = status
             self.rawAccelX = data1
             self.rawAccelY = data2
             self.rawAccelZ = data3
         elif report_id == SENSOR_REPORTID_LINEAR_ACCELERATION:
+            print 'SENSOR_REPORTID_LINEAR_ACCELERATION'
             self.accelLinAccuracy = status
             self.rawLinAccelX = data1
             self.rawLinAccelY = data2
             self.rawLinAccelZ = data3
         elif report_id == SENSOR_REPORTID_GYROSCOPE:
+            print 'SENSOR_REPORTID_GYROSCOPE'
             self.gyroAccuracy = status
             self.rawGyroX = data1
             self.rawGyroY = data2
             self.rawGyroZ = data3
         elif report_id == SENSOR_REPORTID_MAGNETIC_FIELD:
+            print 'SENSOR_REPORTID_MAGNETIC_FIELD'
             self.magAccuracy = status
             self.rawMagX = data1
             self.rawMagY = data2
             self.rawMagZ = data3
         elif report_id == SENSOR_REPORTID_ROTATION_VECTOR or report_id == SENSOR_REPORTID_GAME_ROTATION_VECTOR:
+            print 'SENSOR_REPORTID_ROTATION_VECTOR'
             self.quatAccuracy = status
             self.rawQuatI = data1
             self.rawQuatJ = data2
             self.rawQuatK = data3
             self.rawQuatReal = data4
             self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
+        elif report_id == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
+            print 'SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR'
         elif report_id == SENSOR_REPORTID_STEP_COUNTER:
+            print 'SENSOR_REPORTID_STEP_COUNTER'
             self.stepCount = data3
         elif report_id == SENSOR_REPORTID_STABILITY_CLASSIFIER:
+            print 'SENSOR_REPORTID_STABILITY_CLASSIFIER'
             self.stabilityClassifier = self.receivedData[9]
         elif report_id == SENSOR_REPORTID_PERSONAL_ACTIVITY_CLASSIFIER:
+            print 'SENSOR_REPORTID_PERSONAL_ACTIVITY_CLASSIFIER'
             self.activityClassifier = self.receivedData[10]
         elif report_id == SHTP_REPORT_COMMAND_RESPONSE:
+            print 'SHTP_REPORT_COMMAND_RESPONSE'
             # The BNO080 responds with this report to command requests.
             # It's up to use to remember which command we issued.
             command = self.receivedData[7]  # This is the Command byte of the response
