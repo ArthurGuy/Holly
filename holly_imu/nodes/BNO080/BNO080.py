@@ -118,10 +118,10 @@ class BNO080(object):
     rawMagY = None
     rawMagZ = None
     quatAccuracy = None
-    rawQuatI = None
-    rawQuatJ = None
-    rawQuatK = None
-    rawQuatReal = None
+    rawQuatI = 0
+    rawQuatJ = 0
+    rawQuatK = 0
+    rawQuatReal = 0
     rawQuatRadianAccuracy = None
 
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
