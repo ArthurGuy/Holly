@@ -101,6 +101,29 @@ class BNO080(object):
     receivedData = []
     sequenceNumber = [0, 0, 0, 0, 0, 0]
 
+    accelAccuracy = None
+    rawAccelX = None
+    rawAccelY = None
+    rawAccelZ = None
+    accelLinAccuracy = None
+    rawLinAccelX = None
+    rawLinAccelY = None
+    rawLinAccelZ = None
+    gyroAccuracy = None
+    rawGyroX = None
+    rawGyroY = None
+    rawGyroZ = None
+    magAccuracy = None
+    rawMagX = None
+    rawMagY = None
+    rawMagZ = None
+    quatAccuracy = None
+    rawQuatI = None
+    rawQuatJ = None
+    rawQuatK = None
+    rawQuatReal = None
+    rawQuatRadianAccuracy = None
+
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
         # self._rst = None
         # self._serial = None
