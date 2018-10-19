@@ -117,7 +117,6 @@ class BNO080(object):
 
         print ''
         print 'Sending packet'
-        print data
         print ' '.join('{:02x}'.format(x) for x in data)
         self._i2c_device.writeList(0, data)
 
@@ -194,10 +193,10 @@ class BNO080(object):
         time.sleep(0.1)
         self._receive_packet()
         time.sleep(0.1)
-        # new_data = True
-        # while new_data:
-        #     new_data = self._receive_packet()
-        #     time.sleep(0.05)
+        new_data = True
+        while new_data:
+            new_data = self._receive_packet()
+            time.sleep(0.1)
 
     def begin(self):
         # reset
