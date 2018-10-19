@@ -214,12 +214,6 @@ class BNO080(object):
         # Transmit packet on channel 2, 2 bytes
         self._send_shtp_command(CHANNEL_CONTROL, 2, data)
 
-        self._receive_packet()
-
-        self._receive_packet()
-
-        self._receive_packet()
-
         # Now we wait for response
         if self._receive_packet():
             if self.receivedData[0] == SHTP_REPORT_PRODUCT_ID_RESPONSE:
