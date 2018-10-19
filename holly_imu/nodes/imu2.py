@@ -74,14 +74,9 @@ while not rospy.is_shutdown():
             print('No IMU data available')
 
         rate.sleep()
-
-    except (KeyboardInterrupt, SystemExit):
-        print 'Exiting'
-        imu.stop()
-        print 'Finished'
-        sys.exit()
     except:
         traceback.print_exc()
-        imu.stop()
-        print 'Finished'
-        sys.exit()
+
+if rospy.is_shutdown():
+    imu.stop()
+    print 'Finished'
