@@ -153,8 +153,9 @@ class BNO080(object):
         else:
             self.receivedData = self._i2c_device.readList(0, dataLength)
             print 'Received packet, body:'
-            print self.receivedData
+            # print self.receivedData
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
+            print ''.join(chr(x) for x in self.receivedData)
             return True
 
     def _set_feature_command(self, reportID, specificConfig):
