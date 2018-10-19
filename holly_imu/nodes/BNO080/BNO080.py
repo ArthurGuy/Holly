@@ -23,6 +23,7 @@ import binascii
 import logging
 import struct
 import time
+import pigio
 import Adafruit_GPIO.I2C as I2C
 
 
@@ -105,6 +106,9 @@ class BNO080(object):
         self._serial = None
         self._i2c_device = None
 
+        self.pi = pigio.pi()
+        self.h = self.pi.i2c_open(1, address)
+
         i2c = I2C
         # Save a reference to the I2C device instance for later communication.
         self._i2c_device = i2c.get_i2c_device(address, **kwargs)
@@ -136,7 +140,8 @@ class BNO080(object):
         return self._i2c_device.readList(0, numberOfBytesToRead + 4)
 
     def _receive_packet(self):
-        data = self._i2c_device.readList(0, 4)
+        (count, data) = self.pi.i2c_read_device(self.h, 4)
+        # data = self._i2c_device.readList(0, 4)
 
         # Store the header info.
         shtpHeader = [data[0], data[1], data[2], data[3]]
@@ -154,7 +159,8 @@ class BNO080(object):
         if dataLength == 0:
             return False
         else:
-            receivedData = self._i2c_device.readList(0, dataLength)
+            # receivedData = self._i2c_device.readList(0, dataLength)
+            (count, receivedData) = self.pi.i2c_read_device(self.h, dataLength)
             self.receivedData = receivedData[4:dataLength]
             print 'Received packet, body:'
             # print self.receivedData
