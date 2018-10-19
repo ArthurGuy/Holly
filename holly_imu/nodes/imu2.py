@@ -53,12 +53,18 @@ if not imu.begin():
     raise RuntimeError('Failed to initialize BNO080. Is the sensor connected?')
 
 # imu.enable_rotation_vector(100)  # Send data update every 100ms
+imu.enable_magnetometer(100)
+
+imu.calibrate_all()
 
 
 while not rospy.is_shutdown():
     try:
         if imu.data_available():
             print('IMU data available')
+            mag_accuracy = imu.get_mag_accuracy()
+            sensor_accuracy = imu.get_quat_accuracy()
+            print('Sys_cal={0} Mag_cal={1}'.format(sensor_accuracy, mag_accuracy))
         else:
             print('No IMU data available')
 

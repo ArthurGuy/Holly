@@ -190,6 +190,23 @@ class BNO080(object):
         data.append((specificConfig >> 24) & 0xFF)  # Sensor-specific config (MSB)
         self._send_shtp_command(CHANNEL_CONTROL, 17, data)
 
+    def _set_calibrate_command(self, thing_to_calibrate):
+        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        if thing_to_calibrate == CALIBRATE_ACCEL:
+            data[3] = 1
+        elif thing_to_calibrate == CALIBRATE_GYRO:
+            data[4] = 1
+        elif thing_to_calibrate == CALIBRATE_MAG:
+            data[5] = 1
+        elif thing_to_calibrate == CALIBRATE_PLANAR_ACCEL:
+            data[7] = 1
+        elif thing_to_calibrate == CALIBRATE_ACCEL_GYRO_MAG:
+            data[3] = 1
+            data[4] = 1
+            data[5] = 1
+
+        self._send_shtp_command(COMMAND_ME_CALIBRATE, 12, data)
+
     def soft_reset(self):
         self._send_shtp_command(CHANNEL_EXECUTABLE, 1, [1])
         time.sleep(0.5)
@@ -215,8 +232,14 @@ class BNO080(object):
         return False
 
     def enable_rotation_vector(self, update_time):
-        # Enter operation mode to read sensor data.
+        # This is the 3d fusion mode
         self._set_feature_command(SENSOR_REPORTID_ROTATION_VECTOR, update_time * 1000)
+
+    def enable_magnetometer(self, update_time):
+        self._set_feature_command(SENSOR_REPORTID_MAGNETIC_FIELD, update_time * 1000)
+
+    def calibrate_all(self):
+        self._set_calibrate_command(CALIBRATE_ACCEL_GYRO_MAG)
 
     def data_available(self):
         response = self._receive_packet()
@@ -228,6 +251,12 @@ class BNO080(object):
             elif self.receivedHeader == CHANNEL_CONTROL:
                 self._parse_command_report()
             return True
+
+    def get_mag_accuracy(self):
+        return self.magAccuracy
+
+    def get_quat_accuracy(self):
+        return self.quatAccuracy
 
     def get_data_array(self):
         return self.receivedData
