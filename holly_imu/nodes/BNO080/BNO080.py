@@ -142,7 +142,7 @@ class BNO080(object):
 
     def _receive_packet(self):
         (count, data) = self.pi.i2c_read_device(self.h, 4)
-        if count < 0:
+        if count <= 0:
             return False
         # data = self._i2c_device.readList(0, 4)
 
