@@ -52,7 +52,7 @@ rospy.loginfo("IMU2 starting")
 if not imu.begin():
     raise RuntimeError('Failed to initialize BNO080. Is the sensor connected?')
 
-imu.enable_rotation_vector(100)  # Send data update every 100ms
+# imu.enable_rotation_vector(100)  # Send data update every 100ms
 
 
 while not rospy.is_shutdown():

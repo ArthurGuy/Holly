@@ -200,9 +200,7 @@ class BNO080(object):
 
     def begin(self):
         # reset
-        print 'Resetting'
         self.soft_reset()
-        print 'Reset complete'
 
         # Check communication with device
         data = [SHTP_REPORT_PRODUCT_ID_REQUEST, 0]
