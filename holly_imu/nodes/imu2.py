@@ -78,4 +78,5 @@ while not rospy.is_shutdown():
         imu.stop()
         raise
     except:
+        imu.stop()
         traceback.print_exc()
