@@ -113,14 +113,15 @@ class BNO080(object):
 
         packetLength = dataLength + 4
 
-        self.sequenceNumber[channelNumber] = self.sequenceNumber[channelNumber] + 1
-
         data = [packetLength & 0xFF, packetLength >> 8, channelNumber, self.sequenceNumber[channelNumber]] + data
 
         print ''
         print 'Sending packet'
         print ' '.join('{:02x}'.format(x) for x in data)
         self._i2c_device.writeList(0, data)
+
+        # Increment the sequence counter
+        self.sequenceNumber[channelNumber] = self.sequenceNumber[channelNumber] + 1
 
         # self._i2c_device.writeRaw8(packetLength & 0xFF)  # Packet length LSB
         # self._i2c_device.writeRaw8(packetLength >> 8)    # Packet length MSB
