@@ -128,6 +128,9 @@ class BNO080(object):
 
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
         self.pi = pigpio.pi()
+        if self.pi.connected is False:
+            raise RuntimeError('Error connecting to the PI with pigpio')
+
         self.h = self.pi.i2c_open(1, address)
 
         # i2c = I2C
