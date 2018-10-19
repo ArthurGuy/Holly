@@ -97,6 +97,9 @@ CALIBRATE_ACCEL_GYRO_MAG = 4
 CALIBRATE_STOP = 5
 
 ROTATION_VECTOR_Q = 14
+ACCELEROMETER_Q = 8
+GYRO_Q = 9
+MAGNETOMETER_Q = 4
 
 
 class BNO080(object):
@@ -322,8 +325,8 @@ class BNO080(object):
         return [i, j, k, real]
 
     def _parse_input_report(self):
-        report_id = self.receivedData[5]
-        sequence_number = self.receivedData[6]
+        report_id = self.receivedData[0]
+        sequence_number = self.receivedData[1]
         status = self.receivedData[7] & 0x03
         data1 = self.receivedData[10] << 8 | self.receivedData[9]
         data2 = self.receivedData[12] << 8 | self.receivedData[11]
