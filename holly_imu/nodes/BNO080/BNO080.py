@@ -102,16 +102,16 @@ class BNO080(object):
     sequenceNumber = [0, 0, 0, 0, 0, 0]
 
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
-        self._rst = None
-        self._serial = None
-        self._i2c_device = None
+        # self._rst = None
+        # self._serial = None
+        # self._i2c_device = None
 
         self.pi = pigpio.pi()
         self.h = self.pi.i2c_open(1, address)
 
-        i2c = I2C
+        # i2c = I2C
         # Save a reference to the I2C device instance for later communication.
-        self._i2c_device = i2c.get_i2c_device(address, **kwargs)
+        # self._i2c_device = i2c.get_i2c_device(address, **kwargs)
 
     def _send_shtp_command(self, channelNumber, dataLength, data):
 
@@ -119,9 +119,9 @@ class BNO080(object):
 
         data = [packetLength & 0xFF, packetLength >> 8, channelNumber, self.sequenceNumber[channelNumber]] + data
 
-        print ''
-        print 'Sending packet'
-        print ' '.join('{:02x}'.format(x) for x in data)
+        # print ''
+        # print 'Sending packet'
+        # print ' '.join('{:02x}'.format(x) for x in data)
         # self._i2c_device.writeList(0, data)
         self.pi.i2c_write_device(self.h, data)
 
@@ -136,9 +136,6 @@ class BNO080(object):
         # while i < dataLength:
         #     self._i2c_device.write8(i + 4, data[i])
         #     i += 1
-
-    def _read_data(self, numberOfBytesToRead):
-        return self._i2c_device.readList(0, numberOfBytesToRead + 4)
 
     def _receive_packet(self):
         (count, data) = self.pi.i2c_read_device(self.h, 4)
