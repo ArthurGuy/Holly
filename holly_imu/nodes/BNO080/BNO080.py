@@ -23,7 +23,7 @@ import binascii
 import logging
 import struct
 import time
-import pigio
+import pigpio
 import Adafruit_GPIO.I2C as I2C
 
 
@@ -106,7 +106,7 @@ class BNO080(object):
         self._serial = None
         self._i2c_device = None
 
-        self.pi = pigio.pi()
+        self.pi = pigpio.pi()
         self.h = self.pi.i2c_open(1, address)
 
         i2c = I2C
