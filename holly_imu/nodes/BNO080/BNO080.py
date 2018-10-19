@@ -140,13 +140,15 @@ class BNO080(object):
         # Store the header info.
         shtpHeader = [data[0], data[1], data[2], data[3]]
 
-        print ''
-        print 'Received packet, header:'
-        print ' '.join('{:02x}'.format(x) for x in shtpHeader)
-
         # Calculate the number of data bytes in this packet
         dataLength = shtpHeader[1] << 8 | shtpHeader[0]
         dataLength &= ~(1 << 15)  # Clear the MSbit.
+
+        print ''
+        print 'Received packet, header:'
+        # print ' '.join('{:02x}'.format(x) for x in shtpHeader)
+        print('Length: {0}'.format(dataLength))
+        print('Channel: {0}'.format(shtpHeader[2]))
 
         if dataLength == 0:
             return False
