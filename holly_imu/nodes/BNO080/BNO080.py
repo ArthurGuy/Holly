@@ -319,9 +319,9 @@ class BNO080(object):
         data3 = self.receivedData[14] << 8 | self.receivedData[13]
         data4 = 0
         data5 = 0
-        if len(self.receivedData) > 14:
+        if len(self.receivedData) > 15:
             data4 = self.receivedData[16] << 8 | self.receivedData[15]
-        if len(self.receivedData) > 16:
+        if len(self.receivedData) > 17:
             data5 = self.receivedData[18] << 8 | self.receivedData[17]
 
         if report_id == SENSOR_REPORTID_ACCELEROMETER:
