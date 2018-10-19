@@ -153,22 +153,22 @@ class BNO080(object):
         dataLength = shtpHeader[1] << 8 | shtpHeader[0]
         dataLength &= ~(1 << 15)  # Clear the MSbit.
 
-        print ''
-        print 'Received packet, header:'
-        # print ' '.join('{:02x}'.format(x) for x in shtpHeader)
-        print('Length: {0}'.format(dataLength - 4))
-        print('Channel: {0}'.format(shtpHeader[2]))
-
         if dataLength == 0:
             return False
         else:
+            print ''
+            print 'Received packet, header:'
+            # print ' '.join('{:02x}'.format(x) for x in shtpHeader)
+            print('Length: {0}'.format(dataLength - 4))
+            print('Channel: {0}'.format(shtpHeader[2]))
+
             # receivedData = self._i2c_device.readList(0, dataLength)
             (count, receivedData) = self.pi.i2c_read_device(self.h, dataLength)
             self.receivedData = receivedData[4:dataLength]
             print 'Received packet, body:'
             # print self.receivedData
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
-            print ''.join(chr(x) for x in self.receivedData)
+            # print ''.join(chr(x) for x in self.receivedData)
             return True
 
     def _set_feature_command(self, reportID, specificConfig):
