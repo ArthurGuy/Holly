@@ -132,7 +132,7 @@ class BNO080(object):
         #     i += 1
 
     def _read_data(self, numberOfBytesToRead):
-        return self._i2c_device.readList(4, numberOfBytesToRead + 4)
+        return self._i2c_device.readList(0, numberOfBytesToRead + 4)
 
     def _receive_packet(self):
         data = self._i2c_device.readList(0, 4)
@@ -189,7 +189,9 @@ class BNO080(object):
         self._send_shtp_command(CHANNEL_EXECUTABLE, 1, [1])
         time.sleep(0.1)
         self._receive_packet()
-        time.sleep(0.05)
+        time.sleep(0.1)
+        self._receive_packet()
+        time.sleep(0.1)
         self._send_shtp_command(CHANNEL_EXECUTABLE, 1, [1])
         time.sleep(0.1)
         new_data = True
