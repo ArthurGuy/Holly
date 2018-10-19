@@ -117,6 +117,7 @@ class BNO080(object):
 
         print ''
         print 'Sending packet'
+        print data
         print ' '.join('{:02x}'.format(x) for x in data)
         self._i2c_device.writeList(0, data)
 
@@ -214,7 +215,7 @@ class BNO080(object):
         self._receive_packet()
 
         self._receive_packet()
-        
+
         # Now we wait for response
         if self._receive_packet():
             if self.receivedData[0] == SHTP_REPORT_PRODUCT_ID_RESPONSE:
