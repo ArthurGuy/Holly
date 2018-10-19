@@ -113,7 +113,7 @@ class BNO080(object):
         # Save a reference to the I2C device instance for later communication.
         # self._i2c_device = i2c.get_i2c_device(address, **kwargs)
 
-    def _send_shtp_command(self, channelNumber, dataLength, data):
+    def _send_packet(self, channelNumber, dataLength, data):
 
         packetLength = dataLength + 4
 
@@ -136,6 +136,13 @@ class BNO080(object):
         # while i < dataLength:
         #     self._i2c_device.write8(i + 4, data[i])
         #     i += 1
+
+    def _send_command(self, command, data):
+        data[0] = SHTP_REPORT_COMMAND_REQUEST
+        data[1] = self.sequenceNumber[CHANNEL_CONTROL]
+        data[2] = command
+
+        self._send_packet(CHANNEL_CONTROL, 12, data)
 
     def _receive_packet(self):
         (count, data) = self.pi.i2c_read_device(self.h, 4)
@@ -188,10 +195,11 @@ class BNO080(object):
         data.append((specificConfig >> 8) & 0xFF)   # Sensor-specific config
         data.append((specificConfig >> 16) & 0xFF)  # Sensor-specific config
         data.append((specificConfig >> 24) & 0xFF)  # Sensor-specific config (MSB)
-        self._send_shtp_command(CHANNEL_CONTROL, 17, data)
+        self._send_packet(CHANNEL_CONTROL, 17, data)
 
     def _set_calibrate_command(self, thing_to_calibrate):
         data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
         if thing_to_calibrate == CALIBRATE_ACCEL:
             data[3] = 1
         elif thing_to_calibrate == CALIBRATE_GYRO:
@@ -205,10 +213,10 @@ class BNO080(object):
             data[4] = 1
             data[5] = 1
 
-        self._send_shtp_command(COMMAND_ME_CALIBRATE, 12, data)
+        self._send_command(COMMAND_ME_CALIBRATE, data)
 
     def soft_reset(self):
-        self._send_shtp_command(CHANNEL_EXECUTABLE, 1, [1])
+        self._send_packet(CHANNEL_EXECUTABLE, 1, [1])
         time.sleep(0.5)
         new_data = True
         while new_data:
@@ -222,7 +230,7 @@ class BNO080(object):
         # Check communication with device
         data = [SHTP_REPORT_PRODUCT_ID_REQUEST, 0]
         # Transmit packet on channel 2, 2 bytes
-        self._send_shtp_command(CHANNEL_CONTROL, 2, data)
+        self._send_packet(CHANNEL_CONTROL, 2, data)
 
         # Now we wait for response
         if self._receive_packet():
