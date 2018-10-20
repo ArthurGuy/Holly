@@ -450,6 +450,7 @@ class BNO080(object):
             if command == COMMAND_ME_CALIBRATE:
                 # Calibration report found
                 self.calibrationStatus = self.receivedData[10]  # R0 - Status (0 = success, non-zero = fail)
+        return True
 
     def _parse_command_report(self):
         if self.receivedData[0] == SHTP_REPORT_COMMAND_RESPONSE:
