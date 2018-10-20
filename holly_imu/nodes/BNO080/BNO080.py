@@ -388,7 +388,9 @@ class BNO080(object):
             print 'No sensor data to parse'
             return
 
-        report_id, status, data1, data2, data3, data4, data5 = self.parse_sensor_report(self.receivedData)
+        report_data = self.parse_sensor_report(self.receivedData)
+        if report_data is not None:
+            report_id, status, data1, data2, data3, data4, data5 = report_data
 
         # report_id = self.receivedData[5]
         # sequence_number = self.receivedData[6]
