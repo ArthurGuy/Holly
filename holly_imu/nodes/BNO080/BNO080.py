@@ -389,8 +389,9 @@ class BNO080(object):
             return
 
         report_data = self.parse_sensor_report(self.receivedData)
-        if report_data is not None:
-            report_id, status, data1, data2, data3, data4, data5 = report_data
+        if report_data is None:
+            return
+        report_id, status, data1, data2, data3, data4, data5 = report_data
 
         # report_id = self.receivedData[5]
         # sequence_number = self.receivedData[6]
