@@ -54,6 +54,7 @@ if not imu.begin():
 
 imu.enable_rotation_vector(100)
 imu.enable_linear_acceleration(100)
+imu.enable_gyro(100)
 # imu.enable_magnetometer(200)
 
 imu.calibrate_all()
@@ -67,7 +68,8 @@ while not rospy.is_shutdown():
             mag_accuracy = imu.get_mag_accuracy()
             sensor_accuracy = imu.get_quat_accuracy()
             linear_accuracy = imu.get_linear_accuracy()
-            print('Sys_cal={0} Mag_cal={1} Linear_accel_cal={2}'.format(sensor_accuracy, mag_accuracy, linear_accuracy))
+            gyro_accuracy = imu.get_gyro_accuracy()
+            print('Calibration: Sys={0} Mag={1} Linear_accel={2} Gyro={3}'.format(sensor_accuracy, mag_accuracy, linear_accuracy, gyro_accuracy))
             i, j, k, real = imu.get_rotation_quaternion()
             rotation_accuracy = imu.get_rotation_accuracy()
             print('Orientation: I={0:0.8F} J={1:0.8F} K={2:0.8F} Real={3:0.8F} Accuracy={4}'.format(i, j, k, real, rotation_accuracy))
@@ -76,6 +78,9 @@ while not rospy.is_shutdown():
 
             x, y, z = imu.get_linear_acceleration()
             print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(x, y, z))
+
+            x, y, z = imu.get_gyro()
+            print('Gyro: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(x, y, z))
         else:
             print('No IMU data available')
 

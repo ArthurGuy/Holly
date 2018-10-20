@@ -279,6 +279,9 @@ class BNO080(object):
     def enable_linear_acceleration(self, update_time):
         self._set_feature_command(SENSOR_REPORTID_LINEAR_ACCELERATION, update_time * 1000)
 
+    def enable_gyro(self, update_time):
+        self._set_feature_command(SENSOR_REPORTID_GYROSCOPE, update_time * 1000)
+
     def enable_mag_rotation_vector(self, update_time):
         # This is the 3d fusion mode
         self._set_feature_command(SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR, update_time * 1000)
@@ -316,6 +319,9 @@ class BNO080(object):
     def get_linear_accuracy(self):
         return self.accelLinAccuracy
 
+    def get_gyro_accuracy(self):
+        return self.gyroAccuracy
+
     def get_data_array(self):
         return self.receivedData
 
@@ -346,6 +352,16 @@ class BNO080(object):
         x = self._convert_q_number(x, ACCELEROMETER_Q)
         y = self._convert_q_number(y, ACCELEROMETER_Q)
         z = self._convert_q_number(z, ACCELEROMETER_Q)
+        return [x, y, z]
+
+    def get_gyro(self):
+        x = self.rawGyroX
+        y = self.rawGyroY
+        z = self.rawGyroZ
+
+        x = self._convert_q_number(x, GYRO_Q)
+        y = self._convert_q_number(y, GYRO_Q)
+        z = self._convert_q_number(z, GYRO_Q)
         return [x, y, z]
 
     @staticmethod
@@ -389,9 +405,9 @@ class BNO080(object):
         elif report_id == SENSOR_REPORTID_GYROSCOPE:
             print 'SENSOR_REPORTID_GYROSCOPE'
             self.gyroAccuracy = status
-            self.rawGyroX = data1
-            self.rawGyroY = data2
-            self.rawGyroZ = data3
+            self.rawGyroX = self._convert_signed_number(data1)
+            self.rawGyroY = self._convert_signed_number(data2)
+            self.rawGyroZ = self._convert_signed_number(data3)
         elif report_id == SENSOR_REPORTID_MAGNETIC_FIELD:
             print 'SENSOR_REPORTID_MAGNETIC_FIELD'
             self.magAccuracy = status
