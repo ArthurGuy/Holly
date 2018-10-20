@@ -66,7 +66,8 @@ while not rospy.is_shutdown():
             print ''
             mag_accuracy = imu.get_mag_accuracy()
             sensor_accuracy = imu.get_quat_accuracy()
-            print('Sys_cal={0} Mag_cal={1}'.format(sensor_accuracy, mag_accuracy))
+            linear_accuracy = imu.get_linear_accuracy()
+            print('Sys_cal={0} Mag_cal={1} Linear_accel_cal={2}'.format(sensor_accuracy, mag_accuracy, linear_accuracy))
             i, j, k, real = imu.get_rotation_quaternion()
             rotation_accuracy = imu.get_rotation_accuracy()
             print('Orientation: I={0:0.8F} J={1:0.8F} K={2:0.8F} Real={3:0.8F} Accuracy={4}'.format(i, j, k, real, rotation_accuracy))
@@ -74,8 +75,7 @@ while not rospy.is_shutdown():
             # print('Roll={0:0.2F} Pitch={1:0.2F} Heading={2:0.2F} '.format(angles[0], angles[1], angles[2]))
 
             x, y, z = imu.get_linear_acceleration()
-            linear_accuracy = imu.get_linear_accuracy()
-            print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} Accuracy={3}'.format(x, y, z, linear_accuracy))
+            print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(x, y, z))
         else:
             print('No IMU data available')
 
