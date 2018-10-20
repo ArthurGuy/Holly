@@ -384,7 +384,7 @@ class BNO080(object):
             print 'Error parsing response'
             return
 
-        self.receivedData = self.receivedData[5:(len(self.receivedData) - 5)]
+        self.receivedData = self.receivedData[5:(len(self.receivedData))]
         if len(self.receivedData) == 0:
             print 'No sensor data to parse'
             return
