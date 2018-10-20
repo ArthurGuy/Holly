@@ -52,9 +52,9 @@ rospy.loginfo("IMU2 starting")
 if not imu.begin():
     raise RuntimeError('Failed to initialize BNO080. Is the sensor connected?')
 
-imu.enable_rotation_vector(1000)
-imu.enable_linear_acceleration(1000)
-imu.enable_gyro(10000)
+imu.enable_rotation_vector(100)
+imu.enable_linear_acceleration(100)
+imu.enable_gyro(100)
 # imu.enable_magnetometer(200)
 
 imu.calibrate_all()

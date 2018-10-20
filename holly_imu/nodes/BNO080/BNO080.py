@@ -189,10 +189,7 @@ class BNO080(object):
             # print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             return True
 
-    def _set_feature_command(self, reportID, specificConfig):
-
-        timeBetweenReports = 500
-
+    def _set_feature_command(self, reportID, timeBetweenReports, specificConfig):
         data = []
         data.append(SHTP_REPORT_SET_FEATURE_COMMAND)
         data.append(reportID)
