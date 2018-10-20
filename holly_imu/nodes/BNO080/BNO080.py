@@ -197,7 +197,7 @@ class BNO080(object):
             (count, receivedData) = self.pi.i2c_read_device(self.h, dataLength)
             self.receivedHeader = receivedData[0:4]
             self.receivedData = receivedData[4:dataLength]
-            # print ' '.join('{:02x}'.format(x) for x in self.receivedData)
+            print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             return True
 
     def _set_feature_command(self, reportID, specificConfig):
@@ -325,8 +325,8 @@ class BNO080(object):
         return [i, j, k, real]
 
     def _parse_input_report(self):
-        report_id = self.receivedData[0]
-        sequence_number = self.receivedData[1]
+        report_id = self.receivedData[5]
+        sequence_number = self.receivedData[6]
         status = self.receivedData[7] & 0x03
         data1 = self.receivedData[10] << 8 | self.receivedData[9]
         data2 = self.receivedData[12] << 8 | self.receivedData[11]
