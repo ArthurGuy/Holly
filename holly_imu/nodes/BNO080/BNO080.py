@@ -352,28 +352,52 @@ class BNO080(object):
     def _convert_q_number(number, q_point):
         return number * pow(2, (q_point * -1))
 
+    def _parse_base_timestamp(self, data):
+        return data[4] << 24 | data[3] << 16 | data[2] << 8 | data[1]
+
+    def parse_sensor_report(self, data):
+        report_id = data[5]
+        sequence_number = data[6]
+        status = data[7] & 0x03
+        data1 = data[10] << 8 | data[9]
+        data2 = data[12] << 8 | data[11]
+        data3 = data[14] << 8 | data[13]
+        if len(data) > 15:
+            data4 = data[16] << 8 | data[15]
+        else:
+            data4 = 0
+        if len(data) > 17:
+            data5 = data[18] << 8 | data[17]
+        else:
+            data5 = 0
+        return [report_id, status, data1, data2, data3, data4, data5]
+
     def _parse_input_report(self):
         if (self.receivedData[0]) == SHTP_REPORT_BASE_TIMESTAMP:
-            delay = self.receivedData[4] << 24 | self.receivedData[3] << 16 | self.receivedData[2] << 8 | self.receivedData[1]
+            delay = self._parse_base_timestamp(self.receivedData[0:5])
             # print 'Delay between sensor sample and sending it: {0} us'.format(delay)
         else:
             print 'Error parsing response'
             return
-        report_id = self.receivedData[5]
-        sequence_number = self.receivedData[6]
-        status = self.receivedData[7] & 0x03
-        data1 = self.receivedData[10] << 8 | self.receivedData[9]
-        data2 = self.receivedData[12] << 8 | self.receivedData[11]
-        data3 = self.receivedData[14] << 8 | self.receivedData[13]
-        if len(self.receivedData) > 15:
-            data4 = self.receivedData[16] << 8 | self.receivedData[15]
-        else:
-            data4 = 0
-        if len(self.receivedData) > 17:
-            data5 = self.receivedData[18] << 8 | self.receivedData[17]
-        else:
-            data5 = 0
 
+        self.receivedData = self.receivedData[5:(len(self.receivedData) - 5)]
+        report_id, status, data1, data2, data3, data4, data5 = self.parse_sensor_report(self.receivedData)
+
+        # report_id = self.receivedData[5]
+        # sequence_number = self.receivedData[6]
+        # status = self.receivedData[7] & 0x03
+        # data1 = self.receivedData[10] << 8 | self.receivedData[9]
+        # data2 = self.receivedData[12] << 8 | self.receivedData[11]
+        # data3 = self.receivedData[14] << 8 | self.receivedData[13]
+        # if len(self.receivedData) > 15:
+        #     data4 = self.receivedData[16] << 8 | self.receivedData[15]
+        # else:
+        #     data4 = 0
+        # if len(self.receivedData) > 17:
+        #     data5 = self.receivedData[18] << 8 | self.receivedData[17]
+        # else:
+        #     data5 = 0
+        #
         if report_id == SENSOR_REPORTID_ACCELEROMETER:
             print 'SENSOR_REPORTID_ACCELEROMETER'
             self.accelAccuracy = status
