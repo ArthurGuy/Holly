@@ -385,10 +385,10 @@ class BNO080(object):
         elif report_id == SENSOR_REPORTID_ROTATION_VECTOR or report_id == SENSOR_REPORTID_GAME_ROTATION_VECTOR:
             print 'SENSOR_REPORTID_ROTATION_VECTOR'
             self.quatAccuracy = status
-            self.rawQuatI = data1
-            self.rawQuatJ = data2
-            self.rawQuatK = data3
-            self.rawQuatReal = data4
+            self.rawQuatI = self._convert_signed_number(data1)
+            self.rawQuatJ = self._convert_signed_number(data2)
+            self.rawQuatK = self._convert_signed_number(data3)
+            self.rawQuatReal = self._convert_signed_number(data4)
             self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
             print('Orientation: I={0:b} J={1:b} K={2:b} Real={3:b}'.format(data1, data2, data3, data4))
         elif report_id == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
@@ -417,3 +417,9 @@ class BNO080(object):
             command = self.receivedData[2]
             if command == COMMAND_ME_CALIBRATE:
                 self.calibrationStatus = self.receivedData[4]
+
+    @staticmethod
+    def _convert_signed_number(number):
+        if number > 32768:
+            return number - 32768
+        return number
