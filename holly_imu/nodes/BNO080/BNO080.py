@@ -130,6 +130,8 @@ class BNO080(object):
     rawQuatReal = 0
     rawQuatRadianAccuracy = 0
 
+    sensorDelay = 0
+
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
         self.pi = pigpio.pi()
         if self.pi.connected is False:
@@ -289,7 +291,8 @@ class BNO080(object):
             return False
         else:
             if self.receivedHeader[2] == CHANNEL_REPORTS:
-                self._parse_input_report()
+                if self._parse_input_report() is not None:
+                    self._parse_input_report()
             elif self.receivedHeader[2] == CHANNEL_CONTROL:
                 self._parse_command_report()
             return True
@@ -374,66 +377,49 @@ class BNO080(object):
             data5 = data[13] << 8 | data[12]
         else:
             data5 = 0
-        return [report_id, status, data1, data2, data3, data4, data5]
+        return [status, data1, data2, data3, data4, data5]
 
     def _parse_input_report(self):
-        if (self.receivedData[0]) == SHTP_REPORT_BASE_TIMESTAMP:
-            delay = self._parse_base_timestamp(self.receivedData[0:5])
-            # print 'Delay between sensor sample and sending it: {0} us'.format(delay)
-        else:
-            print 'Error parsing response'
-            return
-
-        self.receivedData = self.receivedData[5:(len(self.receivedData))]
         if len(self.receivedData) == 0:
             print 'No sensor data to parse'
-            return
+            return None
+
+        if (self.receivedData[0]) == SHTP_REPORT_BASE_TIMESTAMP:
+            self.sensorDelay = self._parse_base_timestamp(self.receivedData[0:5])
+            # Strip of the previous now parsed packet
+            self.receivedData = self.receivedData[5:(len(self.receivedData))]
+            # print 'Delay between sensor sample and sending it: {0} us'.format(delay)
 
         report_data = self.parse_sensor_report(self.receivedData)
         if report_data is None:
             return
-        report_id, status, data1, data2, data3, data4, data5 = report_data
+        status, data1, data2, data3, data4, data5 = report_data
 
-        # report_id = self.receivedData[5]
-        # sequence_number = self.receivedData[6]
-        # status = self.receivedData[7] & 0x03
-        # data1 = self.receivedData[10] << 8 | self.receivedData[9]
-        # data2 = self.receivedData[12] << 8 | self.receivedData[11]
-        # data3 = self.receivedData[14] << 8 | self.receivedData[13]
-        # if len(self.receivedData) > 15:
-        #     data4 = self.receivedData[16] << 8 | self.receivedData[15]
-        # else:
-        #     data4 = 0
-        # if len(self.receivedData) > 17:
-        #     data5 = self.receivedData[18] << 8 | self.receivedData[17]
-        # else:
-        #     data5 = 0
-        #
-        if report_id == SENSOR_REPORTID_ACCELEROMETER:
+        if self.receivedData[0] == SENSOR_REPORTID_ACCELEROMETER:
             print 'SENSOR_REPORTID_ACCELEROMETER'
             self.accelAccuracy = status
             self.rawAccelX = data1
             self.rawAccelY = data2
             self.rawAccelZ = data3
-        elif report_id == SENSOR_REPORTID_LINEAR_ACCELERATION:
+        elif self.receivedData[0] == SENSOR_REPORTID_LINEAR_ACCELERATION:
             print 'SENSOR_REPORTID_LINEAR_ACCELERATION'
             self.accelLinAccuracy = status
             self.rawLinAccelX = self._convert_signed_number(data1)
             self.rawLinAccelY = self._convert_signed_number(data2)
             self.rawLinAccelZ = self._convert_signed_number(data3)
-        elif report_id == SENSOR_REPORTID_GYROSCOPE:
+        elif self.receivedData[0] == SENSOR_REPORTID_GYROSCOPE:
             print 'SENSOR_REPORTID_GYROSCOPE'
             self.gyroAccuracy = status
             self.rawGyroX = self._convert_signed_number(data1)
             self.rawGyroY = self._convert_signed_number(data2)
             self.rawGyroZ = self._convert_signed_number(data3)
-        elif report_id == SENSOR_REPORTID_MAGNETIC_FIELD:
+        elif self.receivedData[0] == SENSOR_REPORTID_MAGNETIC_FIELD:
             print 'SENSOR_REPORTID_MAGNETIC_FIELD'
             self.magAccuracy = status
             self.rawMagX = data1
             self.rawMagY = data2
             self.rawMagZ = data3
-        elif report_id == SENSOR_REPORTID_ROTATION_VECTOR or report_id == SENSOR_REPORTID_GAME_ROTATION_VECTOR:
+        elif self.receivedData[0] == SENSOR_REPORTID_ROTATION_VECTOR or self.receivedData[0] == SENSOR_REPORTID_GAME_ROTATION_VECTOR:
             print 'SENSOR_REPORTID_ROTATION_VECTOR'
             self.quatAccuracy = status
             self.rawQuatI = self._convert_signed_number(data1)
@@ -441,19 +427,22 @@ class BNO080(object):
             self.rawQuatK = self._convert_signed_number(data3)
             self.rawQuatReal = self._convert_signed_number(data4)
             self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
-        elif report_id == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
+
+            # Strip the now parsed sensor packed out
+            self.receivedData = self.receivedData[13:(len(self.receivedData))]
+        elif self.receivedData[0] == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
             print 'SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR'
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
-        elif report_id == SENSOR_REPORTID_STEP_COUNTER:
+        elif self.receivedData[0] == SENSOR_REPORTID_STEP_COUNTER:
             print 'SENSOR_REPORTID_STEP_COUNTER'
             self.stepCount = data3
-        elif report_id == SENSOR_REPORTID_STABILITY_CLASSIFIER:
+        elif self.receivedData[0] == SENSOR_REPORTID_STABILITY_CLASSIFIER:
             print 'SENSOR_REPORTID_STABILITY_CLASSIFIER'
             self.stabilityClassifier = self.receivedData[9]
-        elif report_id == SENSOR_REPORTID_PERSONAL_ACTIVITY_CLASSIFIER:
+        elif self.receivedData[0] == SENSOR_REPORTID_PERSONAL_ACTIVITY_CLASSIFIER:
             print 'SENSOR_REPORTID_PERSONAL_ACTIVITY_CLASSIFIER'
             self.activityClassifier = self.receivedData[10]
-        elif report_id == SHTP_REPORT_COMMAND_RESPONSE:
+        elif self.receivedData[0] == SHTP_REPORT_COMMAND_RESPONSE:
             print 'SHTP_REPORT_COMMAND_RESPONSE'
             # The BNO080 responds with this report to command requests.
             # It's up to use to remember which command we issued.
