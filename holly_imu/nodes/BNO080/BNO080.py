@@ -358,6 +358,7 @@ class BNO080(object):
     def parse_sensor_report(self, data):
         if len(data) < 10:
             print 'Report to short'
+            print ' '.join('{:02x}'.format(x) for x in data)
             return
         report_id = data[0]
         sequence_number = data[1]
