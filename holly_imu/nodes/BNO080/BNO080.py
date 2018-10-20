@@ -320,14 +320,15 @@ class BNO080(object):
         k = self.rawQuatK  # z
         real = self.rawQuatReal
 
-        i = i * pow(2, (ROTATION_VECTOR_Q * -1))
-        j = j * pow(2, (ROTATION_VECTOR_Q * -1))
-        k = k * pow(2, (ROTATION_VECTOR_Q * -1))
-        real = real * pow(2, (ROTATION_VECTOR_Q * -1))
+        i = self._convert_q_number(i, ROTATION_VECTOR_Q)
+        j = self._convert_q_number(j, ROTATION_VECTOR_Q)
+        k = self._convert_q_number(k, ROTATION_VECTOR_Q)
+        real = self._convert_q_number(real, ROTATION_VECTOR_Q)
 
         return [i, j, k, real]
 
     def get_rotation_accuracy(self):
+        # Heading accuracy in radians
         accuracy = self.rotationAccuracy
         return self._convert_q_number(accuracy, ROTATION_ACCURACY_Q)
 
@@ -338,7 +339,7 @@ class BNO080(object):
     def _parse_input_report(self):
         if (self.receivedData[0]) == SHTP_REPORT_BASE_TIMESTAMP:
             delay = self.receivedData[4] << 24 | self.receivedData[3] << 16 | self.receivedData[2] << 8 | self.receivedData[1]
-            print 'Delay: {0}'.format(delay)
+            # print 'Delay between sensor sample and sending it: {0} us'.format(delay)
         else:
             print 'Error parsing response'
             return
