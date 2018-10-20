@@ -54,7 +54,7 @@ if not imu.begin():
 
 imu.enable_rotation_vector(100)
 imu.enable_linear_acceleration(100)
-imu.enable_gyro(100)
+imu.enable_gyro(1000)
 # imu.enable_magnetometer(200)
 
 imu.calibrate_all()
