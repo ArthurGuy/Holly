@@ -363,11 +363,6 @@ class BNO080(object):
         return data[4] << 24 | data[3] << 16 | data[2] << 8 | data[1]
 
     def parse_sensor_report(self, data):
-        if len(data) < 10:
-            print 'Report to short'
-            print ' '.join('{:02x}'.format(x) for x in data)
-            return
-
         report_id = data[0]
         sequence_number = data[1]
         status = data[2] & 0x03
@@ -394,23 +389,28 @@ class BNO080(object):
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             return None
 
+        status, data1, data2, data3, data4, data5 = self.parse_sensor_report(self.receivedData)
+
         if (self.receivedData[0]) == SHTP_REPORT_BASE_TIMESTAMP:
+            # report size 5 bytes
+
             self.sensorDelay = self._parse_base_timestamp(self.receivedData[0:5])
-            # Strip of the previous now parsed packet
-            self.receivedData = self.receivedData[5:(len(self.receivedData))]
             # print 'Delay between sensor sample and sending it: {0} us'.format(delay)
 
-        report_data = self.parse_sensor_report(self.receivedData)
-        if report_data is None:
-            return None
-        status, data1, data2, data3, data4, data5 = report_data
+            # Strip the now parsed sensor packed out
+            self.receivedData = self.receivedData[5:(len(self.receivedData))]
 
-        if self.receivedData[0] == SENSOR_REPORTID_ACCELEROMETER:
+        elif self.receivedData[0] == SENSOR_REPORTID_ACCELEROMETER:
+            # report size 10 bytes
             print 'SENSOR_REPORTID_ACCELEROMETER'
             self.accelAccuracy = status
             self.rawAccelX = data1
             self.rawAccelY = data2
             self.rawAccelZ = data3
+
+            # Strip the now parsed sensor packed out
+            self.receivedData = self.receivedData[10:(len(self.receivedData))]
+
         elif self.receivedData[0] == SENSOR_REPORTID_LINEAR_ACCELERATION:
             # report size 10 bytes
             print 'SENSOR_REPORTID_LINEAR_ACCELERATION'
@@ -420,6 +420,7 @@ class BNO080(object):
             self.rawLinAccelZ = self._convert_signed_number(data3)
             # Strip the now parsed sensor packed out
             self.receivedData = self.receivedData[10:(len(self.receivedData))]
+
         elif self.receivedData[0] == SENSOR_REPORTID_GYROSCOPE:
             # report size 10 bytes
             print 'SENSOR_REPORTID_GYROSCOPE'
@@ -430,15 +431,21 @@ class BNO080(object):
 
             # Strip the now parsed sensor packed out
             self.receivedData = self.receivedData[10:(len(self.receivedData))]
+
         elif self.receivedData[0] == SENSOR_REPORTID_MAGNETIC_FIELD:
+            # report size 10 bytes
             print 'SENSOR_REPORTID_MAGNETIC_FIELD'
             self.magAccuracy = status
             self.rawMagX = data1
             self.rawMagY = data2
             self.rawMagZ = data3
-        elif self.receivedData[0] == SENSOR_REPORTID_ROTATION_VECTOR or self.receivedData[0] == SENSOR_REPORTID_GAME_ROTATION_VECTOR:
+
+            # Strip the now parsed sensor packed out
+            self.receivedData = self.receivedData[10:(len(self.receivedData))]
+
+        elif self.receivedData[0] == SENSOR_REPORTID_ROTATION_VECTOR or self.receivedData[0] == SENSOR_REPORTID_GAME_ROTATION_VECTOR or self.receivedData[0] == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
             # report size 14 bytes
-            print 'SENSOR_REPORTID_ROTATION_VECTOR'
+            print 'SENSOR_REPORTID_ROTATION_VECTOR Channel:{:02x}'.format(self.receivedData[0])
             self.quatAccuracy = status
             self.rawQuatI = self._convert_signed_number(data1)
             self.rawQuatJ = self._convert_signed_number(data2)
@@ -448,26 +455,36 @@ class BNO080(object):
 
             # Strip the now parsed sensor packed out
             self.receivedData = self.receivedData[14:(len(self.receivedData))]
-        elif self.receivedData[0] == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
-            print 'SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR'
-            print ' '.join('{:02x}'.format(x) for x in self.receivedData)
+
         elif self.receivedData[0] == SENSOR_REPORTID_STEP_COUNTER:
+            # report size 12 bytes
             print 'SENSOR_REPORTID_STEP_COUNTER'
             self.stepCount = data3
+
+            # Strip the now parsed sensor packed out
+            self.receivedData = self.receivedData[12:(len(self.receivedData))]
+
         elif self.receivedData[0] == SENSOR_REPORTID_STABILITY_CLASSIFIER:
+            # report size 6 bytes
             print 'SENSOR_REPORTID_STABILITY_CLASSIFIER'
-            self.stabilityClassifier = self.receivedData[9]
+            self.stabilityClassifier = self.receivedData[4]
+
+            # Strip the now parsed sensor packed out
+            self.receivedData = self.receivedData[6:(len(self.receivedData))]
+
         elif self.receivedData[0] == SENSOR_REPORTID_PERSONAL_ACTIVITY_CLASSIFIER:
             print 'SENSOR_REPORTID_PERSONAL_ACTIVITY_CLASSIFIER'
-            self.activityClassifier = self.receivedData[10]
+            self.activityClassifier = self.receivedData[5]
+
         elif self.receivedData[0] == SHTP_REPORT_COMMAND_RESPONSE:
             print 'SHTP_REPORT_COMMAND_RESPONSE'
             # The BNO080 responds with this report to command requests.
             # It's up to use to remember which command we issued.
-            command = self.receivedData[7]  # This is the Command byte of the response
+            command = self.receivedData[2]  # This is the Command byte of the response
             if command == COMMAND_ME_CALIBRATE:
                 # Calibration report found
-                self.calibrationStatus = self.receivedData[10]  # R0 - Status (0 = success, non-zero = fail)
+                self.calibrationStatus = self.receivedData[5]  # R0 - Status (0 = success, non-zero = fail)
+
         return True
 
     def _parse_command_report(self):
