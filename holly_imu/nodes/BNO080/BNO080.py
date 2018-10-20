@@ -385,6 +385,10 @@ class BNO080(object):
         return [status, data1, data2, data3, data4, data5]
 
     def _parse_input_report(self):
+        if len(self.receivedData) == 0:
+            # The data has been parsed, nothing else to do
+            return None
+
         if len(self.receivedData) < 10:
             print 'Report to short'
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
