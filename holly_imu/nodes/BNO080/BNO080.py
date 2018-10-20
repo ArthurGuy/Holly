@@ -137,10 +137,6 @@ class BNO080(object):
 
         self.h = self.pi.i2c_open(1, address)
 
-        # i2c = I2C
-        # Save a reference to the I2C device instance for later communication.
-        # self._i2c_device = i2c.get_i2c_device(address, **kwargs)
-
     def _send_packet(self, channelNumber, dataLength, data):
 
         packetLength = dataLength + 4
@@ -155,15 +151,6 @@ class BNO080(object):
 
         # Increment the sequence counter
         self.sequenceNumber[channelNumber] = self.sequenceNumber[channelNumber] + 1
-
-        # self._i2c_device.writeRaw8(packetLength & 0xFF)  # Packet length LSB
-        # self._i2c_device.writeRaw8(packetLength >> 8)    # Packet length MSB
-        # self._i2c_device.writeRaw8(channelNumber)
-        # self._i2c_device.writeRaw8(self.sequenceNumber[channelNumber])  # Send the sequence number, increments with each packet sent, different counter for each channel
-        # i = 0
-        # while i < dataLength:
-        #     self._i2c_device.write8(i + 4, data[i])
-        #     i += 1
 
     def _send_command(self, command, data):
         data[0] = SHTP_REPORT_COMMAND_REQUEST

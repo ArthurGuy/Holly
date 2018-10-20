@@ -29,7 +29,7 @@ rate = rospy.Rate(50)
 
 # setup publisher and classes
 imuPub = rospy.Publisher('imu/data', Imu, queue_size=5)
-msg = Imu()
+imuMsg = Imu()
 
 magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=5)
 magMsg = MagneticField()
@@ -76,11 +76,60 @@ while not rospy.is_shutdown():
             # angles = euler_from_quaternion([i, j, k, real])
             # print('Roll={0:0.2F} Pitch={1:0.2F} Heading={2:0.2F} '.format(angles[0], angles[1], angles[2]))
 
-            x, y, z = imu.get_linear_acceleration()
-            print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(x, y, z))
+            linearAccelX, linearAccelY, linearAccelZ = imu.get_linear_acceleration()
+            print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(linearAccelX, linearAccelY, linearAccelZ))
 
-            x, y, z = imu.get_gyro()
-            print('Gyro: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(x, y, z))
+            gyroX, gyroY, gyroZ = imu.get_gyro()
+            print('Gyro: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(gyroX, gyroY, gyroZ))
+
+
+            # Publish the gyro and accel data #
+
+            imuMsg.header.seq = seq
+            imuMsg.header.stamp = rospy.Time.now()
+            imuMsg.header.frame_id = "base_link"
+
+            imuMsg.orientation.x = i
+            imuMsg.orientation.y = j
+            imuMsg.orientation.z = k
+            imuMsg.orientation.w = real
+            if sensor_accuracy == 3:
+                imuMsg.orientation_covariance = [0.01] * 9
+            elif sensor_accuracy == 2:
+                imuMsg.orientation_covariance = [0.001] * 9
+            elif sensor_accuracy == 1:
+                imuMsg.orientation_covariance = [0.0001] * 9
+            elif sensor_accuracy == 0:
+                imuMsg.orientation_covariance = [0.00001] * 9
+
+            # Gyroscope data (in degrees per second):
+            imuMsg.angular_velocity.x = gyroX
+            imuMsg.angular_velocity.y = gyroY
+            imuMsg.angular_velocity.z = gyroZ
+            if gyro_accuracy == 3:
+                imuMsg.angular_velocity_covariance = [1] * 9
+            elif gyro_accuracy == 2:
+                imuMsg.angular_velocity_covariance = [0.1] * 9
+            elif gyro_accuracy == 1:
+                imuMsg.angular_velocity_covariance = [0.001] * 9
+            elif gyro_accuracy == 0:
+                imuMsg.angular_velocity_covariance = [0.00001] * 9
+
+            # Accelerometer data (in meters per second squared):
+            imuMsg.linear_acceleration.x = linearAccelX
+            imuMsg.linear_acceleration.y = linearAccelY
+            imuMsg.linear_acceleration.z = linearAccelZ
+            if linear_accuracy == 3:
+                imuMsg.linear_acceleration_covariance = [10] * 9
+            elif linear_accuracy == 2:
+                imuMsg.linear_acceleration_covariance = [1] * 9
+            elif linear_accuracy == 1:
+                imuMsg.linear_acceleration_covariance = [0.001] * 9
+            elif linear_accuracy == 0:
+                imuMsg.linear_acceleration_covariance = [0.00001] * 9
+
+            imuPub.publish(imuMsg)
+
         else:
             print('No IMU data available')
 
