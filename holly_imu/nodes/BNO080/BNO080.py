@@ -390,8 +390,6 @@ class BNO080(object):
             self.rawQuatK = self._convert_signed_number(data3)
             self.rawQuatReal = self._convert_signed_number(data4)
             self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
-            print('Orientation: I={0:16b} J={1:16b} K={2:16b} Real={3:16b}'.format(data1, data2, data3, data4))
-            print('Orientation: I={0:16b} J={1:16b} K={2:16b} Real={3:16b}'.format(self._convert_signed_number(data1), self._convert_signed_number(data2), self._convert_signed_number(data3), self._convert_signed_number(data4)))
         elif report_id == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
             print 'SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR'
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
@@ -422,5 +420,5 @@ class BNO080(object):
     @staticmethod
     def _convert_signed_number(number):
         if number > 0x7FFF:
-            return (number & 0x7FFF) ^ 0x7FFF
+            return -((number & 0x7FFF) ^ 0x7FFF)
         return number
