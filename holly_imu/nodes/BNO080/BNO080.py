@@ -356,18 +356,21 @@ class BNO080(object):
         return data[4] << 24 | data[3] << 16 | data[2] << 8 | data[1]
 
     def parse_sensor_report(self, data):
-        report_id = data[5]
-        sequence_number = data[6]
-        status = data[7] & 0x03
-        data1 = data[10] << 8 | data[9]
-        data2 = data[12] << 8 | data[11]
-        data3 = data[14] << 8 | data[13]
-        if len(data) > 15:
-            data4 = data[16] << 8 | data[15]
+        if len(data) < 10:
+            print 'Report to short'
+            return
+        report_id = data[0]
+        sequence_number = data[1]
+        status = data[2] & 0x03
+        data1 = data[5] << 8 | data[4]
+        data2 = data[7] << 8 | data[6]
+        data3 = data[9] << 8 | data[8]
+        if len(data) > 10:
+            data4 = data[11] << 8 | data[10]
         else:
             data4 = 0
-        if len(data) > 17:
-            data5 = data[18] << 8 | data[17]
+        if len(data) > 12:
+            data5 = data[13] << 8 | data[12]
         else:
             data5 = 0
         return [report_id, status, data1, data2, data3, data4, data5]
@@ -381,6 +384,10 @@ class BNO080(object):
             return
 
         self.receivedData = self.receivedData[5:(len(self.receivedData) - 5)]
+        if len(self.receivedData) == 0:
+            print 'No sensor data to parse'
+            return
+
         report_id, status, data1, data2, data3, data4, data5 = self.parse_sensor_report(self.receivedData)
 
         # report_id = self.receivedData[5]
