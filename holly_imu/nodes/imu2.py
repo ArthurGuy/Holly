@@ -75,7 +75,7 @@ while not rospy.is_shutdown():
 
             x, y, z = imu.get_linear_acceleration()
             linear_accuracy = imu.get_linear_accuracy()
-            print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} Accuracy={4}'.format(x, y, z, linear_accuracy))
+            print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F} Accuracy={3}'.format(x, y, z, linear_accuracy))
         else:
             print('No IMU data available')
 
