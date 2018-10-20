@@ -422,5 +422,5 @@ class BNO080(object):
     @staticmethod
     def _convert_signed_number(number):
         if number > 0x7FFF:
-            return ~ (number & 0x7FFF)
+            return (number & 0x7FFF) ^ 0x7FFF
         return number
