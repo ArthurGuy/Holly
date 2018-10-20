@@ -191,7 +191,7 @@ class BNO080(object):
             self.receivedHeader = receivedData[0:4]
             self.receivedData = receivedData[4:dataLength]
             # print ' '.join('{:02x}'.format(x) for x in self.receivedHeader)
-            print ' '.join('{:02x}'.format(x) for x in self.receivedData)
+            # print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             return True
 
     def _set_feature_command(self, reportID, timeBetweenReports, specificConfig=0):
@@ -413,7 +413,7 @@ class BNO080(object):
 
         elif self.receivedData[0] == SENSOR_REPORTID_LINEAR_ACCELERATION:
             # report size 10 bytes
-            print 'SENSOR_REPORTID_LINEAR_ACCELERATION'
+            # print 'SENSOR_REPORTID_LINEAR_ACCELERATION'
             self.accelLinAccuracy = status
             self.rawLinAccelX = self._convert_signed_number(data1)
             self.rawLinAccelY = self._convert_signed_number(data2)
@@ -423,7 +423,7 @@ class BNO080(object):
 
         elif self.receivedData[0] == SENSOR_REPORTID_GYROSCOPE:
             # report size 10 bytes
-            print 'SENSOR_REPORTID_GYROSCOPE'
+            # print 'SENSOR_REPORTID_GYROSCOPE'
             self.gyroAccuracy = status
             self.rawGyroX = self._convert_signed_number(data1)
             self.rawGyroY = self._convert_signed_number(data2)
@@ -445,7 +445,7 @@ class BNO080(object):
 
         elif self.receivedData[0] == SENSOR_REPORTID_ROTATION_VECTOR or self.receivedData[0] == SENSOR_REPORTID_GAME_ROTATION_VECTOR or self.receivedData[0] == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
             # report size 14 bytes
-            print 'SENSOR_REPORTID_ROTATION_VECTOR Channel:{:02x}'.format(self.receivedData[0])
+            # print 'SENSOR_REPORTID_ROTATION_VECTOR Channel:{:02x}'.format(self.receivedData[0])
             self.quatAccuracy = status
             self.rawQuatI = self._convert_signed_number(data1)
             self.rawQuatJ = self._convert_signed_number(data2)
