@@ -53,9 +53,9 @@ if not imu.begin():
     raise RuntimeError('Failed to initialize BNO080. Is the sensor connected?')
 
 imu.enable_rotation_vector(200)
-imu.enable_magnetometer(200)
+# imu.enable_magnetometer(200)
 
-imu.calibrate_all()
+# imu.calibrate_all()
 
 
 while not rospy.is_shutdown():
