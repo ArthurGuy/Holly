@@ -66,10 +66,10 @@ while not rospy.is_shutdown():
             sensor_accuracy = imu.get_quat_accuracy()
             print('Sys_cal={0} Mag_cal={1}'.format(sensor_accuracy, mag_accuracy))
             i, j, k, real = imu.get_rotation_quaternion()
-            # angles = euler_from_quaternion([i, j, k, real])
+            angles = euler_from_quaternion([i, j, k, real])
             rotation_accuracy = imu.get_rotation_accuracy()
             print('Orientation: I={0:0.8F} J={1:0.8F} K={2:0.8F} Real={3:0.8F} Accuracy={4}'.format(i, j, k, real, rotation_accuracy))
-            # print('Roll={0:0.2F} Pitch={1:0.2F} Heading={2:0.2F} '.format(angles[0], angles[1], angles[2]))
+            print('Roll={0:0.2F} Pitch={1:0.2F} Heading={2:0.2F} '.format(angles[0], angles[1], angles[2]))
         else:
             print('No IMU data available')
 

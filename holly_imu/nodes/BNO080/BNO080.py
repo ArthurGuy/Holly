@@ -314,10 +314,11 @@ class BNO080(object):
         return self.receivedData
 
     def get_rotation_quaternion(self):
-        i = self.rawQuatI  # x
-        j = self.rawQuatJ  # y
-        k = self.rawQuatK  # z
-        real = self.rawQuatReal
+        # Returns a rotation vector as a unit quaternion
+        i = self.rawQuatI        # x
+        j = self.rawQuatJ        # y
+        k = self.rawQuatK        # z
+        real = self.rawQuatReal  # w
 
         i = self._convert_q_number(i, ROTATION_VECTOR_Q)
         j = self._convert_q_number(j, ROTATION_VECTOR_Q)
