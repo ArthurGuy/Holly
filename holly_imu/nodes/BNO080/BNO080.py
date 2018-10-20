@@ -342,6 +342,10 @@ class BNO080(object):
         x = self.rawLinAccelX
         y = self.rawLinAccelY
         z = self.rawLinAccelZ
+
+        x = self._convert_q_number(x, ACCELEROMETER_Q)
+        y = self._convert_q_number(y, ACCELEROMETER_Q)
+        z = self._convert_q_number(z, ACCELEROMETER_Q)
         return [x, y, z]
 
     @staticmethod
