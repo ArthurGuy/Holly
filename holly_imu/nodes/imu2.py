@@ -62,6 +62,7 @@ while not rospy.is_shutdown():
     try:
         if imu.data_available():
             # print('IMU data available')
+            print ''
             mag_accuracy = imu.get_mag_accuracy()
             sensor_accuracy = imu.get_quat_accuracy()
             print('Sys_cal={0} Mag_cal={1}'.format(sensor_accuracy, mag_accuracy))
