@@ -185,6 +185,9 @@ class BNO080(object):
 
             # receivedData = self._i2c_device.readList(0, dataLength)
             (count, receivedData) = self.pi.i2c_read_device(self.h, dataLength)
+            if len(receivedData) < 4:
+                # Not big enough for the header so its bad data
+                return False;
             self.receivedHeader = receivedData[0:4]
             self.receivedData = receivedData[4:dataLength]
             # print ' '.join('{:02x}'.format(x) for x in self.receivedHeader)
@@ -291,8 +294,9 @@ class BNO080(object):
             return False
         else:
             if self.receivedHeader[2] == CHANNEL_REPORTS:
-                if self._parse_input_report() is not None:
-                    self._parse_input_report()
+                data_to_parse = True;
+                while data_to_parse is not None:
+                    data_to_parse = self._parse_input_report()
             elif self.receivedHeader[2] == CHANNEL_CONTROL:
                 self._parse_command_report()
             return True
@@ -363,6 +367,7 @@ class BNO080(object):
             print 'Report to short'
             print ' '.join('{:02x}'.format(x) for x in data)
             return
+
         report_id = data[0]
         sequence_number = data[1]
         status = data[2] & 0x03
@@ -380,8 +385,9 @@ class BNO080(object):
         return [status, data1, data2, data3, data4, data5]
 
     def _parse_input_report(self):
-        if len(self.receivedData) == 0:
-            print 'No sensor data to parse'
+        if len(self.receivedData) < 10:
+            print 'Report to short'
+            print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             return None
 
         if (self.receivedData[0]) == SHTP_REPORT_BASE_TIMESTAMP:
@@ -392,7 +398,7 @@ class BNO080(object):
 
         report_data = self.parse_sensor_report(self.receivedData)
         if report_data is None:
-            return
+            return None
         status, data1, data2, data3, data4, data5 = report_data
 
         if self.receivedData[0] == SENSOR_REPORTID_ACCELEROMETER:
@@ -402,17 +408,24 @@ class BNO080(object):
             self.rawAccelY = data2
             self.rawAccelZ = data3
         elif self.receivedData[0] == SENSOR_REPORTID_LINEAR_ACCELERATION:
+            # report size 10 bytes
             print 'SENSOR_REPORTID_LINEAR_ACCELERATION'
             self.accelLinAccuracy = status
             self.rawLinAccelX = self._convert_signed_number(data1)
             self.rawLinAccelY = self._convert_signed_number(data2)
             self.rawLinAccelZ = self._convert_signed_number(data3)
+            # Strip the now parsed sensor packed out
+            self.receivedData = self.receivedData[10:(len(self.receivedData))]
         elif self.receivedData[0] == SENSOR_REPORTID_GYROSCOPE:
+            # report size 10 bytes
             print 'SENSOR_REPORTID_GYROSCOPE'
             self.gyroAccuracy = status
             self.rawGyroX = self._convert_signed_number(data1)
             self.rawGyroY = self._convert_signed_number(data2)
             self.rawGyroZ = self._convert_signed_number(data3)
+
+            # Strip the now parsed sensor packed out
+            self.receivedData = self.receivedData[10:(len(self.receivedData))]
         elif self.receivedData[0] == SENSOR_REPORTID_MAGNETIC_FIELD:
             print 'SENSOR_REPORTID_MAGNETIC_FIELD'
             self.magAccuracy = status
@@ -420,7 +433,7 @@ class BNO080(object):
             self.rawMagY = data2
             self.rawMagZ = data3
         elif self.receivedData[0] == SENSOR_REPORTID_ROTATION_VECTOR or self.receivedData[0] == SENSOR_REPORTID_GAME_ROTATION_VECTOR:
-            # report size 14 bits
+            # report size 14 bytes
             print 'SENSOR_REPORTID_ROTATION_VECTOR'
             self.quatAccuracy = status
             self.rawQuatI = self._convert_signed_number(data1)
