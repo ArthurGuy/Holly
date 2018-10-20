@@ -97,6 +97,7 @@ CALIBRATE_ACCEL_GYRO_MAG = 4
 CALIBRATE_STOP = 5
 
 ROTATION_VECTOR_Q = 14
+ROTATION_ACCURACY_Q = 12
 ACCELEROMETER_Q = 8
 GYRO_Q = 9
 MAGNETOMETER_Q = 4
@@ -128,6 +129,7 @@ class BNO080(object):
     rawQuatK = 0
     rawQuatReal = 0
     rawQuatRadianAccuracy = None
+    rotationAccuracy = 0
 
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
         self.pi = pigpio.pi()
@@ -325,19 +327,39 @@ class BNO080(object):
 
         return [i, j, k, real]
 
+    def get_rotation_accuracy(self):
+        accuracy = self.rotationAccuracy
+        return self._convert_q_number(accuracy, ROTATION_ACCURACY_Q)
+
+    @staticmethod
+    def _convert_q_number(number, q_point):
+        return number * pow(2, (q_point * -1))
+
     def _parse_input_report(self):
+        if (self.receivedData[0]) == SHTP_REPORT_BASE_TIMESTAMP:
+            delay = self.receivedData[4] << 24 | self.receivedData[3] << 16 | self.receivedData[2] << 8 | self.receivedData[1]
+            print 'Delay: {0}'.format(delay)
+        else:
+            print 'Error parsing response'
+            return
         report_id = self.receivedData[5]
         sequence_number = self.receivedData[6]
         status = self.receivedData[7] & 0x03
         data1 = self.receivedData[10] << 8 | self.receivedData[9]
         data2 = self.receivedData[12] << 8 | self.receivedData[11]
         data3 = self.receivedData[14] << 8 | self.receivedData[13]
-        data4 = 0
-        data5 = 0
         if len(self.receivedData) > 15:
             data4 = self.receivedData[16] << 8 | self.receivedData[15]
+        else:
+            data4 = 0
         if len(self.receivedData) > 17:
             data5 = self.receivedData[18] << 8 | self.receivedData[17]
+        else:
+            data5 = 0
+        if len(self.receivedData) > 19:
+            data6 = self.receivedData[20] << 8 | self.receivedData[19]
+        else:
+            data6 = 0
 
         if report_id == SENSOR_REPORTID_ACCELEROMETER:
             print 'SENSOR_REPORTID_ACCELEROMETER'
@@ -371,6 +393,7 @@ class BNO080(object):
             self.rawQuatK = data3
             self.rawQuatReal = data4
             self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
+            self.rotationAccuracy = data6
         elif report_id == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
             print 'SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR'
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
