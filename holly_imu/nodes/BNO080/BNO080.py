@@ -186,7 +186,7 @@ class BNO080(object):
             self.receivedHeader = receivedData[0:4]
             self.receivedData = receivedData[4:dataLength]
             # print ' '.join('{:02x}'.format(x) for x in self.receivedHeader)
-            # print ' '.join('{:02x}'.format(x) for x in self.receivedData)
+            print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             return True
 
     def _set_feature_command(self, reportID, timeBetweenReports, specificConfig=0):
