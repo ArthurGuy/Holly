@@ -390,6 +390,7 @@ class BNO080(object):
             self.rawQuatK = data3
             self.rawQuatReal = data4
             self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
+            print('Orientation: I={0:b} J={1:b} K={2:b} Real={3:b}'.format(data1, data2, data3, data4))
         elif report_id == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
             print 'SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR'
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
