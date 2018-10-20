@@ -55,7 +55,7 @@ if not imu.begin():
 imu.enable_rotation_vector(100)
 # imu.enable_magnetometer(200)
 
-# imu.calibrate_all()
+imu.calibrate_all()
 
 
 while not rospy.is_shutdown():
