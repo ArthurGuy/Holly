@@ -369,11 +369,11 @@ class BNO080(object):
         data1 = data[5] << 8 | data[4]
         data2 = data[7] << 8 | data[6]
         data3 = data[9] << 8 | data[8]
-        if len(data) > 10:
+        if len(data) > 11:
             data4 = data[11] << 8 | data[10]
         else:
             data4 = 0
-        if len(data) > 12:
+        if len(data) > 13:
             data5 = data[13] << 8 | data[12]
         else:
             data5 = 0
@@ -420,6 +420,7 @@ class BNO080(object):
             self.rawMagY = data2
             self.rawMagZ = data3
         elif self.receivedData[0] == SENSOR_REPORTID_ROTATION_VECTOR or self.receivedData[0] == SENSOR_REPORTID_GAME_ROTATION_VECTOR:
+            # report size 14 bits
             print 'SENSOR_REPORTID_ROTATION_VECTOR'
             self.quatAccuracy = status
             self.rawQuatI = self._convert_signed_number(data1)
@@ -429,7 +430,7 @@ class BNO080(object):
             self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
 
             # Strip the now parsed sensor packed out
-            self.receivedData = self.receivedData[13:(len(self.receivedData))]
+            self.receivedData = self.receivedData[14:(len(self.receivedData))]
         elif self.receivedData[0] == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
             print 'SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR'
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
