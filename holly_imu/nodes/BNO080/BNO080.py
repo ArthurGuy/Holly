@@ -379,9 +379,9 @@ class BNO080(object):
         elif report_id == SENSOR_REPORTID_LINEAR_ACCELERATION:
             print 'SENSOR_REPORTID_LINEAR_ACCELERATION'
             self.accelLinAccuracy = status
-            self.rawLinAccelX = data1
-            self.rawLinAccelY = data2
-            self.rawLinAccelZ = data3
+            self.rawLinAccelX = self._convert_signed_number(data1)
+            self.rawLinAccelY = self._convert_signed_number(data2)
+            self.rawLinAccelZ = self._convert_signed_number(data3)
         elif report_id == SENSOR_REPORTID_GYROSCOPE:
             print 'SENSOR_REPORTID_GYROSCOPE'
             self.gyroAccuracy = status
