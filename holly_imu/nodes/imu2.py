@@ -37,6 +37,7 @@ magMsg = MagneticField()
 statusPub = rospy.Publisher('imu/debug', Int8MultiArray, queue_size=1)
 statusMsg = Int8MultiArray()
 
+no_data_count = 0
 
 seq = 1
 
@@ -49,20 +50,26 @@ cal_data = []
 
 rospy.loginfo("IMU2 starting")
 
-if not imu.begin():
-    raise RuntimeError('Failed to initialize BNO080. Is the sensor connected?')
 
-imu.enable_rotation_vector(100)
-imu.enable_linear_acceleration(100)
-imu.enable_gyro(100)
-# imu.enable_magnetometer(200)
+def setup_imu():
+    if not imu.begin():
+        raise RuntimeError('Failed to initialize BNO080. Is the sensor connected?')
 
-imu.calibrate_all()
+    imu.enable_rotation_vector(100)
+    imu.enable_linear_acceleration(100)
+    imu.enable_gyro(100)
+    # imu.enable_magnetometer(200)
 
+    imu.calibrate_all()
+
+
+setup_imu()
 
 while not rospy.is_shutdown():
     try:
         if imu.data_available():
+            no_data_count = 0
+
             # print('IMU data available')
             print ''
             mag_accuracy = imu.get_mag_accuracy()
@@ -132,6 +139,9 @@ while not rospy.is_shutdown():
 
         else:
             print('No IMU data available')
+            no_data_count = no_data_count + 1
+            if no_data_count == 10:
+                setup_imu()
 
         rate.sleep()
     except:
