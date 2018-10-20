@@ -24,7 +24,7 @@ from tf.transformations import euler_from_quaternion
 imu = BNO080.BNO080()
 
 rospy.init_node('holly_imu2')
-rate = rospy.Rate(50)
+rate = rospy.Rate(20)
 
 
 # setup publisher and classes
