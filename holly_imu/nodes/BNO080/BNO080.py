@@ -276,6 +276,9 @@ class BNO080(object):
         # This is the 3d fusion mode
         self._set_feature_command(SENSOR_REPORTID_ROTATION_VECTOR, update_time * 1000)
 
+    def enable_linear_acceleration(self, update_time):
+        self._set_feature_command(SENSOR_REPORTID_LINEAR_ACCELERATION, update_time * 1000)
+
     def enable_mag_rotation_vector(self, update_time):
         # This is the 3d fusion mode
         self._set_feature_command(SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR, update_time * 1000)
@@ -310,6 +313,9 @@ class BNO080(object):
     def get_quat_accuracy(self):
         return self.quatAccuracy
 
+    def get_linear_accuracy(self):
+        return self.accelLinAccuracy
+
     def get_data_array(self):
         return self.receivedData
 
@@ -331,6 +337,12 @@ class BNO080(object):
         # Heading accuracy in radians
         accuracy = self.rawQuatRadianAccuracy
         return self._convert_q_number(accuracy, ROTATION_ACCURACY_Q)
+
+    def get_linear_acceleration(self):
+        x = self.rawLinAccelX
+        y = self.rawLinAccelY
+        z = self.rawLinAccelZ
+        return [x, y, z]
 
     @staticmethod
     def _convert_q_number(number, q_point):
