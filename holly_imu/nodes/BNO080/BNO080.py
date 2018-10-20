@@ -128,8 +128,7 @@ class BNO080(object):
     rawQuatJ = 0
     rawQuatK = 0
     rawQuatReal = 0
-    rawQuatRadianAccuracy = None
-    rotationAccuracy = 0
+    rawQuatRadianAccuracy = 0
 
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
         self.pi = pigpio.pi()
@@ -329,7 +328,7 @@ class BNO080(object):
 
     def get_rotation_accuracy(self):
         # Heading accuracy in radians
-        accuracy = self.rotationAccuracy
+        accuracy = self.rawQuatRadianAccuracy
         return self._convert_q_number(accuracy, ROTATION_ACCURACY_Q)
 
     @staticmethod
@@ -357,10 +356,6 @@ class BNO080(object):
             data5 = self.receivedData[18] << 8 | self.receivedData[17]
         else:
             data5 = 0
-        if len(self.receivedData) > 19:
-            data6 = self.receivedData[20] << 8 | self.receivedData[19]
-        else:
-            data6 = 0
 
         if report_id == SENSOR_REPORTID_ACCELEROMETER:
             print 'SENSOR_REPORTID_ACCELEROMETER'
@@ -394,7 +389,6 @@ class BNO080(object):
             self.rawQuatK = data3
             self.rawQuatReal = data4
             self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
-            self.rotationAccuracy = data6
         elif report_id == SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR:
             print 'SENSOR_REPORTID_GEOMAGNETIC_ROTATION_VECTOR'
             print ' '.join('{:02x}'.format(x) for x in self.receivedData)
