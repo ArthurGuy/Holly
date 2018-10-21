@@ -30,8 +30,8 @@ rate = rospy.Rate(20)
 imuPub = rospy.Publisher('imu/data', Imu, queue_size=5)
 imuMsg = Imu()
 
-magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=5)
-magMsg = MagneticField()
+# magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=5)
+# magMsg = MagneticField()
 
 statusPub = rospy.Publisher('imu/debug', Int8MultiArray, queue_size=1)
 statusMsg = Int8MultiArray()
