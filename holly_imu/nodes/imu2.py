@@ -38,6 +38,7 @@ statusPub = rospy.Publisher('imu/debug', Int8MultiArray, queue_size=1)
 statusMsg = Int8MultiArray()
 
 no_data_count = 0
+restart_count = 0
 
 seq = 1
 
@@ -52,6 +53,7 @@ rospy.loginfo("IMU2 starting")
 
 
 def setup_imu():
+    global restart_count
     if not imu.begin():
         raise RuntimeError('Failed to initialize BNO080. Is the sensor connected?')
 
@@ -62,6 +64,7 @@ def setup_imu():
 
     imu.calibrate_all()
 
+    restart_count = restart_count + 1
 
 setup_imu()
 
