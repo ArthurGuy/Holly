@@ -8,7 +8,6 @@ import sys, getopt
 from BNO080 import BNO080
 
 sys.path.append('.')
-import RTIMU
 import os.path
 import time
 import math
@@ -91,6 +90,10 @@ while not rospy.is_shutdown():
 
             gyroX, gyroY, gyroZ = imu.get_gyro()
             print('Gyro: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(gyroX, gyroY, gyroZ))
+
+            # Publish the status flags so we can see whats going on
+            statusMsg.data = sensor_accuracy, gyro_accuracy, linear_accuracy, mag_accuracy
+            statusPub.publish(statusMsg)
 
 
             # Publish the gyro and accel data #
