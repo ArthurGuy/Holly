@@ -41,6 +41,10 @@ def status_callback(imu_status):
     print('Status: Sys={0} Mag={1} Linear_accel={2} Gyro={3}'.format(system_status, mag_status, accel_status, gyro_status))
 
 
+def accuracy_callback(accuracy):
+    print('Rotation Accuracy={0}'.format(accuracy.data))
+
+
 # odomMsg = Odometry()
 # rospy.Subscriber("/odometry/filtered", Odometry, odom_callback)
 
@@ -48,7 +52,10 @@ imuMsg = Imu()
 rospy.Subscriber("/imu/data", Imu, imu_callback)
 
 statusMessage = Int8MultiArray()
-rospy.Subscriber("/imu/debug", Imu, status_callback)
+rospy.Subscriber("/imu/debug", Int8MultiArray, status_callback)
+
+accuracyMessage = Int8MultiArray()
+rospy.Subscriber("/imu/direction_accuracy", Float32, accuracy_callback)
 
 
 def update_position():
