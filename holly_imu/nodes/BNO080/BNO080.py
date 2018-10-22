@@ -337,6 +337,9 @@ class BNO080(object):
     def get_accel_data_delay(self):
         return self.accelSensorDelay
 
+    def get_mag_data_delay(self):
+        return self.magSensorDelay
+
     def get_rotation_quaternion(self):
         # Returns a rotation vector as a unit quaternion
         i = self.rawQuatI        # x
@@ -473,11 +476,12 @@ class BNO080(object):
 
         elif self.receivedData[0] == SENSOR_REPORTID_MAGNETIC_FIELD:
             # report size 10 bytes
-            print 'SENSOR_REPORTID_MAGNETIC_FIELD'
             self.magAccuracy = status
             self.rawMagX = data1
             self.rawMagY = data2
             self.rawMagZ = data3
+
+            self.magSensorDelay = self.sensorDelay
 
             # Strip the now parsed sensor packed out
             self.receivedData = self.receivedData[10:(len(self.receivedData))]
