@@ -136,10 +136,25 @@
         </visual>
     </link>
 
+    <link name="/rear_distance_sensor">
+         <visual>
+            <geometry>
+                <box size="0.02 0.02 0.02" />
+            </geometry>
+            <material name="red" />
+        </visual>
+    </link>
+
     <joint name="base_to_front_distance_sensor" type="fixed">
         <parent link="/base_link" />
         <child link="/front_distance_sensor" />
         <origin xyz="0.22 0.0 -0.04" rpy="0 0 0" />
+    </joint>
+
+    <joint name="base_to_rear_distance_sensor" type="fixed">
+        <parent link="/base_link" />
+        <child link="/rear_distance_sensor" />
+        <origin xyz="-0.22 0.0 -0.04" rpy="0 0 3.14159" />
     </joint>
 
     <link name="/laserscan_frame"></link>
