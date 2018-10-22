@@ -68,8 +68,10 @@ while not rospy.is_shutdown():
     try:
         if sensorSetupNeeded:
             # try:
-            tof = VL53L0X()
+            tof = VL53L0X(0x29, 0, 0x70)
+            tof_rear = VL53L0X(0x29, 1, 0x70)
             tof.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
+            tof_rear.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
             sensorSetupNeeded = 0
             # except:
             #     print 'Error setting up the range sensor'
