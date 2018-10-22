@@ -7,7 +7,7 @@ import time
 from geometry_msgs.msg import Twist, Pose, Point
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
-from std_msgs.msg import Float64
+from std_msgs.msg import Int8MultiArray, Bool, Float32
 from tf.transformations import euler_from_quaternion
 
 sys.path.append('.')
@@ -36,11 +36,19 @@ def imu_callback(data):
     print('Orientation  IMU: Roll={0:0.8F} Pitch={1:0.8F} Yaw={2:0.8F}'.format(roll, pitch, yaw))
 
 
-odomMsg = Odometry()
-rospy.Subscriber("/odometry/filtered", Odometry, odom_callback)
+def status_callback(imu_status):
+    system_status, gyro_status, accel_status, mag_status = imu_status.data
+    print('Status: Sys={0} Mag={1} Linear_accel={2} Gyro={3}'.format(system_status, mag_status, accel_status, gyro_status))
+
+
+# odomMsg = Odometry()
+# rospy.Subscriber("/odometry/filtered", Odometry, odom_callback)
 
 imuMsg = Imu()
 rospy.Subscriber("/imu/data", Imu, imu_callback)
+
+statusMessage = Int8MultiArray()
+rospy.Subscriber("/imu/debug", Imu, status_callback)
 
 
 def update_position():
