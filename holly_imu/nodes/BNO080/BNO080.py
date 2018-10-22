@@ -131,6 +131,11 @@ class BNO080(object):
     rawQuatRadianAccuracy = 0
 
     sensorDelay = 0
+    magSensorDelay = 0
+    gyroSensorDelay = 0
+    accelSensorDelay = 0
+    posSensorDelay = 0
+    linearAccelSensorDelay = 0
 
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
         self.pi = pigpio.pi()
@@ -320,6 +325,18 @@ class BNO080(object):
     def get_data_delay(self):
         return self.sensorDelay
 
+    def get_gyro_data_delay(self):
+        return self.gyroSensorDelay
+
+    def get_pos_data_delay(self):
+        return self.posSensorDelay
+
+    def get_linear_accel_data_delay(self):
+        return self.linearAccelSensorDelay
+
+    def get_accel_data_delay(self):
+        return self.accelSensorDelay
+
     def get_rotation_quaternion(self):
         # Returns a rotation vector as a unit quaternion
         i = self.rawQuatI        # x
@@ -423,6 +440,8 @@ class BNO080(object):
             self.rawAccelY = data2
             self.rawAccelZ = data3
 
+            self.accelSensorDelay = self.sensorDelay
+
             # Strip the now parsed sensor packed out
             self.receivedData = self.receivedData[10:(len(self.receivedData))]
 
@@ -433,6 +452,9 @@ class BNO080(object):
             self.rawLinAccelX = self._convert_signed_number(data1)
             self.rawLinAccelY = self._convert_signed_number(data2)
             self.rawLinAccelZ = self._convert_signed_number(data3)
+
+            self.linearAccelSensorDelay = self.sensorDelay
+
             # Strip the now parsed sensor packed out
             self.receivedData = self.receivedData[10:(len(self.receivedData))]
 
@@ -443,6 +465,8 @@ class BNO080(object):
             self.rawGyroX = self._convert_signed_number(data1)
             self.rawGyroY = self._convert_signed_number(data2)
             self.rawGyroZ = self._convert_signed_number(data3)
+
+            self.gyroSensorDelay = self.sensorDelay
 
             # Strip the now parsed sensor packed out
             self.receivedData = self.receivedData[10:(len(self.receivedData))]
@@ -467,6 +491,8 @@ class BNO080(object):
             self.rawQuatK = self._convert_signed_number(data3)
             self.rawQuatReal = self._convert_signed_number(data4)
             self.rawQuatRadianAccuracy = data5  # Only available on rotation vector, not game rot vector
+
+            self.posSensorDelay = self.sensorDelay
 
             # Strip the now parsed sensor packed out
             self.receivedData = self.receivedData[14:(len(self.receivedData))]

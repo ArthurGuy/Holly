@@ -82,8 +82,9 @@ while not rospy.is_shutdown():
             linear_accuracy = imu.get_linear_accuracy()
             gyro_accuracy = imu.get_gyro_accuracy()
             data_delay = imu.get_data_delay()  # delay in (us)
+            gyro_data_delay = imu.get_gyro_data_delay()  # delay in (us)
 
-            print('Delay: {0}'.format(data_delay))
+            print('Delay: {0}'.format(gyro_data_delay))
 
             print('Calibration: Sys={0} Mag={1} Linear_accel={2} Gyro={3}'.format(sensor_accuracy, mag_accuracy, linear_accuracy, gyro_accuracy))
             i, j, k, real = imu.get_rotation_quaternion()
@@ -112,7 +113,7 @@ while not rospy.is_shutdown():
 
             # Publish the mag data #
             magMsg.header.seq = seq
-            magMsg.header.stamp = rospy.Time.now() - rospy.Duration(data_delay / 1000000)
+            magMsg.header.stamp = rospy.Time.now() - rospy.Duration(gyro_data_delay / 1000000)
             magMsg.header.frame_id = "base_link"
 
             # Magnetometer data (in micro-Teslas):
