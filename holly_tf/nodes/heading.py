@@ -33,7 +33,7 @@ def imu_callback(data):
         data.orientation.z,
         data.orientation.w)
     (roll, pitch, yaw) = euler_from_quaternion(quaternion)
-    print('Orientation  IMU: Roll={0:0.8F} Pitch={1:0.8F} Yaw={2:0.8F}'.format(roll, pitch, yaw))
+    print('Roll={0:0.8F} Pitch={1:0.8F} Yaw={2:0.8F}'.format(roll, pitch, yaw))
 
 
 def status_callback(imu_status):

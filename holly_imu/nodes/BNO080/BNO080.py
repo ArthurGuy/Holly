@@ -317,6 +317,9 @@ class BNO080(object):
     def get_data_array(self):
         return self.receivedData
 
+    def get_data_delay(self):
+        return self.sensorDelay
+
     def get_rotation_quaternion(self):
         # Returns a rotation vector as a unit quaternion
         i = self.rawQuatI        # x
