@@ -30,8 +30,8 @@ rate = rospy.Rate(20)
 imuPub = rospy.Publisher('imu/data', Imu, queue_size=5)
 imuMsg = Imu()
 
-# magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=5)
-# magMsg = MagneticField()
+magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=5)
+magMsg = MagneticField()
 
 statusPub = rospy.Publisher('imu/debug', Int8MultiArray, queue_size=1)
 statusMsg = Int8MultiArray()
@@ -62,7 +62,7 @@ def setup_imu():
     imu.enable_rotation_vector(100)
     imu.enable_linear_acceleration(100)
     imu.enable_gyro(100)
-    # imu.enable_magnetometer(200)
+    imu.enable_magnetometer(100)
 
     imu.calibrate_all()
 
@@ -94,12 +94,45 @@ while not rospy.is_shutdown():
             gyroX, gyroY, gyroZ = imu.get_gyro()
             print('Gyro: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(gyroX, gyroY, gyroZ))
 
+            magX, magY, magZ = imu.get_mag()
+            print('Mag: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(magX, magY, magZ))
+
             # Publish the status flags so we can see whats going on
             statusMsg.data = sensor_accuracy, gyro_accuracy, linear_accuracy, mag_accuracy
             statusPub.publish(statusMsg)
 
             directionAccuracyMsg.data = rotation_accuracy
             directionAccuracyPub.publish(directionAccuracyMsg)
+
+            seq += 1
+
+            # Publish the mag data #
+            magMsg.header.seq = seq
+            magMsg.header.stamp = rospy.Time.now()
+            magMsg.header.frame_id = "base_link"
+
+            # Magnetometer data (in micro-Teslas):
+            magMsg.magnetic_field.x = magX / 1000000  # Convert to Teslas
+            magMsg.magnetic_field.y = magY / 1000000
+            magMsg.magnetic_field.z = magZ / 1000000
+            if mag_accuracy == 3:
+                magMsg.magnetic_field_covariance = [0.01, 0.00, 0.00,
+                                                    0.00, 0.01, 0.00,
+                                                    0.00, 0.00, 0.01]
+            elif mag_accuracy == 2:
+                magMsg.magnetic_field_covariance = [0.001, 0.000, 0.000,
+                                                    0.000, 0.001, 0.000,
+                                                    0.000, 0.000, 0.001]
+            elif mag_accuracy == 1:
+                magMsg.magnetic_field_covariance = [0.0001, 0.0000, 0.0000,
+                                                    0.0000, 0.0001, 0.0000,
+                                                    0.0000, 0.0000, 0.0001]
+            elif mag_accuracy == 0:
+                magMsg.magnetic_field_covariance = [0.00001, 0.00000, 0.00000,
+                                                    0.00000, 0.00001, 0.00000,
+                                                    0.00000, 0.00000, 0.00001]
+
+            magPub.publish(magMsg)
 
 
             # Publish the gyro and accel data #

@@ -305,6 +305,7 @@ class BNO080(object):
         return self.magAccuracy
 
     def get_quat_accuracy(self):
+        # rotation position accurate to about 5 degrees
         return self.quatAccuracy
 
     def get_linear_accuracy(self):
@@ -353,6 +354,17 @@ class BNO080(object):
         x = self._convert_q_number(x, GYRO_Q)
         y = self._convert_q_number(y, GYRO_Q)
         z = self._convert_q_number(z, GYRO_Q)
+        return [x, y, z]
+
+    def get_mag(self):
+        x = self.rawMagX
+        y = self.rawMagY
+        z = self.rawMagZ
+
+        x = self._convert_q_number(x, MAGNETOMETER_Q)
+        y = self._convert_q_number(y, MAGNETOMETER_Q)
+        z = self._convert_q_number(z, MAGNETOMETER_Q)
+
         return [x, y, z]
 
     @staticmethod
