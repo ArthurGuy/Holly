@@ -137,6 +137,10 @@ class BNO080(object):
     posSensorDelay = 0
     linearAccelSensorDelay = 0
 
+    accelCalEnabled = None
+    gyroCalEnabled = None
+    magCalEnabled = None
+
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
         self.pi = pigpio.pi()
         if self.pi.connected is False:
@@ -292,6 +296,9 @@ class BNO080(object):
     def save_calibration(self):
         data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self._send_command(COMMAND_DCD, data)
+
+    def get_calibration_status(self):
+        return [self.accelCalEnabled, self.gyroCalEnabled, self.magCalEnabled]
 
     def data_available(self):
         response = self._receive_packet()
@@ -529,6 +536,12 @@ class BNO080(object):
             if command == COMMAND_ME_CALIBRATE:
                 # Calibration report found
                 self.calibrationStatus = self.receivedData[5]  # R0 - Status (0 = success, non-zero = fail)
+                self.accelCalEnabled = self.receivedData[6]  # R0 - Status (0 = success, non-zero = fail)
+                self.gyroCalEnabled = self.receivedData[7]  # R0 - Status (0 = success, non-zero = fail)
+                self.magCalEnabled = self.receivedData[8]  # R0 - Status (0 = success, non-zero = fail)
+                print 'Calibration response: {0}'.format(self.calibrationStatus)
+            else:
+                print 'Unknown command response received. Command: {0}'.format(command)
 
         return True
 
