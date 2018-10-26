@@ -248,11 +248,13 @@ class BNO080(object):
         self._send_command(COMMAND_ME_CALIBRATE, data)
 
     def save_dcd_command(self):
+        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         # Dynamic calibration data
-        self._send_command(COMMAND_DCD, [])
+        self._send_command(COMMAND_DCD, data)
 
     def save_dcd_periodically_command(self):
-        self._send_command(COMMAND_DCD_PERIOD_SAVE, [])
+        data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self._send_command(COMMAND_DCD_PERIOD_SAVE, data)
 
     def soft_reset(self):
         self._send_packet(CHANNEL_EXECUTABLE, 1, [1])
