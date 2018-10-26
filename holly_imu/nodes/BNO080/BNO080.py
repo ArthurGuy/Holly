@@ -137,6 +137,7 @@ class BNO080(object):
     posSensorDelay = 0
     linearAccelSensorDelay = 0
 
+    calibrationStatus = None
     accelCalEnabled = None
     gyroCalEnabled = None
     magCalEnabled = None
