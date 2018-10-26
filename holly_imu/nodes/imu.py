@@ -214,6 +214,8 @@ while not rospy.is_shutdown():
 
             imuPub.publish(imuMsg)
 
+            imu.calibrate_all()
+
         else:
             print('No IMU data available')
             no_data_count = no_data_count + 1
