@@ -84,8 +84,8 @@ while not rospy.is_shutdown():
             gyro_data_delay = imu.get_gyro_data_delay()  # delay in (us)
             mag_data_delay = imu.get_gyro_data_delay()  # delay in (us)
 
-            cal_accel, cal_gyro, cal_mag = imu.get_calibration_status()
-            print('Calibration status, Accel: {0}, Gyro: {1}, Mag: {2}'.format(cal_accel, cal_gyro, cal_mag))
+            cal_status, cal_accel, cal_gyro, cal_mag = imu.get_calibration_status()
+            print('Calibration status, Status: {0}, Accel: {1}, Gyro: {2}, Mag: {3}'.format(cal_status, cal_accel, cal_gyro, cal_mag))
 
             print('Delay: {0}'.format(gyro_data_delay))
 
@@ -213,8 +213,6 @@ while not rospy.is_shutdown():
                                                          0.00000, 0.00000, 0.00001]
 
             imuPub.publish(imuMsg)
-
-            imu.calibrate_all()
 
         else:
             print('No IMU data available')
