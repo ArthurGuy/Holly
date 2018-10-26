@@ -537,18 +537,18 @@ class BNO080(object):
             if command == COMMAND_ME_CALIBRATE:
                 # Calibration report found
                 self.calibrationStatus = self.receivedData[5]  # R0 - Status (0 = success, non-zero = fail)
-                self.accelCalEnabled = self.receivedData[6]  # R0 - Status (0 = success, non-zero = fail)
-                self.gyroCalEnabled = self.receivedData[7]  # R0 - Status (0 = success, non-zero = fail)
-                self.magCalEnabled = self.receivedData[8]  # R0 - Status (0 = success, non-zero = fail)
+                self.accelCalEnabled = self.receivedData[6]  # R0 - Status (1 = enabled, 0 = disabled)
+                self.gyroCalEnabled = self.receivedData[7]  # R0 - Status (1 = enabled, 0 = disabled)
+                self.magCalEnabled = self.receivedData[8]  # R0 - Status (1 = enabled, 0 = disabled)
                 print 'Calibration response: {0}'.format(self.calibrationStatus)
             else:
                 print 'Unknown command response received. Command: {0}'.format(command)
+                print ' '.join('{:02x}'.format(x) for x in self.receivedData)
 
         return True
 
     def _parse_command_report(self):
         if self.receivedData[0] == SHTP_REPORT_COMMAND_RESPONSE:
-            print ' '.join('{:02x}'.format(x) for x in self.receivedData)
             command = self.receivedData[2]
             if command == COMMAND_ME_CALIBRATE:
                 # Calibration report found
@@ -559,6 +559,7 @@ class BNO080(object):
                 print 'Calibration response: {0}'.format(self.calibrationStatus)
             else:
                 print 'Unknown command response received. Command: {0}'.format(command)
+                print ' '.join('{:02x}'.format(x) for x in self.receivedData)
 
     @staticmethod
     def _convert_signed_number(number):
