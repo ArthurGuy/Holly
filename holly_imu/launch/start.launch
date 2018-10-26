@@ -19,6 +19,5 @@
                                 false, false, false]</rosparam>
         <param name="print_diagnostics" value="true" />
         <param name="two_d_mode" value="true" />
-        <param name="frequency" value="20" />
     </node>
 </launch>
