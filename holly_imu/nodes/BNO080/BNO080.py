@@ -547,6 +547,7 @@ class BNO080(object):
 
     def _parse_command_report(self):
         if self.receivedData[0] == SHTP_REPORT_COMMAND_RESPONSE:
+            print 'SHTP_REPORT_COMMAND_RESPONSE'
             command = self.receivedData[2]
             if command == COMMAND_ME_CALIBRATE:
                 self.calibrationStatus = self.receivedData[4]
