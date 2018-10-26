@@ -59,7 +59,7 @@ def setup_imu():
     if not imu.begin():
         raise RuntimeError('Failed to initialize BNO080. Is the sensor connected?')
 
-    imu.enable_rotation_vector(100)
+    imu.enable_rotation_vector(50)
     imu.enable_linear_acceleration(100)
     imu.enable_gyro(100)
     imu.enable_magnetometer(100)
@@ -91,15 +91,15 @@ while not rospy.is_shutdown():
             gyro_data_delay = imu.get_gyro_data_delay()  # delay in (us)
             mag_data_delay = imu.get_gyro_data_delay()  # delay in (us)
 
-            cal_status, cal_accel, cal_gyro, cal_mag = imu.get_calibration_status()
-            print('Calibration status, Status: {0}, Accel: {1}, Gyro: {2}, Mag: {3}'.format(cal_status, cal_accel, cal_gyro, cal_mag))
+            # cal_status, cal_accel, cal_gyro, cal_mag = imu.get_calibration_status()
+            # print('Calibration status, Status: {0}, Accel: {1}, Gyro: {2}, Mag: {3}'.format(cal_status, cal_accel, cal_gyro, cal_mag))
 
             # print('Delay: {0}'.format(gyro_data_delay))
 
             print('Calibration: Sys={0} Mag={1} Linear_accel={2} Gyro={3}'.format(sensor_accuracy, mag_accuracy, linear_accuracy, gyro_accuracy))
             i, j, k, real = imu.get_rotation_quaternion()
             rotation_accuracy = imu.get_rotation_accuracy()
-            print('Orientation: I={0:0.8F} J={1:0.8F} K={2:0.8F} Real={3:0.8F} Accuracy={4}'.format(i, j, k, real, rotation_accuracy))
+            # print('Orientation: I={0:0.8F} J={1:0.8F} K={2:0.8F} Real={3:0.8F} Accuracy={4}'.format(i, j, k, real, rotation_accuracy))
             # angles = euler_from_quaternion([i, j, k, real])
             # print('Roll={0:0.2F} Pitch={1:0.2F} Heading={2:0.2F} '.format(angles[0], angles[1], angles[2]))
 
