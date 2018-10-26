@@ -66,6 +66,8 @@ def setup_imu():
 
     imu.calibrate_all()
 
+    imu.save_dcd_periodically_command()
+
     restart_count = restart_count + 1
 
 setup_imu()
