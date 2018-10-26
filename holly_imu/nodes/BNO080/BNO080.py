@@ -95,6 +95,7 @@ CALIBRATE_MAG = 2
 CALIBRATE_PLANAR_ACCEL = 3
 CALIBRATE_ACCEL_GYRO_MAG = 4
 CALIBRATE_STOP = 5
+CALIBRATE_ACCEL_MAG = 6
 
 ROTATION_VECTOR_Q = 14
 ROTATION_ACCURACY_Q = 12
@@ -240,6 +241,9 @@ class BNO080(object):
             data[3] = 1
             data[4] = 1
             data[5] = 1
+        elif thing_to_calibrate == CALIBRATE_ACCEL_MAG:
+            data[3] = 1
+            data[5] = 1
 
         self._send_command(COMMAND_ME_CALIBRATE, data)
 
@@ -296,6 +300,9 @@ class BNO080(object):
         self._set_feature_command(SENSOR_REPORTID_MAGNETIC_FIELD, update_time * 1000)
 
     def calibrate_all(self):
+        self._set_calibrate_command(CALIBRATE_ACCEL_GYRO_MAG)
+
+    def calibrate_main(self):
         self._set_calibrate_command(CALIBRATE_ACCEL_GYRO_MAG)
 
     def end_calibrate(self):

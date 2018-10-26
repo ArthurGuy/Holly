@@ -72,6 +72,11 @@ setup_imu()
 
 while not rospy.is_shutdown():
     try:
+        if seq == 50:
+            # Stop dynamically calibrating the gyro to avoid unwanted drif
+            print 'Stopping gyro calibration'
+            imu.calibrate_main()
+
         if imu.data_available():
             no_data_count = 0
 
@@ -87,7 +92,7 @@ while not rospy.is_shutdown():
             cal_status, cal_accel, cal_gyro, cal_mag = imu.get_calibration_status()
             print('Calibration status, Status: {0}, Accel: {1}, Gyro: {2}, Mag: {3}'.format(cal_status, cal_accel, cal_gyro, cal_mag))
 
-            print('Delay: {0}'.format(gyro_data_delay))
+            # print('Delay: {0}'.format(gyro_data_delay))
 
             print('Calibration: Sys={0} Mag={1} Linear_accel={2} Gyro={3}'.format(sensor_accuracy, mag_accuracy, linear_accuracy, gyro_accuracy))
             i, j, k, real = imu.get_rotation_quaternion()
@@ -103,7 +108,7 @@ while not rospy.is_shutdown():
             print('Gyro: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(gyroX, gyroY, gyroZ))
 
             magX, magY, magZ = imu.get_mag()
-            print('Mag: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(magX, magY, magZ))
+            # print('Mag: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(magX, magY, magZ))
 
             # Publish the status flags so we can see whats going on
             statusMsg.data = sensor_accuracy, gyro_accuracy, linear_accuracy, mag_accuracy
