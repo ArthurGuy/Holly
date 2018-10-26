@@ -243,6 +243,13 @@ class BNO080(object):
 
         self._send_command(COMMAND_ME_CALIBRATE, data)
 
+    def save_dcd_command(self):
+        # Dynamic calibration data
+        self._send_command(COMMAND_DCD, [])
+
+    def save_dcd_periodically_command(self):
+        self._send_command(COMMAND_DCD_PERIOD_SAVE, [])
+
     def soft_reset(self):
         self._send_packet(CHANNEL_EXECUTABLE, 1, [1])
         time.sleep(0.5)
@@ -557,6 +564,10 @@ class BNO080(object):
                 self.gyroCalEnabled = self.receivedData[7]  # R0 - Status (1 = enabled, 0 = disabled)
                 self.magCalEnabled = self.receivedData[8]  # R0 - Status (1 = enabled, 0 = disabled)
                 print 'Calibration response: {0}'.format(self.calibrationStatus)
+            elif command == COMMAND_DCD:
+                print 'DCD command response'
+                if self.receivedData[5] != 0:
+                    print 'Save DCD command failed'
             else:
                 print 'Unknown command response received. Command: {0}'.format(command)
                 print ' '.join('{:02x}'.format(x) for x in self.receivedData)
