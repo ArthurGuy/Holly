@@ -303,7 +303,7 @@ class BNO080(object):
         self._set_calibrate_command(CALIBRATE_ACCEL_GYRO_MAG)
 
     def calibrate_main(self):
-        self._set_calibrate_command(CALIBRATE_ACCEL_GYRO_MAG)
+        self._set_calibrate_command(CALIBRATE_ACCEL_MAG)
 
     def end_calibrate(self):
         self._set_calibrate_command(CALIBRATE_STOP)
