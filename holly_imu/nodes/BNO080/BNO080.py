@@ -96,6 +96,7 @@ CALIBRATE_PLANAR_ACCEL = 3
 CALIBRATE_ACCEL_GYRO_MAG = 4
 CALIBRATE_STOP = 5
 CALIBRATE_ACCEL_MAG = 6
+CALIBRATE_ACCEL_MAG = 6
 
 ROTATION_VECTOR_Q = 14
 ROTATION_ACCURACY_Q = 12
@@ -305,7 +306,7 @@ class BNO080(object):
         self._set_calibrate_command(CALIBRATE_ACCEL_GYRO_MAG)
 
     def calibrate_main(self):
-        self._set_calibrate_command(CALIBRATE_ACCEL_MAG)
+        self._set_calibrate_command(CALIBRATE_ACCEL)
 
     def end_calibrate(self):
         self._set_calibrate_command(CALIBRATE_STOP)
