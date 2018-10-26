@@ -305,12 +305,12 @@ class BNO080(object):
         if response is False:
             return False
         else:
-            if self.receivedHeader[2] == CHANNEL_REPORTS:
-                data_to_parse = True;
-                while data_to_parse is not None:
-                    data_to_parse = self._parse_input_report()
-            elif self.receivedHeader[2] == CHANNEL_CONTROL:
-                self._parse_command_report()
+            # if self.receivedHeader[2] == CHANNEL_REPORTS:
+            data_to_parse = True;
+            while data_to_parse is not None:
+                data_to_parse = self._parse_input_report()
+            # elif self.receivedHeader[2] == CHANNEL_CONTROL:
+            #     self._parse_command_report()
             return True
 
     def get_mag_accuracy(self):
