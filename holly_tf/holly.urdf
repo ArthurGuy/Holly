@@ -157,13 +157,13 @@
     <joint name="base_to_front_left_distance_sensor" type="fixed">
         <parent link="/base_link" />
         <child link="/front_left_distance_sensor" />
-        <origin xyz="0.22 0.09 -0.04" rpy="0 0 0" />
+        <origin xyz="0.22 -0.09 -0.04" rpy="0 0 0" />
     </joint>
 
     <joint name="base_to_front_right_distance_sensor" type="fixed">
         <parent link="/base_link" />
         <child link="/front_right_distance_sensor" />
-        <origin xyz="0.22 -0.09 -0.04" rpy="0 0 0" />
+        <origin xyz="0.22 0.09 -0.04" rpy="0 0 0" />
     </joint>
 
     <joint name="base_to_rear_distance_sensor" type="fixed">
