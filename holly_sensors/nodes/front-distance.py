@@ -11,10 +11,13 @@ sys.path.append('.')
 rospy.init_node('distance_sensors')  # public display name of the publisher
 rate = rospy.Rate(10)  # 10hz
 
-rangePublisher = rospy.Publisher('/holly/range/front', Range, queue_size=10)
-rangeMessage = Range()
+range1Publisher = rospy.Publisher('/holly/range/front_left', Range, queue_size=5)
+range1Message = Range()
 
-range2Publisher = rospy.Publisher('/holly/range/rear', Range, queue_size=10)
+range5Publisher = rospy.Publisher('/holly/range/front_right', Range, queue_size=5)
+range5Message = Range()
+
+range2Publisher = rospy.Publisher('/holly/range/rear', Range, queue_size=5)
 range2Message = Range()
 
 seq = 1
@@ -38,27 +41,41 @@ def get_data():
 
     if not sensorSetupNeeded:
         try:
-            distance_in_mm = sensor_front.get_distance()  # Grab the range in mm
-            distance_rear_in_mm = sensor_rear.get_distance()  # Grab the range in mm
+            sensor_1_distance = sensor_1.get_distance()  # Grab the range in mm
+            sensor_2_distance = sensor_2.get_distance()  # Grab the range in mm
+            sensor_5_distance = sensor_5.get_distance()  # Grab the range in mm
 
-            if distance_in_mm > 0:
+            if sensor_1_distance > 0:
                 seq += 1
 
-                print float(distance_in_mm) / 1000
+                range1Message.header.seq = seq
+                range1Message.header.stamp = rospy.Time.now()
+                range1Message.header.frame_id = "front_left_distance_sensor"
 
-                rangeMessage.header.seq = seq
-                rangeMessage.header.stamp = rospy.Time.now()
-                rangeMessage.header.frame_id = "front_distance_sensor"
+                range1Message.radiation_type = 1
+                range1Message.min_range = 0.05
+                range1Message.max_range = 3
+                range1Message.field_of_view = 0.436  # 25 degrees
+                range1Message.range = float(sensor_1_distance) / 1000
 
-                rangeMessage.radiation_type = 1
-                rangeMessage.min_range = 0.05
-                rangeMessage.max_range = 2
-                rangeMessage.field_of_view = 0.436  # 25 degrees
-                rangeMessage.range = float(distance_in_mm) / 1000
+                range1Publisher.publish(range1Message)
 
-                rangePublisher.publish(rangeMessage)
+            if sensor_5_distance > 0:
+                seq += 1
 
-            if distance_rear_in_mm > 0:
+                range5Message.header.seq = seq
+                range5Message.header.stamp = rospy.Time.now()
+                range5Message.header.frame_id = "front_right_distance_sensor"
+
+                range5Message.radiation_type = 1
+                range5Message.min_range = 0.05
+                range5Message.max_range = 3
+                range5Message.field_of_view = 0.436  # 25 degrees
+                range5Message.range = float(sensor_5_distance) / 1000
+
+                range5Publisher.publish(range5Message)
+
+            if sensor_2_distance > 0:
                 seq += 1
 
                 range2Message.header.seq = seq
@@ -67,9 +84,9 @@ def get_data():
 
                 range2Message.radiation_type = 1
                 range2Message.min_range = 0.05
-                range2Message.max_range = 2
+                range2Message.max_range = 3
                 range2Message.field_of_view = 0.436  # 25 degrees
-                range2Message.range = float(distance_rear_in_mm) / 1000
+                range2Message.range = float(sensor_2_distance) / 1000
 
                 range2Publisher.publish(range2Message)
         except:
@@ -86,10 +103,12 @@ while not rospy.is_shutdown():
 
     try:
         if sensorSetupNeeded:
-            sensor_front = VL53L0X(0x29, 0, 0x70)
-            sensor_rear = VL53L0X(0x29, 1, 0x70)
-            sensor_front.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
-            sensor_rear.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
+            sensor_1 = VL53L0X(0x29, 0, 0x70)
+            sensor_2 = VL53L0X(0x29, 1, 0x70)
+            sensor_5 = VL53L0X(0x29, 4, 0x70)
+            sensor_1.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
+            sensor_2.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
+            sensor_5.start_ranging(VL53L0X_BETTER_ACCURACY_MODE)
             sensorSetupNeeded = 0
 
         get_data()

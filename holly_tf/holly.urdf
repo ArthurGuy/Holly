@@ -127,7 +127,16 @@
         <limit lower="-0.785" upper="0.785" effort="1000" velocity="0.5" />
     </joint>
 
-    <link name="/front_distance_sensor">
+    <link name="/front_left_distance_sensor">
+         <visual>
+            <geometry>
+                <box size="0.02 0.02 0.02" />
+            </geometry>
+            <material name="red" />
+        </visual>
+    </link>
+
+    <link name="/front_right_distance_sensor">
          <visual>
             <geometry>
                 <box size="0.02 0.02 0.02" />
@@ -145,16 +154,22 @@
         </visual>
     </link>
 
-    <joint name="base_to_front_distance_sensor" type="fixed">
+    <joint name="base_to_front_left_distance_sensor" type="fixed">
         <parent link="/base_link" />
-        <child link="/front_distance_sensor" />
-        <origin xyz="0.22 0.0 -0.04" rpy="0 0 0" />
+        <child link="/front_left_distance_sensor" />
+        <origin xyz="0.22 0.09 -0.04" rpy="0 0 0" />
+    </joint>
+
+    <joint name="base_to_front_right_distance_sensor" type="fixed">
+        <parent link="/base_link" />
+        <child link="/front_right_distance_sensor" />
+        <origin xyz="0.22 -0.09 -0.04" rpy="0 0 0" />
     </joint>
 
     <joint name="base_to_rear_distance_sensor" type="fixed">
         <parent link="/base_link" />
         <child link="/rear_distance_sensor" />
-        <origin xyz="-0.27 0.0 -0.04" rpy="0 0 3.14159" />
+        <origin xyz="-0.27 0.0 0.04" rpy="0 0 3.14159" />
     </joint>
 
     <link name="/laserscan_frame"></link>
