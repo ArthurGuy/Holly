@@ -12,8 +12,3 @@ local_costmap:
   # Specifies the delay in transform (tf) data that is tolerable in seconds.
   transform_tolerance: 0.7
 
-  plugins:
-    - {name: sonar, type: "range_sensor_layer::RangeSensorLayer"}
-
-  sonar:
-    topics: ['/holly/range/front_left', '/holly/range/front_right', '/holly/range/rear']

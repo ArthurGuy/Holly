@@ -56,7 +56,7 @@ def get_data():
 
                 range1Message.radiation_type = 1
                 range1Message.min_range = 0.05
-                range1Message.max_range = 2.5
+                range1Message.max_range = 2
                 range1Message.field_of_view = 0.436  # 25 degrees
                 range1Message.range = float(sensor_1_distance) / 1000
 
@@ -71,7 +71,7 @@ def get_data():
 
                 range5Message.radiation_type = 1
                 range5Message.min_range = 0.05
-                range5Message.max_range = 2.5
+                range5Message.max_range = 2
                 range5Message.field_of_view = 0.436  # 25 degrees
                 range5Message.range = float(sensor_5_distance) / 1000
 
@@ -86,7 +86,7 @@ def get_data():
 
                 range2Message.radiation_type = 1
                 range2Message.min_range = 0.05
-                range2Message.max_range = 2.5
+                range2Message.max_range = 2
                 range2Message.field_of_view = 0.436  # 25 degrees
                 range2Message.range = float(sensor_2_distance) / 1000
 
