@@ -1,9 +1,9 @@
-footprint: [[-0.35, -0.22], [-0.35, 0.22], [0.35, 0.22], [0.35, -0.22]]
+#footprint: [[-0.35, -0.22], [-0.35, 0.22], [0.35, 0.22], [0.35, -0.22]]
 #robot_radius: 0.3
 
-obstacle_range: 2.5
-raytrace_range: 3.0
-inflation_radius: 0.03
+#obstacle_range: 2.5
+#raytrace_range: 3.0
+#inflation_radius: 0.03
 
 
 #observation_sources: point_cloud_sensor
@@ -13,9 +13,15 @@ inflation_radius: 0.03
 #point_cloud_sensor: {sensor_frame: /kinect_depth_frame, data_type: PointCloud2, topic: /camera/depth/points, marking: true, clearing: true}
 
 plugins:
-  - {name: sonar, type: "range_sensor_layer::RangeSensorLayer"}
+  - {name: inflation_layer,   type: "costmap_2d::InflationLayer"}
   - {name: obstacle_layer,  type: "costmap_2d::ObstacleLayer"}
   - {name: voxel_layer, type: "costmap_2d::VoxelLayer"}
+  - {name: sonar, type: "range_sensor_layer::RangeSensorLayer"}
+
+inflation_layer:
+#  cost_scaling_factor: 0.5
+  inflation_radius: 0.03
+  footprint: [[-0.35, -0.22], [-0.35, 0.22], [0.35, 0.22], [0.35, -0.22]]
 
 sonar:
   topics: ['/holly/range/front_left', '/holly/range/front_right', '/holly/range/rear']
