@@ -20,7 +20,9 @@ range5Message = Range()
 range2Publisher = rospy.Publisher('/holly/range/rear', Range, queue_size=5)
 range2Message = Range()
 
-seq = 1
+seq1 = 1
+seq2 = 1
+seq5 = 1
 
 sensorSetupNeeded = 1
 
@@ -37,7 +39,7 @@ signal.signal(signal.SIGALRM, handler)
 
 
 def get_data():
-    global seq, sensorSetupNeeded
+    global seq1, seq2, seq5, sensorSetupNeeded
 
     if not sensorSetupNeeded:
         try:
@@ -46,45 +48,45 @@ def get_data():
             sensor_5_distance = sensor_5.get_distance()  # Grab the range in mm
 
             if sensor_1_distance > 0:
-                seq += 1
+                seq1 += 1
 
-                range1Message.header.seq = seq
+                range1Message.header.seq = seq1
                 range1Message.header.stamp = rospy.Time.now()
                 range1Message.header.frame_id = "front_left_distance_sensor"
 
                 range1Message.radiation_type = 1
                 range1Message.min_range = 0.05
-                range1Message.max_range = 3
+                range1Message.max_range = 2.5
                 range1Message.field_of_view = 0.436  # 25 degrees
                 range1Message.range = float(sensor_1_distance) / 1000
 
                 range1Publisher.publish(range1Message)
 
             if sensor_5_distance > 0:
-                seq += 1
+                seq5 += 1
 
-                range5Message.header.seq = seq
+                range5Message.header.seq = seq5
                 range5Message.header.stamp = rospy.Time.now()
                 range5Message.header.frame_id = "front_right_distance_sensor"
 
                 range5Message.radiation_type = 1
                 range5Message.min_range = 0.05
-                range5Message.max_range = 3
+                range5Message.max_range = 2.5
                 range5Message.field_of_view = 0.436  # 25 degrees
                 range5Message.range = float(sensor_5_distance) / 1000
 
                 range5Publisher.publish(range5Message)
 
             if sensor_2_distance > 0:
-                seq += 1
+                seq2 += 1
 
-                range2Message.header.seq = seq
+                range2Message.header.seq = seq2
                 range2Message.header.stamp = rospy.Time.now()
                 range2Message.header.frame_id = "rear_distance_sensor"
 
                 range2Message.radiation_type = 1
                 range2Message.min_range = 0.05
-                range2Message.max_range = 3
+                range2Message.max_range = 2.5
                 range2Message.field_of_view = 0.436  # 25 degrees
                 range2Message.range = float(sensor_2_distance) / 1000
 
