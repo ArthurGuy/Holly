@@ -16,7 +16,7 @@ plugins:
   - {name: inflation_layer,   type: "costmap_2d::InflationLayer"}
   - {name: obstacle_layer,  type: "costmap_2d::ObstacleLayer"}
   - {name: voxel_layer, type: "costmap_2d::VoxelLayer"}
-  - {name: sonar, type: "range_sensor_layer::RangeSensorLayer"}
+#  - {name: sonar, type: "range_sensor_layer::RangeSensorLayer"}
 
 inflation_layer:
 #  cost_scaling_factor: 0.5
