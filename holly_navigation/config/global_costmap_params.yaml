@@ -7,3 +7,7 @@ global_costmap:
 
   # Specifies the delay in transform (tf) data that is tolerable in seconds.
   transform_tolerance: 0.7
+
+
+  plugins:
+  - {name: static_map,  type: "costmap_2d::StaticLayer"}
