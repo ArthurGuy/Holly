@@ -187,11 +187,11 @@
         <origin xyz="0.2 0 0.1" rpy="0 0 0" />
     </joint>
 
-    <link name="/kinect_frame"></link>
+    <link name="/kinect_laserscan_frame"></link>
 
-    <joint name="base_to_kinect_sensor" type="fixed">
+    <joint name="base_to_kinect_laserscan_frame" type="fixed">
         <parent link="/base_link" />
-        <child link="/kinect_frame" />
+        <child link="/kinect_laserscan_frame" />
         <origin xyz="0.32 0.0 0.0" rpy="0 0 0" />
     </joint>
 
