@@ -191,7 +191,7 @@ def get_data():
     speed_y_m = (float(m.dy) / ADNS3080_COUNTS_PER_METER) / time_diff
 
     # print str(speed_x_m) + ", " + str(speed_y_m)
-    # print m.squal
+    print m.squal
 
     # Y forward and back
 
