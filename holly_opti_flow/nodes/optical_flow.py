@@ -172,9 +172,9 @@ def get_data():
     qualityMsg.data = m.squal
     qualityPub.publish(qualityMsg)
 
-    if m.squal < 50:
+    if m.squal < 60:
         led_lighting.on()
-    if m.squal > 80:
+    if m.squal > 60:
         led_lighting.off()
 
     abs_x += m.dx
@@ -191,7 +191,7 @@ def get_data():
     speed_y_m = (float(m.dy) / ADNS3080_COUNTS_PER_METER) / time_diff
 
     # print str(speed_x_m) + ", " + str(speed_y_m)
-    print m.squal
+    # print m.squal
 
     # Y forward and back
 
