@@ -167,27 +167,39 @@ def get_data():
     abs_x_m = (float(abs_x) / ADNS3080_COUNTS_PER_METER)
     abs_y_m = (float(abs_y) / ADNS3080_COUNTS_PER_METER)
 
+    speed_x_m = (float(m.dx) / ADNS3080_COUNTS_PER_METER)
+    speed_y_m = (float(m.dy) / ADNS3080_COUNTS_PER_METER)
+
     print str(abs_x_m) + ", " + str(abs_y_m)
     print m.squal
+
+    # Y forward and back
 
     msg.header.seq = seq
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "odom"
 
-    pose = Pose()
-    pose.position.x = abs_x_m
-    pose.position.y = abs_y_m
+    # pose = Pose()
+    # pose.position.x = abs_x_m
+    # pose.position.y = abs_y_m
+    #
+    # poseC = PoseWithCovariance()
+    # poseC.pose = pose
+    # poseC.covariance = [0.1, 0, 0, 0, 0, 0,
+    #                     0, 0.1, 0, 0, 0, 0,
+    #                     0, 0, 99999, 0, 0, 0,
+    #                     0, 0, 0, 99999, 0, 0,
+    #                     0, 0, 0, 0, 99999, 0,
+    #                     0, 0, 0, 0, 0, 10]
+    # msg.pose = poseC
 
-    poseC = PoseWithCovariance()
-    poseC.pose = pose
-    poseC.covariance = [0.1, 0, 0, 0, 0, 0,
-                        0, 0.1, 0, 0, 0, 0,
-                        0, 0, 99999, 0, 0, 0,
-                        0, 0, 0, 99999, 0, 0,
-                        0, 0, 0, 0, 99999, 0,
-                        0, 0, 0, 0, 0, 10]
+    twist = Twist()
+    twist.linear.x = speed_x_m
+    twist.linear.y = 0
+    msg.twist.twist = twist
+    msg.twist.covariance = [0.1] * 36
 
-    msg.pose = poseC
+
 
     odomPub.publish(msg)
 
