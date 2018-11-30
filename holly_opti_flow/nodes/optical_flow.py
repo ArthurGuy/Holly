@@ -55,7 +55,7 @@ ADNS3080_PRODUCT_ID_VAL = 0x17
 opti_flow_sensor = gpiozero.SPIDevice(port=0, device=0)
 opti_flow_reset = gpiozero.LED(PIN_SENSOR_RESET)
 opti_flow_cs = gpiozero.LED(PIN_SENSOR_CS)
-led_lighting = gpiozero.PWMLED(pin=PIN_LIGHTING, active_high=False)
+led_lighting = gpiozero.PWMLED(pin=PIN_LIGHTING)
 
 # Setup the ROS publisher
 rospy.init_node('holly_optical_flow')  # public display name of the publisher
