@@ -204,8 +204,10 @@ while not rospy.is_shutdown():
         get_data()
 
     except (KeyboardInterrupt, SystemExit):
-        # opti_flow_sensor.close()
         raise
     except:
-        # opti_flow_sensor.close()
         traceback.print_exc()
+
+if rospy.is_shutdown():
+    opti_flow_sensor.close()
+    print 'Finished'
