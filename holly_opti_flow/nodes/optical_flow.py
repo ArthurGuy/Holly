@@ -228,7 +228,7 @@ if sensor_init() == -1:
     led_lighting.off()
     exit()
 
-led_lighting.pulse(n=10)
+led_lighting.pulse(n=10, background=False)
 
 while not rospy.is_shutdown():
     try:
