@@ -225,6 +225,7 @@ def get_data():
 if sensor_init() == -1:
     print "Error setting up the motion sensor"
     opti_flow_sensor.close()
+    led_lighting.off()
     exit()
 
 while not rospy.is_shutdown():
@@ -238,4 +239,5 @@ while not rospy.is_shutdown():
 
 if rospy.is_shutdown():
     opti_flow_sensor.close()
+    led_lighting.off()
     print 'Finished'
