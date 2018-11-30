@@ -4,4 +4,5 @@
     <include file="$(find holly_sensors)/launch/start.launch" />
     <include file="$(find holly_motors)/launch/start.launch" />
     <include file="$(find holly_imu)/launch/start.launch" />
+    <include file="$(find holly_opti_flow)/launch/start.launch" />
 </launch>
