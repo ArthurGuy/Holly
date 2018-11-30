@@ -4,7 +4,7 @@ import traceback
 import gpiozero
 from time import sleep
 
-from geometry_msgs.msg import Twist, PoseWithCovariance, Pose, Point
+from geometry_msgs.msg import Twist, PoseWithCovariance, Pose, Point, Float32
 from nav_msgs.msg import Odometry
 
 PIN_SENSOR_CS = 5
@@ -63,6 +63,9 @@ rate = rospy.Rate(10)  # 10hz
 # setup publisher and classes
 odomPub = rospy.Publisher('optical_flow/odom', Odometry, queue_size=10)
 msg = Odometry()
+
+qualityPub = rospy.Publisher('optical_flow/quality', Float32, queue_size=1)
+qualityMsg = Float32()
 
 seq = 1
 
@@ -164,6 +167,9 @@ def get_data():
     m = sensor_read_motion()
     if m.motion & 0x10:
         print "Overflow"
+
+    qualityMsg.data = m.squal
+    qualityPub.publish(qualityMsg)
 
     if m.squal < 50:
         led_lighting.on()
