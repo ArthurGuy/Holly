@@ -184,19 +184,14 @@ def get_data():
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "odom"
 
-    # pose = Pose()
-    # pose.position.x = abs_x_m
-    # pose.position.y = abs_y_m
-    #
-    # poseC = PoseWithCovariance()
-    # poseC.pose = pose
-    # poseC.covariance = [0.1, 0, 0, 0, 0, 0,
-    #                     0, 0.1, 0, 0, 0, 0,
-    #                     0, 0, 99999, 0, 0, 0,
-    #                     0, 0, 0, 99999, 0, 0,
-    #                     0, 0, 0, 0, 99999, 0,
-    #                     0, 0, 0, 0, 0, 10]
-    # msg.pose = poseC
+    pose = Pose()
+    pose.position.x = abs_x_m
+    pose.position.y = abs_y_m
+
+    poseC = PoseWithCovariance()
+    poseC.pose = pose
+    poseC.covariance = [-1] * 36
+    msg.pose = poseC
 
     twist = Twist()
     twist.linear.x = speed_y_m
