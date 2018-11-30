@@ -4,8 +4,9 @@ import traceback
 import gpiozero
 from time import sleep
 
-from geometry_msgs.msg import Twist, PoseWithCovariance, Pose, Point, Float32
+from geometry_msgs.msg import Twist, PoseWithCovariance, Pose, Point
 from nav_msgs.msg import Odometry
+from std_msgs.msg import Float32
 
 PIN_SENSOR_CS = 5
 PIN_SENSOR_RESET = 6
