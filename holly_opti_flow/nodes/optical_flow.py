@@ -199,7 +199,7 @@ def get_data():
     # msg.pose = poseC
 
     twist = Twist()
-    twist.linear.x = speed_x_m
+    twist.linear.x = speed_y_m
     twist.linear.y = 0
     msg.twist.twist = twist
     msg.twist.covariance = [0.1] * 36
