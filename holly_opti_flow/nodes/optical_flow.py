@@ -70,6 +70,8 @@ abs_y = 0
 abs_x_m = 0
 abs_y_m = 0
 
+last_time = rospy.get_time()
+
 
 def sensor_reset():
     opti_flow_reset.on()
@@ -109,7 +111,7 @@ def sensor_read_reg(reg):
     ret = opti_flow_sensor._spi.transfer([0xff]);
     opti_flow_cs.on()
     sleep(0.000005)
-    return ret[0];
+    return ret[0]
 
 
 class Move:
@@ -153,7 +155,7 @@ def sensor_read_motion():
 
 
 def get_data():
-    global seq, abs_x, abs_y, abs_x_m, abs_y_m
+    global seq, abs_x, abs_y, abs_x_m, abs_y_m, last_time
 
     seq += 1
 
@@ -163,14 +165,17 @@ def get_data():
     abs_x += m.dx
     abs_y += m.dy
 
+    time_diff = rospy.get_time() - last_time
+    last_time = rospy.get_time()
+
     # Convert the counts reading into metres
     abs_x_m = (float(abs_x) / ADNS3080_COUNTS_PER_METER)
     abs_y_m = (float(abs_y) / ADNS3080_COUNTS_PER_METER)
 
-    speed_x_m = (float(m.dx) / ADNS3080_COUNTS_PER_METER)
-    speed_y_m = (float(m.dy) / ADNS3080_COUNTS_PER_METER)
+    speed_x_m = (float(m.dx) / ADNS3080_COUNTS_PER_METER) / time_diff
+    speed_y_m = (float(m.dy) / ADNS3080_COUNTS_PER_METER) / time_diff
 
-    print str(abs_x_m) + ", " + str(abs_y_m)
+    print str(speed_x_m) + ", " + str(speed_y_m)
     print m.squal
 
     # Y forward and back
