@@ -73,14 +73,16 @@ abs_y_m = 0
 
 def sensor_reset():
     opti_flow_reset.on()
-    sleep(0.010)  # reset pulse >10us
+    sleep(0.020)  # reset pulse >10us
     opti_flow_reset.off()
-    sleep(0.040)  # 35ms from reset to functional
+    sleep(0.050)  # 35ms from reset to functional
 
 
 def sensor_init():
     opti_flow_cs.on()
 
+    sensor_reset()
+    sleep(0.1)
     sensor_reset()
 
     pid = sensor_read_reg(ADNS3080_PRODUCT_ID)
