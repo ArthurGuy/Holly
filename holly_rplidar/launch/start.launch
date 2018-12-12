@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="rplidar_ros" name="rplidarNode" type="rplidarNode">
+        <param name="frame_id" value="/rplidar_sensor" />
+        <param name="angle_compensate" value="false" />
+    </node>
+</launch>
