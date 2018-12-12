@@ -15,6 +15,6 @@ local_costmap:
   plugins:
   - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
   - {name: obstacle_layer, type: "costmap_2d::ObstacleLayer"}
+#  - {name: range_sensors, type: "range_sensor_layer::RangeSensorLayer"}
 #  - {name: voxel_layer, type: "costmap_2d::VoxelLayer"}
-  - {name: range_sensors, type: "range_sensor_layer::RangeSensorLayer"}
 #  - {name: static_map,  type: "costmap_2d::StaticLayer"}
