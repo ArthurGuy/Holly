@@ -200,8 +200,8 @@ def get_data():
     msg.header.frame_id = "odom"
 
     pose = Pose()
-    pose.position.x = abs_x_m
-    pose.position.y = abs_y_m
+    pose.position.x = 0
+    pose.position.y = 0
 
     poseC = PoseWithCovariance()
     poseC.pose = pose
