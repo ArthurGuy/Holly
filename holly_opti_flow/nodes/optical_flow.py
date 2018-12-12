@@ -172,9 +172,9 @@ def get_data():
     qualityMsg.data = m.squal
     qualityPub.publish(qualityMsg)
 
-    if m.squal < 60:
+    if m.squal < 90:
         led_lighting.on()
-    if m.squal > 75:
+    if m.squal > 90:
         led_lighting.off()
 
     abs_x += m.dx
