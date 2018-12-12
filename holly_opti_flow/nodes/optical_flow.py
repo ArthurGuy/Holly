@@ -174,7 +174,7 @@ def get_data():
 
     if m.squal < 60:
         led_lighting.on()
-    if m.squal > 60:
+    if m.squal > 70:
         led_lighting.off()
 
     abs_x += m.dx
