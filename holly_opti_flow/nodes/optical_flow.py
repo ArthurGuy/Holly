@@ -59,7 +59,7 @@ led_lighting = gpiozero.PWMLED(pin=PIN_LIGHTING)
 
 # Setup the ROS publisher
 rospy.init_node('holly_optical_flow')  # public display name of the publisher
-rate = rospy.Rate(10)  # 10hz
+rate = rospy.Rate(15)  # 15hz
 
 # setup publisher and classes
 odomPub = rospy.Publisher('optical_flow/odom', Odometry, queue_size=10)
