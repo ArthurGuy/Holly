@@ -60,7 +60,7 @@ def setup_imu():
         raise RuntimeError('Failed to initialize BNO080. Is the sensor connected?')
 
     imu.enable_rotation_vector(50)
-    imu.enable_linear_acceleration(100)
+    imu.enable_accelerometer(100)
     imu.enable_gyro(100)
     imu.enable_magnetometer(100)
 
@@ -86,7 +86,7 @@ while not rospy.is_shutdown():
             print ''
             mag_accuracy = imu.get_mag_accuracy()
             sensor_accuracy = imu.get_quat_accuracy()
-            linear_accuracy = imu.get_linear_accuracy()
+            accel_accuracy = imu.get_accelerometer_accuracy()
             gyro_accuracy = imu.get_gyro_accuracy()
             gyro_data_delay = imu.get_gyro_data_delay()  # delay in (us)
             mag_data_delay = imu.get_gyro_data_delay()  # delay in (us)
@@ -96,15 +96,15 @@ while not rospy.is_shutdown():
 
             # print('Delay: {0}'.format(gyro_data_delay))
 
-            print('Calibration: Sys={0} Mag={1} Linear_accel={2} Gyro={3}'.format(sensor_accuracy, mag_accuracy, linear_accuracy, gyro_accuracy))
+            print('Calibration: Sys={0} Mag={1} Accel={2} Gyro={3}'.format(sensor_accuracy, mag_accuracy, accel_accuracy, gyro_accuracy))
             i, j, k, real = imu.get_rotation_quaternion()
             rotation_accuracy = imu.get_rotation_accuracy()
             # print('Orientation: I={0:0.8F} J={1:0.8F} K={2:0.8F} Real={3:0.8F} Accuracy={4}'.format(i, j, k, real, rotation_accuracy))
             # angles = euler_from_quaternion([i, j, k, real])
             # print('Roll={0:0.2F} Pitch={1:0.2F} Heading={2:0.2F} '.format(angles[0], angles[1], angles[2]))
 
-            linearAccelX, linearAccelY, linearAccelZ = imu.get_linear_acceleration()
-            print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(linearAccelX, linearAccelY, linearAccelZ))
+            accelX, accelY, accelZ = imu.get_acceleration()
+            print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(accelX, accelY, accelZ))
 
             gyroX, gyroY, gyroZ = imu.get_gyro()
             print('Gyro: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(gyroX, gyroY, gyroZ))
@@ -113,7 +113,7 @@ while not rospy.is_shutdown():
             # print('Mag: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(magX, magY, magZ))
 
             # Publish the status flags so we can see whats going on
-            statusMsg.data = sensor_accuracy, gyro_accuracy, linear_accuracy, mag_accuracy
+            statusMsg.data = sensor_accuracy, gyro_accuracy, accel_accuracy, mag_accuracy
             statusPub.publish(statusMsg)
 
             directionAccuracyMsg.data = rotation_accuracy
@@ -199,22 +199,22 @@ while not rospy.is_shutdown():
                                                       0.00000, 0.00000, 0.00001]
 
             # Accelerometer data (in meters per second squared):
-            imuMsg.linear_acceleration.x = linearAccelX
-            imuMsg.linear_acceleration.y = linearAccelY
-            imuMsg.linear_acceleration.z = linearAccelZ
-            if linear_accuracy == 3:
+            imuMsg.linear_acceleration.x = accelX
+            imuMsg.linear_acceleration.y = accelY
+            imuMsg.linear_acceleration.z = accelZ
+            if accel_accuracy == 3:
                 imuMsg.linear_acceleration_covariance = [0.01, 0.00, 0.00,
                                                          0.00, 0.01, 0.00,
                                                          0.00, 0.00, 0.01]
-            elif linear_accuracy == 2:
+            elif accel_accuracy == 2:
                 imuMsg.linear_acceleration_covariance = [0.001, 0.000, 0.000,
                                                          0.000, 0.001, 0.000,
                                                          0.000, 0.000, 0.001]
-            elif linear_accuracy == 1:
+            elif accel_accuracy == 1:
                 imuMsg.linear_acceleration_covariance = [0.0001, 0.0000, 0.0000,
                                                          0.0000, 0.0001, 0.0000,
                                                          0.0000, 0.0000, 0.0001]
-            elif linear_accuracy == 0:
+            elif accel_accuracy == 0:
                 imuMsg.linear_acceleration_covariance = [0.00001, 0.00000, 0.00000,
                                                          0.00000, 0.00001, 0.00000,
                                                          0.00000, 0.00000, 0.00001]

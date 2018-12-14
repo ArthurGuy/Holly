@@ -291,6 +291,9 @@ class BNO080(object):
     def enable_linear_acceleration(self, update_time):
         self._set_feature_command(SENSOR_REPORTID_LINEAR_ACCELERATION, update_time * 1000)
 
+    def enable_accelerometer(self, update_time):
+        self._set_feature_command(SENSOR_REPORTID_ACCELEROMETER, update_time * 1000)
+
     def enable_gyro(self, update_time):
         self._set_feature_command(SENSOR_REPORTID_GYROSCOPE, update_time * 1000)
 
@@ -340,6 +343,9 @@ class BNO080(object):
     def get_linear_accuracy(self):
         return self.accelLinAccuracy
 
+    def get_accelerometer_accuracy(self):
+        return self.accelAccuracy
+
     def get_gyro_accuracy(self):
         return self.gyroAccuracy
 
@@ -387,6 +393,16 @@ class BNO080(object):
         x = self.rawLinAccelX
         y = self.rawLinAccelY
         z = self.rawLinAccelZ
+
+        x = self._convert_q_number(x, ACCELEROMETER_Q)
+        y = self._convert_q_number(y, ACCELEROMETER_Q)
+        z = self._convert_q_number(z, ACCELEROMETER_Q)
+        return [x, y, z]
+
+    def get_acceleration(self):
+        x = self.rawAccelX
+        y = self.rawAccelY
+        z = self.rawAccelZ
 
         x = self._convert_q_number(x, ACCELEROMETER_Q)
         y = self._convert_q_number(y, ACCELEROMETER_Q)
@@ -461,7 +477,7 @@ class BNO080(object):
 
         elif self.receivedData[0] == SENSOR_REPORTID_ACCELEROMETER:
             # report size 10 bytes
-            print 'SENSOR_REPORTID_ACCELEROMETER'
+            # print 'SENSOR_REPORTID_ACCELEROMETER'
             self.accelAccuracy = status
             self.rawAccelX = data1
             self.rawAccelY = data2
