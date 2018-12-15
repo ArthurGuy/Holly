@@ -83,7 +83,7 @@ while not rospy.is_shutdown():
             no_data_count = 0
 
             # print('IMU data available')
-            print ''
+            # print ''
             mag_accuracy = imu.get_mag_accuracy()
             sensor_accuracy = imu.get_quat_accuracy()
             accel_accuracy = imu.get_accelerometer_accuracy()
@@ -96,7 +96,7 @@ while not rospy.is_shutdown():
 
             # print('Delay: {0}'.format(gyro_data_delay))
 
-            print('Calibration: Sys={0} Mag={1} Accel={2} Gyro={3}'.format(sensor_accuracy, mag_accuracy, accel_accuracy, gyro_accuracy))
+            # print('Calibration: Sys={0} Mag={1} Accel={2} Gyro={3}'.format(sensor_accuracy, mag_accuracy, accel_accuracy, gyro_accuracy))
             i, j, k, real = imu.get_rotation_quaternion()
             rotation_accuracy = imu.get_rotation_accuracy()
             # print('Orientation: I={0:0.8F} J={1:0.8F} K={2:0.8F} Real={3:0.8F} Accuracy={4}'.format(i, j, k, real, rotation_accuracy))
@@ -104,10 +104,10 @@ while not rospy.is_shutdown():
             # print('Roll={0:0.2F} Pitch={1:0.2F} Heading={2:0.2F} '.format(angles[0], angles[1], angles[2]))
 
             accelX, accelY, accelZ = imu.get_acceleration()
-            print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(accelX, accelY, accelZ))
+            # print('Acceleration: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(accelX, accelY, accelZ))
 
             gyroX, gyroY, gyroZ = imu.get_gyro()
-            print('Gyro: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(gyroX, gyroY, gyroZ))
+            # print('Gyro: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(gyroX, gyroY, gyroZ))
 
             magX, magY, magZ = imu.get_mag()
             # print('Mag: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(magX, magY, magZ))
