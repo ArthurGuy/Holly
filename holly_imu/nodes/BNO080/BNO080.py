@@ -479,9 +479,9 @@ class BNO080(object):
             # report size 10 bytes
             # print 'SENSOR_REPORTID_ACCELEROMETER'
             self.accelAccuracy = status
-            self.rawAccelX = data1
-            self.rawAccelY = data2
-            self.rawAccelZ = data3
+            self.rawAccelX = self._convert_signed_number(data1)
+            self.rawAccelY = self._convert_signed_number(data2)
+            self.rawAccelZ = self._convert_signed_number(data3)
 
             self.accelSensorDelay = self.sensorDelay
 
