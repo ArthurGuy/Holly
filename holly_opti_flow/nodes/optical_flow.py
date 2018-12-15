@@ -198,6 +198,7 @@ def get_data():
     msg.header.seq = seq
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "odom"
+    msg.child_frame_id = "base_link"
 
     pose = Pose()
     pose.position.x = 0
@@ -212,7 +213,7 @@ def get_data():
     twist.linear.x = speed_y_m
     twist.linear.y = 0
     msg.twist.twist = twist
-    msg.twist.covariance = [0.1] * 36
+    msg.twist.covariance = [0.01] * 36
 
 
 

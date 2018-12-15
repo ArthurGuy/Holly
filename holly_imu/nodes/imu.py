@@ -130,22 +130,9 @@ while not rospy.is_shutdown():
             magMsg.magnetic_field.x = magX / 1000000  # Convert to Teslas
             magMsg.magnetic_field.y = magY / 1000000
             magMsg.magnetic_field.z = magZ / 1000000
-            if mag_accuracy == 3:
-                magMsg.magnetic_field_covariance = [0.01, 0.00, 0.00,
-                                                    0.00, 0.01, 0.00,
-                                                    0.00, 0.00, 0.01]
-            elif mag_accuracy == 2:
-                magMsg.magnetic_field_covariance = [0.001, 0.000, 0.000,
-                                                    0.000, 0.001, 0.000,
-                                                    0.000, 0.000, 0.001]
-            elif mag_accuracy == 1:
-                magMsg.magnetic_field_covariance = [0.0001, 0.0000, 0.0000,
-                                                    0.0000, 0.0001, 0.0000,
-                                                    0.0000, 0.0000, 0.0001]
-            elif mag_accuracy == 0:
-                magMsg.magnetic_field_covariance = [0.00001, 0.00000, 0.00000,
-                                                    0.00000, 0.00001, 0.00000,
-                                                    0.00000, 0.00000, 0.00001]
+            magMsg.magnetic_field_covariance = [0.01, 0.00, 0.00,
+                                                0.00, 0.01, 0.00,
+                                                0.00, 0.00, 0.01]
 
             magPub.publish(magMsg)
 
@@ -160,64 +147,25 @@ while not rospy.is_shutdown():
             imuMsg.orientation.y = j
             imuMsg.orientation.z = k
             imuMsg.orientation.w = real
-            if sensor_accuracy == 3:
-                imuMsg.orientation_covariance = [0.01, 0.00, 0.00,
-                                                 0.00, 0.01, 0.00,
-                                                 0.00, 0.00, 0.01]
-            elif sensor_accuracy == 2:
-                imuMsg.orientation_covariance = [0.001, 0.000, 0.000,
-                                                 0.000, 0.001, 0.000,
-                                                 0.000, 0.000, 0.001]
-            elif sensor_accuracy == 1:
-                imuMsg.orientation_covariance = [0.0001, 0.0000, 0.0000,
-                                                 0.0000, 0.0001, 0.0000,
-                                                 0.0000, 0.0000, 0.0001]
-            elif sensor_accuracy == 0:
-                imuMsg.orientation_covariance = [0.00001, 0.00000, 0.00000,
-                                                 0.00000, 0.00001, 0.00000,
-                                                 0.00000, 0.00000, 0.00001]
+            imuMsg.orientation_covariance = [0.01, 0.00, 0.00,
+                                             0.00, 0.01, 0.00,
+                                             0.00, 0.00, 0.01]
 
             # Gyroscope data (in degrees per second):
             imuMsg.angular_velocity.x = gyroX
             imuMsg.angular_velocity.y = gyroY
             imuMsg.angular_velocity.z = gyroZ
-            if gyro_accuracy == 3:
-                imuMsg.angular_velocity_covariance = [0.01, 0.00, 0.00,
-                                                      0.00, 0.01, 0.00,
-                                                      0.00, 0.00, 0.01]
-            elif gyro_accuracy == 2:
-                imuMsg.angular_velocity_covariance = [0.001, 0.000, 0.000,
-                                                      0.000, 0.001, 0.000,
-                                                      0.000, 0.000, 0.001]
-            elif gyro_accuracy == 1:
-                imuMsg.angular_velocity_covariance = [0.0001, 0.0000, 0.0000,
-                                                      0.0000, 0.0001, 0.0000,
-                                                      0.0000, 0.0000, 0.0001]
-            elif gyro_accuracy == 0:
-                imuMsg.angular_velocity_covariance = [0.00001, 0.00000, 0.00000,
-                                                      0.00000, 0.00001, 0.00000,
-                                                      0.00000, 0.00000, 0.00001]
+            imuMsg.angular_velocity_covariance = [0.01, 0.00, 0.00,
+                                                  0.00, 0.01, 0.00,
+                                                  0.00, 0.00, 0.01]
 
             # Accelerometer data (in meters per second squared):
             imuMsg.linear_acceleration.x = accelX
             imuMsg.linear_acceleration.y = accelY
             imuMsg.linear_acceleration.z = accelZ
-            if accel_accuracy == 3:
-                imuMsg.linear_acceleration_covariance = [0.01, 0.00, 0.00,
-                                                         0.00, 0.01, 0.00,
-                                                         0.00, 0.00, 0.01]
-            elif accel_accuracy == 2:
-                imuMsg.linear_acceleration_covariance = [0.001, 0.000, 0.000,
-                                                         0.000, 0.001, 0.000,
-                                                         0.000, 0.000, 0.001]
-            elif accel_accuracy == 1:
-                imuMsg.linear_acceleration_covariance = [0.0001, 0.0000, 0.0000,
-                                                         0.0000, 0.0001, 0.0000,
-                                                         0.0000, 0.0000, 0.0001]
-            elif accel_accuracy == 0:
-                imuMsg.linear_acceleration_covariance = [0.00001, 0.00000, 0.00000,
-                                                         0.00000, 0.00001, 0.00000,
-                                                         0.00000, 0.00000, 0.00001]
+            imuMsg.linear_acceleration_covariance = [0.01, 0.00, 0.00,
+                                                     0.00, 0.01, 0.00,
+                                                     0.00, 0.00, 0.01]
 
             imuPub.publish(imuMsg)
 
