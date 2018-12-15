@@ -10,11 +10,12 @@ TrajectoryPlannerROS:
   max_vel_y: 0.0
   min_vel_y: 0.0
   min_in_place_vel_theta: 0.3
-  max_vel_theta: 0.3
-  max_rotational_vel: 0.25
+#  max_vel_theta: 0.3
+  max_rotational_vel: 0.2
+  escape_vel: -0.15
 
   #Set the tolerance on achieving a goal
-  xy_goal_tolerance: 0.5
+  xy_goal_tolerance: 0.4
   yaw_goal_tolerance: 0.1
   latch_xy_goal_tolerance: true
 
@@ -25,3 +26,9 @@ TrajectoryPlannerROS:
 
   # Whether the *_scale parameters should assume that *_distance are expressed in units of meters
   meter_scoring: true
+
+  # Publish the cost grid that the planner will use when planning
+  publish_cost_grid_pc: true
+
+  # The amount of time to forward-simulate trajectories in seconds
+  sim_time: 2
