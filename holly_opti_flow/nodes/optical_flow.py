@@ -201,7 +201,7 @@ def get_data():
     msg.child_frame_id = "base_link"
 
     pose = Pose()
-    pose.position.x = 0
+    pose.position.x = abs_x_m
     pose.position.y = 0
 
     poseC = PoseWithCovariance()
