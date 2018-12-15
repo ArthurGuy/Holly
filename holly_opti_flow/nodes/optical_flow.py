@@ -68,6 +68,19 @@ msg = Odometry()
 qualityPub = rospy.Publisher('optical_flow/quality', Float32, queue_size=1)
 qualityMsg = Float32()
 
+pivoting = False
+
+
+def cmd_vel_callback(cmd_msg):
+    global pivoting
+    if cmd_msg.linear.x == 0 and cmd_msg.linear.y == 0 and cmd_msg.angular.z != 0:
+        pivoting = True
+    else:
+        pivoting = False
+
+
+rospy.Subscriber("/cmd_vel", Twist, cmd_vel_callback)
+
 seq = 1
 
 # Cumulative offsets
@@ -99,6 +112,8 @@ def sensor_init():
 
     # turn on sensitive mode, 1600 counts per inch
     sensor_write_reg(ADNS3080_CONFIGURATION_BITS, 0x19)
+
+    led_lighting.on()
     return 0
 
 
@@ -172,10 +187,10 @@ def get_data():
     qualityMsg.data = m.squal
     qualityPub.publish(qualityMsg)
 
-    if m.squal < 90:
-        led_lighting.on()
-    if m.squal > 90:
-        led_lighting.off()
+    # if m.squal < 90:
+    #     led_lighting.on()
+    # if m.squal > 90:
+    #     led_lighting.off()
 
     abs_x += m.dx
     abs_y += m.dy
@@ -209,6 +224,10 @@ def get_data():
     poseC.pose = pose
     poseC.covariance = [-1] * 36
     msg.pose = poseC
+
+    # If we are pivoting the sensor doesnt work properly so don't output anything
+    if pivoting:
+        speed_y_m = 0
 
     twist = Twist()
     twist.linear.x = speed_y_m

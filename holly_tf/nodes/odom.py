@@ -23,7 +23,7 @@ wheel_travel_3 = 0
 wheel_travel_4 = 0
 wheel_travel_5 = 0
 wheel_travel_6 = 0
-wheel_angle = 0
+# wheel_angle = 0
 heading = 0
 
 
@@ -38,9 +38,9 @@ def odom_callback(data):
     newOdomData = True
 
 
-def wheel_angle_callback(data):
-    global wheel_angle
-    wheel_angle = data.data
+# def wheel_angle_callback(data):
+#     global wheel_angle
+#     wheel_angle = data.data
 
 
 def imu_callback(data):
@@ -57,7 +57,7 @@ def imu_callback(data):
 odomMsg = Odometry()
 odomPublisher = rospy.Publisher('/odom', Odometry, queue_size=10)
 rospy.Subscriber("/holly/encoders", Float64MultiArray, odom_callback)
-rospy.Subscriber("/holly/wheel_angle", Float64, wheel_angle_callback)
+# rospy.Subscriber("/holly/wheel_angle", Float64, wheel_angle_callback)
 rospy.Subscriber("/imu/data", Imu, imu_callback)
 
 last_update_time = time.time()
