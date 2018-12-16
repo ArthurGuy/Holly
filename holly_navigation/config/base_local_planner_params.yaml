@@ -6,13 +6,18 @@ TrajectoryPlannerROS:
 
   #Set the velocity limits of the robot
   max_vel_x: 0.25
-  min_vel_x: 0.1
+  min_vel_x: 0.075
   max_vel_y: 0.0
   min_vel_y: 0.0
-  min_in_place_vel_theta: 0.3
-#  max_vel_theta: 0.3
-  max_rotational_vel: 0.2
+  min_in_place_vel_theta: 0.15
+  max_vel_theta: 0.5
+  min_vel_theta: -0.5
   escape_vel: -0.15
+
+  #rotate_recovery
+  max_rotational_vel: 0.5
+  min_in_place_rotational_vel: 0.15
+
 
   #Set the tolerance on achieving a goal
   xy_goal_tolerance: 0.4
