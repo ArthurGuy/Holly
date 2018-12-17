@@ -1,10 +1,10 @@
 TrajectoryPlannerROS:
-  #Set the acceleration limits of the robot
+  # Set the acceleration limits of the robot
   acc_lim_theta: 0.2
   acc_lim_x: 0.05
   acc_lim_y: 0
 
-  #Set the velocity limits of the robot
+  # Set the velocity limits of the robot
   max_vel_x: 0.25
   min_vel_x: 0.075
   max_vel_y: 0.0
@@ -14,19 +14,18 @@ TrajectoryPlannerROS:
   min_vel_theta: -0.5
   escape_vel: -0.15
 
-  #rotate_recovery
+  # rotate_recovery
   max_rotational_vel: 0.5
   min_in_place_rotational_vel: 0.2
 
-
-  #Set the tolerance on achieving a goal
+  # Set the tolerance on achieving a goal
   xy_goal_tolerance: 0.4
   yaw_goal_tolerance: 0.1
   latch_xy_goal_tolerance: true
 
   holonomic_robot: false
 
-  #The frequency at which the local planner gets called
+  # The frequency at which the local planner gets called
   controller_frequency: 5.0
 
   # Whether the *_scale parameters should assume that *_distance are expressed in units of meters
@@ -36,4 +35,7 @@ TrajectoryPlannerROS:
   publish_cost_grid_pc: true
 
   # The amount of time to forward-simulate trajectories in seconds
-  sim_time: 2
+  sim_time: 4
+
+  # The number of samples to use when exploring the x velocity space
+  vx_samples: 10

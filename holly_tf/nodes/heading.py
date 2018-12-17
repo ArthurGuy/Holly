@@ -13,7 +13,7 @@ from tf.transformations import euler_from_quaternion
 sys.path.append('.')
 
 rospy.init_node('holly_heading') #public display name of the publisher
-rate = rospy.Rate(10) # 10hz
+rate = rospy.Rate(5)
 
 
 def odom_callback(data):
@@ -38,7 +38,7 @@ def imu_callback(data):
 
 def status_callback(imu_status):
     system_status, gyro_status, accel_status, mag_status = imu_status.data
-    print('Status: Sys={0} Mag={1} Linear_accel={2} Gyro={3}'.format(system_status, mag_status, accel_status, gyro_status))
+    print('Status: Sys={0} Mag={1} Accel={2} Gyro={3}'.format(system_status, mag_status, accel_status, gyro_status))
 
 
 def accuracy_callback(accuracy):
