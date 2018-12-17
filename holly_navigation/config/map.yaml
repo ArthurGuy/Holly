@@ -1,4 +1,4 @@
-image: floorplan.png
+image: testmap.png
 resolution: 0.01
 origin: [-3.5, -1.15, 0.0]
 occupied_thresh: 0.65
