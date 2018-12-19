@@ -114,11 +114,12 @@ while not rospy.is_shutdown():
             # print('Mag: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(magX, magY, magZ))
 
             # Publish the status flags so we can see whats going on
-            statusMsg.layout.dim = []
-            statusMsg.layout.dim[0].label = 'overall'
-            statusMsg.layout.dim[1].label = 'gyro'
-            statusMsg.layout.dim[2].label = 'accel'
-            statusMsg.layout.dim[3].label = 'mag'
+            statusLayout = MultiArrayLayout()
+            statusLayout.dim[0].label = 'overall'
+            statusLayout.dim[1].label = 'gyro'
+            statusLayout.dim[2].label = 'accel'
+            statusLayout.dim[3].label = 'mag'
+            statusMsg.layout = statusLayout
             statusMsg.data = sensor_accuracy, gyro_accuracy, accel_accuracy, mag_accuracy
             statusPub.publish(statusMsg)
 
