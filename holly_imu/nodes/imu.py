@@ -114,6 +114,7 @@ while not rospy.is_shutdown():
             # print('Mag: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(magX, magY, magZ))
 
             # Publish the status flags so we can see whats going on
+            statusMsg.layout.dim = []
             statusMsg.layout.dim[0].label = 'overall'
             statusMsg.layout.dim[1].label = 'gyro'
             statusMsg.layout.dim[2].label = 'accel'
