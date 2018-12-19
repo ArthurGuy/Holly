@@ -572,7 +572,8 @@ class BNO080(object):
                 self.accelCalEnabled = self.receivedData[6]  # R0 - Status (1 = enabled, 0 = disabled)
                 self.gyroCalEnabled = self.receivedData[7]  # R0 - Status (1 = enabled, 0 = disabled)
                 self.magCalEnabled = self.receivedData[8]  # R0 - Status (1 = enabled, 0 = disabled)
-                print 'Calibration response: {0}'.format(self.calibrationStatus)
+                if self.calibrationStatus:
+                    print 'Calibration error, response: {0}'.format(self.calibrationStatus)
             else:
                 print 'Unknown command response received. Command: {0}'.format(command)
                 print ' '.join('{:02x}'.format(x) for x in self.receivedData)
