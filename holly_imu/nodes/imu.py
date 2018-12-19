@@ -75,7 +75,7 @@ setup_imu()
 
 while not rospy.is_shutdown():
     try:
-        if seq == 500:
+        if seq == 300:
             # Stop dynamically calibrating the gyro to avoid unwanted drift
             rospy.loginfo("Stopping dynamic gyro calibration")
             imu.calibrate_main()
