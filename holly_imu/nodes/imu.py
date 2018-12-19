@@ -12,7 +12,7 @@ import os.path
 import time
 import math
 
-from std_msgs.msg import Int8MultiArray, Bool, Float32, MultiArrayLayout, MultiArrayDimension
+from std_msgs.msg import Int8MultiArray, Bool, Float32
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu
 from sensor_msgs.msg import MagneticField
@@ -114,14 +114,6 @@ while not rospy.is_shutdown():
             # print('Mag: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(magX, magY, magZ))
 
             # Publish the status flags so we can see whats going on
-            statusLayout = MultiArrayLayout()
-            dim1 = MultiArrayDimension()
-            dim1.label = 'overall'
-            statusLayout.dim[0] = dim1
-            # statusLayout.dim[1].label = 'gyro'
-            # statusLayout.dim[2].label = 'accel'
-            # statusLayout.dim[3].label = 'mag'
-            statusMsg.layout = statusLayout
             statusMsg.data = sensor_accuracy, gyro_accuracy, accel_accuracy, mag_accuracy
             statusPub.publish(statusMsg)
 
