@@ -91,8 +91,7 @@ while not rospy.is_shutdown():
             gyro_accuracy = imu.get_gyro_accuracy()
             gyro_data_delay = imu.get_gyro_data_delay()  # delay in (us)
             mag_data_delay = imu.get_gyro_data_delay()  # delay in (us)
-
-            # cal_status, cal_accel, cal_gyro, cal_mag = imu.get_calibration_status()
+            cal_status, cal_accel, cal_gyro, cal_mag = imu.get_calibration_status()
             # print('Calibration status, Status: {0}, Accel: {1}, Gyro: {2}, Mag: {3}'.format(cal_status, cal_accel, cal_gyro, cal_mag))
 
             # print('Delay: {0}'.format(gyro_data_delay))
@@ -114,7 +113,7 @@ while not rospy.is_shutdown():
             # print('Mag: X={0:0.8F} Y={1:0.8F} Z={2:0.8F}'.format(magX, magY, magZ))
 
             # Publish the status flags so we can see whats going on
-            statusMsg.data = sensor_accuracy, gyro_accuracy, accel_accuracy, mag_accuracy
+            statusMsg.data = sensor_accuracy, gyro_accuracy, accel_accuracy, mag_accuracy, cal_status, cal_accel, cal_gyro, cal_mag
             statusPub.publish(statusMsg)
 
             directionAccuracyMsg.data = rotation_accuracy
