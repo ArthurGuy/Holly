@@ -75,13 +75,10 @@ setup_imu()
 
 while not rospy.is_shutdown():
     try:
-        if seq == 300:
-            # Stop dynamically calibrating the gyro to avoid unwanted drift
-            rospy.loginfo("Stopping dynamic gyro calibration")
-            imu.calibrate_main()
 
         if imu.data_available():
             no_data_count = 0
+            seq += 1
 
             # print('IMU data available')
             # print ''
@@ -118,8 +115,6 @@ while not rospy.is_shutdown():
 
             directionAccuracyMsg.data = rotation_accuracy
             directionAccuracyPub.publish(directionAccuracyMsg)
-
-            seq += 1
 
             # Publish the mag data #
             magMsg.header.seq = seq
@@ -168,6 +163,11 @@ while not rospy.is_shutdown():
                                                      0.00, 0.00, 0.01]
 
             imuPub.publish(imuMsg)
+
+            if seq >= 300 and gyro_accuracy == 3:
+                # Stop dynamically calibrating the gyro to avoid unwanted drift
+                rospy.loginfo("Stopping dynamic gyro calibration")
+                imu.calibrate_main()
 
         else:
             print('No IMU data available')
