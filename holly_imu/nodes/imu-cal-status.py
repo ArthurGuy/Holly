@@ -38,8 +38,8 @@ def imu_callback(data):
 
 def status_callback(imu_status):
     system_status, gyro_status, accel_status, mag_status, cal_status, cal_accel, cal_gyro, cal_mag = imu_status.data
-    print('Calibration status, Status: {0}, Mag: {1}, Accel: {2}, Gyro: {3}, '.format(cal_status, cal_mag, cal_accel, cal_gyro))
-    print('Status: Sys={0} Mag={1} Accel={2} Gyro={3}'.format(system_status, mag_status, accel_status, gyro_status))
+    # print('Calibration status, Status: {0}, Accel: {2}, Gyro: {3}, Mag: {1} '.format(cal_status, cal_mag, cal_accel, cal_gyro))
+    print('Status: Sys={0} Accel={2} Gyro={3}, Mag={1} '.format(system_status, mag_status, accel_status, gyro_status))
 
 
 def accuracy_callback(accuracy):
