@@ -51,8 +51,8 @@ def accuracy_callback(accuracy):
 imuMsg = Imu()
 rospy.Subscriber("/imu/data", Imu, imu_callback)
 
-statusMessage = Int8MultiArray()
-rospy.Subscriber("/imu/debug", Int8MultiArray, status_callback)
+# statusMessage = Int8MultiArray()
+# rospy.Subscriber("/imu/debug", Int8MultiArray, status_callback)
 
 accuracyMessage = Int8MultiArray()
 rospy.Subscriber("/imu/direction_accuracy", Float32, accuracy_callback)
