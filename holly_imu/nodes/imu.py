@@ -125,9 +125,14 @@ while not rospy.is_shutdown():
             magMsg.magnetic_field.x = magX / 1000000  # Convert to Teslas
             magMsg.magnetic_field.y = magY / 1000000
             magMsg.magnetic_field.z = magZ / 1000000
-            magMsg.magnetic_field_covariance = [0.01, 0.00, 0.00,
-                                                0.00, 0.01, 0.00,
-                                                0.00, 0.00, 0.01]
+            if mag_accuracy == 0:
+                magMsg.magnetic_field_covariance = [-1, 0.00, 0.00,
+                                                    0.00, -1, 0.00,
+                                                    0.00, 0.00, -1]
+            else:
+                magMsg.magnetic_field_covariance = [0.01, 0.00, 0.00,
+                                                    0.00, 0.01, 0.00,
+                                                    0.00, 0.00, 0.01]
 
             magPub.publish(magMsg)
 
