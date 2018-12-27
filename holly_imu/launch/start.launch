@@ -1,6 +1,13 @@
 <launch>
     <node pkg="holly_imu" type="imu.py" name="holly_imu" output="screen" />
     <node pkg="holly_tf" type="odom.py" name="holly_odom" output="screen" />
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node" output="screen">
+        <param name="world_frame" value="enu" />
+        <param name="use_mag" value="true" />
+        <param name="fixed_frame" value="odom" />
+        <param name="publish_tf" value="false" />
+        <param name="publish_debug_topics" value="true" />
+    </node>
     <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_node" output="screen">
         <param name="imu0" value="/imu/data" />
         <param name="imu0_relative" value="false"/>

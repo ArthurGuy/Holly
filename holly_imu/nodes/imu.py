@@ -27,7 +27,7 @@ rate = rospy.Rate(20)
 
 
 # setup publisher and classes
-imuPub = rospy.Publisher('imu/data', Imu, queue_size=5)
+imuPub = rospy.Publisher('imu/data_raw', Imu, queue_size=5)
 imuMsg = Imu()
 
 magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=5)
