@@ -164,7 +164,7 @@ while not rospy.is_shutdown():
 
             imuPub.publish(imuMsg)
 
-            if seq >= 300 and gyro_accuracy == 3:
+            if seq >= 300 and gyro_accuracy == 3 and cal_gyro == 1:
                 # Stop dynamically calibrating the gyro to avoid unwanted drift
                 rospy.loginfo("Stopping dynamic gyro calibration")
                 imu.calibrate_main()
