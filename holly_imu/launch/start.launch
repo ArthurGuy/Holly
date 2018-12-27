@@ -4,7 +4,7 @@
     <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter_node" output="screen">
         <param name="world_frame" value="enu" />
         <param name="use_mag" value="true" />
-        <param name="use_magnetic_field_msg" value="false" />
+        <param name="use_magnetic_field_msg" value="true" />
         <param name="publish_tf" value="false" />
         <param name="publish_debug_topics" value="true" />
         <param name="stateless" value="true" />
