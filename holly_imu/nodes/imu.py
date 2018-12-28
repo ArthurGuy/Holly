@@ -27,7 +27,7 @@ rate = rospy.Rate(20)
 
 
 # setup publisher and classes
-imuPub = rospy.Publisher('imu/data_raw', Imu, queue_size=5)
+imuPub = rospy.Publisher('imu/data', Imu, queue_size=5)
 imuMsg = Imu()
 
 magPub = rospy.Publisher('imu/mag', MagneticField, queue_size=5)
@@ -147,9 +147,14 @@ while not rospy.is_shutdown():
             imuMsg.orientation.y = j
             imuMsg.orientation.z = k
             imuMsg.orientation.w = real
-            imuMsg.orientation_covariance = [0.01, 0.00, 0.00,
-                                             0.00, 0.01, 0.00,
-                                             0.00, 0.00, 0.01]
+            if mag_accuracy == 0:
+                imuMsg.orientation_covariance = [0.0001, 0.00, 0.00,
+                                                 0.00, 0.0001, 0.00,
+                                                 0.00, 0.00, 0.0001]
+            else:
+                imuMsg.orientation_covariance = [0.01, 0.00, 0.00,
+                                                 0.00, 0.01, 0.00,
+                                                 0.00, 0.00, 0.01]
 
             # Gyroscope data (in degrees per second):
             imuMsg.angular_velocity.x = gyroX
