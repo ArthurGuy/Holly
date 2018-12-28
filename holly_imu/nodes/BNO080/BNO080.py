@@ -518,9 +518,9 @@ class BNO080(object):
         elif self.receivedData[0] == SENSOR_REPORTID_MAGNETIC_FIELD:
             # report size 10 bytes
             self.magAccuracy = status
-            self.rawMagX = data1
-            self.rawMagY = data2
-            self.rawMagZ = data3
+            self.rawMagX = self._convert_signed_number(data1)
+            self.rawMagY = self._convert_signed_number(data2)
+            self.rawMagZ = self._convert_signed_number(data3)
 
             self.magSensorDelay = self.sensorDelay
 
