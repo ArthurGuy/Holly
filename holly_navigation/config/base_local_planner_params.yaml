@@ -3,22 +3,22 @@ controller_frequency: 3.0
 
 TrajectoryPlannerROS:
   # Set the acceleration limits of the robot
-  acc_lim_theta: 0.2
-  acc_lim_x: 0.05
+  acc_lim_theta: 0.15
+  acc_lim_x: 0.04
   acc_lim_y: 0
 
   # Set the velocity limits of the robot
-  max_vel_x: 0.20
+  max_vel_x: 0.15
   min_vel_x: 0.075
   max_vel_y: 0.0
   min_vel_y: 0.0
-  min_in_place_vel_theta: 0.2
+  min_in_place_vel_theta: 0.15
   max_vel_theta: 0.4
   min_vel_theta: -0.4
   escape_vel: -0.15
 
   # rotate_recovery
-  max_rotational_vel: 0.5
+  max_rotational_vel: 0.3
   min_in_place_rotational_vel: 0.2
 
   # Set the tolerance on achieving a goal
