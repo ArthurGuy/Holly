@@ -4,7 +4,7 @@ controller_frequency: 3.0
 TrajectoryPlannerROS:
   # Set the acceleration limits of the robot
   acc_lim_theta: 0.15
-  acc_lim_x: 0.04
+  acc_lim_x: 0.05
   acc_lim_y: 0
 
   # Set the velocity limits of the robot
