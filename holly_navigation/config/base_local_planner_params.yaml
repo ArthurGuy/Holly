@@ -1,3 +1,6 @@
+# The frequency at which the local planner gets called
+controller_frequency: 4
+
 TrajectoryPlannerROS:
   # Set the acceleration limits of the robot
   acc_lim_theta: 0.2
@@ -24,9 +27,6 @@ TrajectoryPlannerROS:
   latch_xy_goal_tolerance: true
 
   holonomic_robot: false
-
-  # The frequency at which the local planner gets called
-  controller_frequency: 4
 
   # Whether the *_scale parameters should assume that *_distance are expressed in units of meters
   meter_scoring: true
