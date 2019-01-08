@@ -8,7 +8,7 @@ TrajectoryPlannerROS:
   acc_lim_y: 0
 
   # Set the velocity limits of the robot
-  max_vel_x: 0.25
+  max_vel_x: 0.20
   min_vel_x: 0.075
   max_vel_y: 0.0
   min_vel_y: 0.0
