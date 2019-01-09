@@ -139,10 +139,10 @@ class BNO080(object):
     posSensorDelay = 0
     linearAccelSensorDelay = 0
 
-    calibrationStatus = None
-    accelCalEnabled = None
-    gyroCalEnabled = None
-    magCalEnabled = None
+    calibrationStatus = 0
+    accelCalEnabled = 0
+    gyroCalEnabled = 0
+    magCalEnabled = 0
 
     def __init__(self, address=BNO080_ADDRESS_B, gpio=None, **kwargs):
         self.pi = pigpio.pi()
