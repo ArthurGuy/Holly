@@ -6,7 +6,7 @@ global_costmap:
   resolution: 0.1
 
   # Specifies the delay in transform (tf) data that is tolerable in seconds.
-  transform_tolerance: 0.8
+  transform_tolerance: 1.0
 
 
   plugins:
