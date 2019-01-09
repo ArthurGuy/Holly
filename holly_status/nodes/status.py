@@ -35,10 +35,10 @@ def toggle_led():
 def imu_status_callback(imu_status):
     global imuProblem
 
-    system_status, gyro_status, accel_status, mag_status = imu_status.data
-    # print('Sys_cal={0} Gyro_cal={1} Accel_cal={2} Mag_cal={3}'.format(system_status, gyro_status, accel_status, mag_status))
+    sensor_accuracy, gyro_accuracy, accel_accuracy, mag_accuracy, cal_status, cal_accel, cal_gyro, cal_mag = imu_status.data
+    # print('Sys_cal={0} Gyro_cal={1} Accel_cal={2} Mag_cal={3}'.format(sensor_accuracy, gyro_accuracy, accel_accuracy, mag_accuracy))
 
-    if system_status == 0:
+    if sensor_accuracy == 0:
         imuProblem = True
     else:
         imuProblem = False
