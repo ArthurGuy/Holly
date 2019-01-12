@@ -1,5 +1,5 @@
 # The frequency at which the local planner gets called
-controller_frequency: 5.0
+controller_frequency: 3.0
 planner_frequency: 1.0
 
 TrajectoryPlannerROS:
