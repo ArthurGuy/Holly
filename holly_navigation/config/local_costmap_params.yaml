@@ -7,7 +7,7 @@ local_costmap:
   rolling_window: true
   width: 5.0
   height: 5.0
-  resolution: 0.03
+  resolution: 0.025
 
   # Specifies the delay in transform (tf) data that is tolerable in seconds.
   transform_tolerance: 1.0
