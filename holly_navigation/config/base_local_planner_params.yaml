@@ -1,5 +1,5 @@
 # The frequency at which the local planner gets called
-controller_frequency: 3.0
+controller_frequency: 2.0
 
 TrajectoryPlannerROS:
   # Set the acceleration limits of the robot
